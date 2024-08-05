@@ -1,7 +1,6 @@
 # Hjælp! Jeg er en fisk?
 
-## " Hjælp! Jeg er en fisk? Er til den ikke så vante motionist, til kontoret, til hjemmet eller bare til en fisk på land der leder efter andre fisk, der hellere ikke er for landfaste i fitnesscenteret. 
-" Kevin Dines Nielsen CEO HJEEF A/S  ##
+## "Hjælp! Jeg er en fisk? Er til den ikke så vante motionist, til kontoret, til hjemmet eller bare til en fisk på land der leder efter andre fisk, der hellere ikke er for landfaste i fitnesscenteret. "Kevin Dines Nielsen CEO HJEEF A/S  ##
 
 
 #### Formålet med, "Hjælp! Jeg er en fisk?", er at få så mange mennesker som muligt i form og føre en sundere livsstil. Vi ønsker at nå ud til dem, der ikke normalt går i fitnesscentret eller deltager i traditionelle fitness aktiviteter. Vores mål er at gøre træning sjov, tilgængelig og motiverende for alle, uanset deres udgangspunkt.Vi driver vi tilbyder en række unikke og kreative træningsmetoder, der bryder med de konventionelle fitness rutiner. Ved at fokusere på sjov og inklusion håber vi at inspirere folk til at tage det første skridt mod en sundere livsstil. Gennem konkurrence og fællesskab gør vi træning sjov for alle. ####
