@@ -17,8 +17,8 @@
 * Konkurrence: Brugerne har mulighed for at oprette konkurrencer f.eks. Hvem går mest på en uge? Eller hvem kan løfte flest Kg i bænkpress
 * Konkurrence, dette er en af hovedelementerne, der skal være mulighed for at lave en gruppe som man er i konkurrence med. Det kan også være ens venner på platformen.
 * Konkurrence: Globale ugentlige/måned basis konkurrencer f.eks. Hvem har løbet flest km.
-*
-  #### Krav til brugerprofil: ####
+
+#### Krav til brugerprofil: ####
 * Brugerne skal uploade et profilbillede.
 * En form for quick connect
 * Der skal være mulighed for at angive fulde navn.
