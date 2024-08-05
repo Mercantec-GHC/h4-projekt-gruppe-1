@@ -2,9 +2,10 @@
 
 ## " Hjælp! Jeg er en fisk? Er til den ikke så vante motionist, til kontoret, til hjemmet eller bare til en fisk på land der leder efter andre fisk, der hellere ikke er for landfaste i fitnesscenteret. " Kevin Dines Nielsen CEO HJEEF A/S  ##
 ### Formålet med, "Hjælp! Jeg er en fisk?", er at få så mange mennesker som muligt i form og føre en sundere livsstil. Vi ønsker at nå ud til dem, der ikke normalt går i fitnesscentret eller deltager i traditionelle fitness aktiviteter. Vores mål er at gøre træning sjov, tilgængelig og motiverende for alle, uanset deres udgangspunkt.Vi driver vi tilbyder en række unikke og kreative træningsmetoder, der bryder med de konventionelle fitness rutiner. Ved at fokusere på sjov og inklusion håber vi at inspirere folk til at tage det første skridt mod en sundere livsstil. Gennem konkurrence og fællesskab gør vi træning sjov for alle. ###
-Virksomheden: Hjælp! Jeg er en fisk? Er baseret i Danmark og  har 3 kerne medlemmer(bestyrelsen) samt over 100 ansatte fordelt på vores 22 fitnesscentre over hele verden!
 
-Appen skal gøre brug af:
+#### Virksomheden: #### Hjælp! Jeg er en fisk? Er baseret i Danmark og  har 3 kerne medlemmer(bestyrelsen) samt over 100 ansatte fordelt på vores 22 fitnesscentre over hele verden! 
+
+#### Appen skal gøre brug af: ####
 * Geo-lokation: Sporing af ruter, hastighed og tid ved hjælp af GPS.
 * Geo-lokation: Ved indtjekning med mobil app anvises hvilket center du befinder dig i.
 * Planlægning: kunne planlægge træning i fitnesscenteret på forhånd og invitere andre brugere til at deltage(f.eks. bænkpress). Samt kunne lave personlige træningsplan
@@ -16,7 +17,8 @@ Appen skal gøre brug af:
 * Konkurrence: Brugerne har mulighed for at oprette konkurrencer f.eks. Hvem går mest på en uge? Eller hvem kan løfte flest Kg i bænkpress
 * Konkurrence, dette er en af hovedelementerne, der skal være mulighed for at lave en gruppe som man er i konkurrence med. Det kan også være ens venner på platformen.
 * Konkurrence: Globale ugentlige/måned basis konkurrencer f.eks. Hvem har løbet flest km.
-Krav til brugerprofil:
+*
+  #### Krav til brugerprofil: ####
 * Brugerne skal uploade et profilbillede.
 * En form for quick connect
 * Der skal være mulighed for at angive fulde navn.
@@ -25,7 +27,7 @@ Krav til brugerprofil:
 * Man skal kunne starte en konkurrence og enten tilføje folk ved navn eller qr kode
 * Der skal være mulighed for at vælge en primær træningsform, Løber du? Løfter du? Eller svømmer du?
 
-Ekstra features (Nice to have):
+#### Ekstra features (Nice to have): ####
 * Integration med sociale medier: Brugerne skal kunne dele deres træningspas
 * Et point system som uddeler point baseret på intensiteten af træningspasset
 * Notifikationer: Det kunne være fedt hvis man modtog notifikationer når man er bagud sine konkurrenter. (hold notifikation i fiske tema)
