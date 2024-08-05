@@ -28,12 +28,12 @@
 * Der skal være mulighed for at vælge en primær træningsform, Løber du? Løfter du? Eller svømmer du?
 
 #### Ekstra features (Nice to have): ####
-	* Integration med sociale medier: Brugerne skal kunne dele deres træningspas
-	* Et point system som uddeler point baseret på intensiteten af træningspasset
-	* Notifikationer: Det kunne være fedt hvis man modtog notifikationer når man er bagud sine konkurrenter. (hold notifikation i fiske tema)
-	* Achievements: Der kunne godt være en form for achievements, så hvis du har vundet konkurrencen 3 uger i streg så får du en in-app achievement så du kan flexe. (achievement guld, 	sølv og bronze fisk med tekst fra den vundne konkurrence)
-	* Chat i appen med andre bruger, så man kan skrive internt med hinanden (en fisk som sendeknap og måske kalde det fiskevenner)
-	* En Ai som kan foreslå et træningsprogram ud fra hvordan du klarer dig og hvad du gerne vil opnå
+* Integration med sociale medier: Brugerne skal kunne dele deres træningspas
+* Et point system som uddeler point baseret på intensiteten af træningspasset
+* Notifikationer: Det kunne være fedt hvis man modtog notifikationer når man er bagud sine konkurrenter. (hold notifikation i fiske tema)
+* Achievements: Der kunne godt være en form for achievements, så hvis du har vundet konkurrencen 3 uger i streg så får du en in-app achievement så du kan flexe. (achievement guld, 	sølv og bronze fisk med tekst fra den vundne konkurrence)
+* Chat i appen med andre bruger, så man kan skrive internt med hinanden (en fisk som sendeknap og måske kalde det fiskevenner)
+* En Ai som kan foreslå et træningsprogram ud fra hvordan du klarer dig og hvad du gerne vil opnå
 
 ## Teknisk specifikationer: ## 
 
