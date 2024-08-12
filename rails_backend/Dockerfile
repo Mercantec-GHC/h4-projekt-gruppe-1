@@ -21,6 +21,11 @@ FROM base as build
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential git libvips pkg-config
 
+# Install packages needed to build gems and node modules
+RUN apt-get update -qq && \
+apt-get install --no-install-recommends -y build-essential curl libpq-dev
+
+
 # Install application gems
 COPY Gemfile Gemfile.lock ./
 RUN bundle install && \
