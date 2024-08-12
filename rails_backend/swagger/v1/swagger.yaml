@@ -1,0 +1,111 @@
+openapi: 3.0.0
+info:
+  title: User Stats API
+  version: 1.0.0
+  description: API til at håndtere brugers statistikker, herunder wins, losses, spil spillet, rigtige gæt og skips.
+
+paths:
+  /user_stat:
+    get:
+      summary: Hent liste over alle brugers statistikker
+      operationId: getUserStats
+      responses:
+        '200':
+          description: En liste over brugers statistikker
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserStat'
+
+    post:
+      summary: Opret en ny brugerstatistik
+      operationId: createUserStat
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserStatInput'
+      responses:
+        '201':
+          description: Statistik oprettet succesfuldt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserStat'
+
+  /user_stat/new:
+    get:
+      summary: Formular for at oprette en ny brugerstatistik
+      operationId: newUserStat
+      responses:
+        '200':
+          description: Ny brugerstatistik formular
+
+  /user_stat/{id}:
+    get:
+      summary: Hent en specifik brugerstatistik baseret på ID
+      operationId: getUserStatById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: En brugerstatistik
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserStat'
+        '404':
+          description: Ikke fundet
+
+components:
+  schemas:
+    UserStat:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unikt ID for brugerstatistikken
+        wins:
+          type: integer
+          description: Antal vundne spil
+        lost:
+          type: integer
+          description: Antal tabte spil
+        games_played:
+          type: integer
+          description: Antal spil spillet
+        right_guesses:
+          type: integer
+          description: Antal rigtige gæt
+        skips:
+          type: integer
+          description: Antal skips
+        created_at:
+          type: string
+          format: date-time
+          description: Oprettelsesdato for statistikken
+        updated_at:
+          type: string
+          format: date-time
+          description: Sidst opdateret dato for statistikken
+
+    UserStatInput:
+      type: object
+      properties:
+        wins:
+          type: integer
+        lost:
+          type: integer
+        games_played:
+          type: integer
+        right_guesses:
+          type: integer
+        skips:
+          type: integer
