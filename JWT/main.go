@@ -8,6 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/swaggest/swgui/v5emb"
 )
 
 type Todo struct {
@@ -23,6 +24,19 @@ func main() {
 	r := gin.Default()
 	r.Static("/static", "./static")
 	r.LoadHTMLGlob("templates/*")
+
+	http.Handle("/api1/docs/", v5emb.New(
+		"/api1/docs/",
+		"swagger.yaml",
+		"swagger-ui-bundle.js",
+	))
+
+	http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
+		_, _ = writer.Write([]byte("Hello World!"))
+	})
+
+	println("docs at http://localhost:8080/api1/docs/")
+	_ = http.ListenAndServe("localhost:8080", http.DefaultServeMux)
 
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{
