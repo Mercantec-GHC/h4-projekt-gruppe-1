@@ -1,36 +1,35 @@
 package models
 
-import (
-	"database/sql"
-)
-
 type User struct {
-	ID       int
-	Username string
-	Email    string
-	Password string
+	ID         int    `json:"id"`
+	Name       string `json:"name"`
+	Nickname   string `json:"nickname"`
+	Phone      string `json:"phone"`
+	Email      string `json:"email"`
+	Password   string `json:"password"`
+	ProfilePic string `json:"profilePic"`
+	StatsID    int    `json:"statsID"`
 }
 
-func CreateUserTable(db *sql.DB) error {
-	query := `
-    CREATE TABLE IF NOT EXISTS users (
-        id SERIAL PRIMARY KEY,
-        username VARCHAR(50) NOT NULL,
-        email VARCHAR(100) NOT NULL,
-        password VARCHAR(100) NOT NULL
-    )`
-	_, err := db.Exec(query)
-	if err != nil {
-		return err
+func NewUser(name, email, phone, nickname, profilePic, password string, statsID int) *User {
+	return &User{
+		Name:       name,
+		Nickname:   nickname,
+		Phone:      phone,
+		ProfilePic: profilePic,
+		Email:      email,
+		Password:   password,
+		StatsID:    statsID,
 	}
-	return nil
 }
 
-func InsertUser(db *sql.DB, user User) error {
-	query := "INSERT INTO users (username, email, password) VALUES ($1, $2, $3)"
-	_, err := db.Exec(query, user.Username, user.Email, user.Password)
-	if err != nil {
-		return err
+func GenerateDummyUsers() []*User {
+	users := []*User{
+		NewUser("user1", "user1@example.com", "password1", "", "", "", 0),
+		NewUser("user2", "user2@example.com", "password2", "", "", "", 0),
+		NewUser("user3", "user3@example.com", "password3", "", "", "", 0),
+		NewUser("user4", "user4@example.com", "password4", "", "", "", 0),
+		NewUser("kim", "user5@example.com", "password5", "", "", "", 0),
 	}
-	return nil
+	return users
 }
