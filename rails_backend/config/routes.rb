@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  mount Rswag::Ui::Engine => '/api-docs'
+  mount Rswag::Ui::Engine => '/'
   mount Rswag::Api::Engine => '/api-docs'
 
   get '/user/:name', to: 'user#show', as: 'user_by_name'
