@@ -36,14 +36,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserStat'
 
-  /user_stat/new:
-    get:
-      summary: Formular for at oprette en ny brugerstatistik
-      operationId: newUserStat
-      responses:
-        '200':
-          description: Ny brugerstatistik formular
-
   /user_stat/{id}:
     get:
       summary: Hent en specifik brugerstatistik baseret på ID
@@ -61,6 +53,97 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserStat'
+        '404':
+          description: Ikke fundet
+
+  /user:
+    get:
+      summary: Hent liste over alle brugere
+      operationId: getUsers
+      responses:
+        '200':
+          description: En liste over brugere
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+
+    post:
+      summary: Opret en ny bruger
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '201':
+          description: Bruger oprettet succesfuldt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /user/{id}:
+    get:
+      summary: Hent en specifik bruger baseret på ID
+      operationId: getUserById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: En bruger
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Ikke fundet
+
+    put:
+      summary: Opdater en eksisterende bruger
+      operationId: updateUser
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '200':
+          description: Bruger opdateret succesfuldt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Ikke fundet
+
+    delete:
+      summary: Slet en bruger
+      operationId: deleteUser
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Bruger slettet succesfuldt
         '404':
           description: Ikke fundet
 
@@ -108,4 +191,45 @@ components:
         right_guesses:
           type: integer
         skips:
+          type: integer
+
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unikt ID for brugeren
+        name:
+          type: string
+          description: Brugerens navn
+        nick_name:
+          type: string
+          description: Brugerens kaldenavn
+        email:
+          type: string
+          description: Brugerens email
+        number:
+          type: integer
+          description: Brugerens nummer
+        created_at:
+          type: string
+          format: date-time
+          description: Oprettelsesdato for brugeren
+        updated_at:
+          type: string
+          format: date-time
+          description: Sidst opdateret dato for brugeren
+
+    UserInput:
+      type: object
+      properties:
+        name:
+          type: string
+        nick_name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        number:
           type: integer
