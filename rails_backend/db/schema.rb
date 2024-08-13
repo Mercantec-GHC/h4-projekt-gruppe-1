@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_13_084934) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_13_114218) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,19 +22,21 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_13_084934) do
     t.integer "right_guesses"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "name"
-    t.string "nick_name"
-    t.string "email"
-    t.string "password"
-    t.integer "number"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "user_stat_id"
-    t.index ["user_stat_id"], name: "index_users_on_user_stat_id"
+    t.timestamptz "created_at"
+    t.timestamptz "updated_at"
+    t.timestamptz "deleted_at"
+    t.text "name"
+    t.text "nick_name"
+    t.text "email"
+    t.text "password"
+    t.text "phone"
+    t.text "profile_photo"
+    t.text "stats_id"
+    t.index ["deleted_at"], name: "idx_users_deleted_at"
   end
 
-  add_foreign_key "users", "user_stats"
 end

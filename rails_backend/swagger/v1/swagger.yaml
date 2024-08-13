@@ -1,107 +1,11 @@
 openapi: 3.0.0
 info:
-  title: User and UserStats API
+  title: User Stats API
   version: 1.0.0
-  description: API til at håndtere brugere og deres statistikker, herunder oprettelse, opdatering og visning af data.
+  description: API til at håndtere brugers statistikker, herunder oprettelse, opdatering, visning og sletning.
 
 paths:
-  /user:
-    get:
-      summary: Hent liste over alle brugere
-      operationId: getUsers
-      responses:
-        '200':
-          description: En liste over brugere
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/User'
-
-    post:
-      summary: Opret en ny bruger
-      operationId: createUser
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserInput'
-      responses:
-        '201':
-          description: Bruger oprettet succesfuldt
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-        '422':
-          description: Ugyldige data indsendt
-
-  /user/{name}:
-    get:
-      summary: Hent en specifik bruger baseret på navn
-      operationId: getUserByName
-      parameters:
-        - name: name
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: En bruger
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-        '404':
-          description: Bruger ikke fundet
-
-  /user/{id}:
-    put:
-      summary: Opdater en eksisterende bruger
-      operationId: updateUser
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserInput'
-      responses:
-        '200':
-          description: Bruger opdateret succesfuldt
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-        '404':
-          description: Bruger ikke fundet
-        '422':
-          description: Ugyldige data indsendt
-
-    delete:
-      summary: Slet en bruger
-      operationId: deleteUser
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: Bruger slettet succesfuldt
-        '404':
-          description: Bruger ikke fundet
-
-  /user_stats:
+  /user_stat:
     get:
       summary: Hent liste over alle brugerstatistikker
       operationId: getUserStats
@@ -115,7 +19,26 @@ paths:
                 items:
                   $ref: '#/components/schemas/UserStat'
 
-  /user_stats/{id}:
+    post:
+      summary: Opret en ny brugerstatistik
+      operationId: createUserStat
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserStatInput'
+      responses:
+        '201':
+          description: Statistik oprettet succesfuldt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserStat'
+        '422':
+          description: Ugyldige data indsendt
+
+  /user_stat/{id}:
     get:
       summary: Hent en specifik brugerstatistik baseret på ID
       operationId: getUserStatById
@@ -162,41 +85,23 @@ paths:
         '422':
           description: Ugyldige data indsendt
 
+    delete:
+      summary: Slet en brugerstatistik
+      operationId: deleteUserStat
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Statistik slettet succesfuldt
+        '404':
+          description: Statistik ikke fundet
+
 components:
   schemas:
-    User:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Brugerens navn
-        nick_name:
-          type: string
-          description: Brugerens kaldenavn
-        email:
-          type: string
-          description: Brugerens email
-        password:
-          type: string
-          description: Brugerens kodeord
-        number:
-          type: integer
-          description: Brugerens nummer
-
-    UserInput:
-      type: object
-      properties:
-        name:
-          type: string
-        nick_name:
-          type: string
-        email:
-          type: string
-        password:
-          type: string
-        number:
-          type: integer
-
     UserStat:
       type: object
       properties:
@@ -218,6 +123,14 @@ components:
         skips:
           type: integer
           description: Antal skips
+        created_at:
+          type: string
+          format: date-time
+          description: Oprettelsesdato for statistikken
+        updated_at:
+          type: string
+          format: date-time
+          description: Sidst opdateret dato for statistikken
 
     UserStatInput:
       type: object
