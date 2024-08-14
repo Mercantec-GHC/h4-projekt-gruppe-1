@@ -1,15 +1,15 @@
 package routes
 
 import (
-	"bytes"
-	"encoding/json"
-	"net/http"
-	"net/http/httptest"
-	"testing"
-	"token-auth/db"
-	"token-auth/models"
+    "bytes"
+    "encoding/json"
+    "net/http"
+    "net/http/httptest"
+    "testing"
+    "token-auth/models"
 
-	"github.com/gin-gonic/gin"
+    "github.com/gin-gonic/gin"
+    "github.com/stretchr/testify/assert"
 )
 
 func setupRouter() *gin.Engine {
@@ -45,7 +45,7 @@ func TestRegister(t *testing.T) {
                 NickName:     "Johnny",
                 Email:        "johndoe@example.com",
                 Password:     "securepassword",
-                Phone:        "1234567890",
+                Phone:        "12345678",
             },
             expectedStatus: http.StatusBadRequest,
         },
