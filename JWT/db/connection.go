@@ -34,11 +34,12 @@ func Connect() {
 	if err != nil {
 		panic("Could not connect")
 	}
-	log.Println("Connected to database")
 
 	db.Logger.LogMode(logger.Info)
 
 	db.AutoMigrate(&models.User{})
 
 	DB = DbInstance{Db: db}
+
+	log.Println("Connected to database")
 }
