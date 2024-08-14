@@ -25,5 +25,4 @@ func TestLogin(t *testing.T) {
 	if status := recorder.Code; status != http.StatusOK {
 		t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
 	}
-
 }
