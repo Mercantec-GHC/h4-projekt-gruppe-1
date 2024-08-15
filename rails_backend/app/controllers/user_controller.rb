@@ -1,4 +1,4 @@
-class UserController < ApplicationController
+class UserController < LoginController
   def index
     user = User.all
     render json: user , except: [:id, :created_at, :updated_at], status: :ok
@@ -10,13 +10,13 @@ class UserController < ApplicationController
   end
 
   def create
-    user = User.new(user_params)
-    user.user_stat = UserStat.create(wins: 0, lost: 0, games_played: 0, right_guesses: 0, skips: 0)
-    if user.save
-      render json: user, status: :created
-    else
-      render json: user.errors, status: :unprocessable_entity
-    end
+    # user = User.new(user_params)
+    # user.user_stat = UserStat.create(wins: 0, lost: 0, games_played: 0, right_guesses: 0, skips: 0)
+    # if user.save
+    #   render json: user, status: :created
+    # else
+    #   render json: user.errors, status: :unprocessable_entity
+    # end
   
   end
 
