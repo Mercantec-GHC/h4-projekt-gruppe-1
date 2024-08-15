@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"fmt"
 	"net/http"
+	"token-auth/db"
 	"token-auth/models"
 
 	"github.com/gin-gonic/gin"
@@ -10,15 +10,12 @@ import (
 
 func GetSingleUser(c *gin.Context) {
 	id := c.Param("id")
-	var users []models.User
-	fmt.Println("ID: ", id)
-	fmt.Println("Users: ", users)
+	var user models.User
 
-	for _, item := range users {
-		if item.ID == id {
-			c.IndentedJSON(http.StatusOK, item)
-			return
-		}
+	if err := db.DB.Db.Where("id = ?", id).First(&user).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"message": "User not found"})
+		return
 	}
-	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "User not found"})
+
+	c.IndentedJSON(http.StatusOK, user)
 }

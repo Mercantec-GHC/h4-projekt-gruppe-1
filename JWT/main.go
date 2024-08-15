@@ -20,9 +20,9 @@ func main() {
 		})
 	})
 	r.GET("/users", routes.Users)
+	r.GET("/user/:id", routes.GetSingleUser)
 	r.POST("/register", routes.Register)
 	r.POST("/login", routes.Login)
-	r.GET("/user/:id", routes.GetSingleUser)
 
 	db.Connect()
 
