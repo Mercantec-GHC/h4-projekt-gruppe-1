@@ -1,38 +1,130 @@
 definitions:
+  models.LoginData:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
   models.User:
     properties:
-      created_at:
-        type: string
-      deleted_at:
-        type: string
       email:
         type: string
       id:
-        type: string
+        type: integer
       name:
         type: string
-      nick_name:
+      nickname:
         type: string
       password:
         type: string
       phone:
         type: string
-      profile_photo:
-        type: string
-      stats_id:
-        type: string
-      updated_at:
-        type: string
-    required:
-    - email
-    - name
-    - nick_name
-    - password
-    - phone
     type: object
 info:
   contact: {}
 paths:
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Update user
+      parameters:
+      - description: Login data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Update user with specific id
+      tags:
+      - user
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Register user
+      parameters:
+      - description: User data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Register user with specific id
+      tags:
+      - user
+  /user/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Delete user with specific id
+      tags:
+      - user
+    get:
+      consumes:
+      - application/json
+      description: Return a single user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: Find user by ID
+      tags:
+      - user
+    patch:
+      consumes:
+      - application/json
+      description: Update user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Update user with specific id
+      tags:
+      - user
   /users:
     get:
       description: Retrieves a list of user accounts

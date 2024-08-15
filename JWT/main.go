@@ -23,12 +23,14 @@ func main() {
 			"title": "Home Page",
 		})
 	})
+	db.Connect()
+
 	r.GET("/users", routes.Users)
 	r.GET("/user/:id", routes.GetSingleUser)
+	r.DELETE("/user/:id", routes.DeleteUser)
+	r.PATCH("/user/:id", routes.UpdateUser)
 	r.POST("/register", routes.Register)
 	r.POST("/login", routes.Login)
-
-	db.Connect()
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.Run(":8080")

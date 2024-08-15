@@ -26,3 +26,82 @@ func Users(c *gin.Context) {
 	c.JSON(http.StatusOK, users)
 
 }
+
+// GetSingleUser handles the request to get a single user by ID.
+//
+// @Summary      Find user by ID
+// @Description  Return a single user
+// @Tags         user
+// @Param  		 id path string true "User ID"
+// @Accept       json
+// @Produce 	 application/json
+// @Success      200  {object}   models.User
+// @Router       /user/{id} [get]
+func GetSingleUser(c *gin.Context) {
+	id := c.Param("id")
+	var user models.User
+
+	if err := db.DB.Db.Where("id = ?", id).First(&user).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"message": "User not found"})
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, user)
+}
+
+// Delete user.
+//
+// @Summary      Delete user with specific id
+// @Description  Delete user
+// @Tags         user
+// @Param  		 id path string true "User ID"
+// @Accept       json
+// @Produce 	 application/json
+// @Success      200
+// @Router       /user/{id} [delete]
+func DeleteUser(c *gin.Context) {
+	id := c.Param("id")
+	var user models.User
+
+	if err := db.DB.Db.Where("id = ?", id).First(&user).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"message": "User not found"})
+		return
+	}
+
+	db.DB.Db.Delete(&user)
+
+	c.JSON(http.StatusOK, gin.H{"message": "User deleted"})
+}
+
+// Update user.
+//
+// @Summary      Update user with specific id
+// @Description  Update user
+// @Tags         user
+// @Param        id path string true "User ID"
+// @Accept       json
+// @Produce      application/json
+// @Success      200
+// @Router       /user/{id} [patch]
+func UpdateUser(c *gin.Context) {
+	id := c.Param("id")
+	var user models.User
+
+	if err := db.DB.Db.Where("id = ?", id).First(&user).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"message": "User not found"})
+		return
+	}
+
+	var updatedUser models.User
+	if err := c.ShouldBindJSON(&updatedUser); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request", "details": err.Error()})
+		return
+	}
+
+	if err := db.DB.Db.Save(&user).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update user", "details": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "User updated"})
+}

@@ -11,6 +11,16 @@ import (
 	"gorm.io/gorm"
 )
 
+// Login user.
+//
+// @Summary      Update user with specific id
+// @Description  Update user
+// @Tags         user
+// @Param        request body models.LoginData true "Login data"
+// @Accept       json
+// @Produce      application/json
+// @Success      200 {string} string
+// @Router       /login [post]
 func Login(c *gin.Context) {
 	var loginData models.LoginData
 
