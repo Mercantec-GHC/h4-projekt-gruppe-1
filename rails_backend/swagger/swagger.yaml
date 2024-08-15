@@ -1,0 +1,1220 @@
+openapi: 3.0.0
+info:
+  title: Large API with Many Endpoints
+  version: 1.0.0
+  description: API med 500 endpoints for at demonstrere bred funktionalitet.
+
+tags:
+  - name: User
+    description: API til at håndtere brugere
+  - name: Match
+    description: API til at håndtere kampe
+  - name: Game
+    description: API til at håndtere spil
+  - name: Score
+    description: API til at håndtere scores
+  - name: Tournament
+    description: API til at håndtere turneringer
+  - name: Player
+    description: API til at håndtere spillere
+  - name: Team
+    description: API til at håndtere teams
+  - name: Achievement
+    description: API til at håndtere achievements
+  - name: Level
+    description: API til at håndtere levels
+  - name: Challenge
+    description: API til at håndtere challenges
+
+paths:
+  /users:
+    get:
+      tags:
+        - User
+      summary: Hent alle brugere
+      operationId: getUsers
+      responses:
+        '200':
+          description: En liste over brugere
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      tags:
+        - User
+      summary: Opret en ny bruger
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '201':
+          description: Bruger oprettet succesfuldt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  
+  /users/{id}:
+    get:
+      tags:
+        - User
+      summary: Hent en specifik bruger baseret på ID
+      operationId: getUserById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: En bruger
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    put:
+      tags:
+        - User
+      summary: Opdater en bruger
+      operationId: updateUser
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '200':
+          description: Bruger opdateret succesfuldt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    delete:
+      tags:
+        - User
+      summary: Slet en bruger
+      operationId: deleteUser
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Bruger slettet succesfuldt
+
+  /matches:
+    get:
+      tags:
+        - Match
+      summary: Hent alle kampe
+      operationId: getMatches
+      responses:
+        '200':
+          description: En liste over kampe
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Match'
+    post:
+      tags:
+        - Match
+      summary: Opret en ny kamp
+      operationId: createMatch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MatchInput'
+      responses:
+        '201':
+          description: Kamp oprettet succesfuldt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Match'
+
+  /matches/{id}:
+    get:
+      tags:
+        - Match
+      summary: Hent en specifik kamp baseret på ID
+      operationId: getMatchById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: En kamp
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Match'
+    put:
+      tags:
+        - Match
+      summary: Opdater en kamp
+      operationId: updateMatch
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MatchInput'
+      responses:
+        '200':
+          description: Kamp opdateret succesfuldt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Match'
+    delete:
+      tags:
+        - Match
+      summary: Slet en kamp
+      operationId: deleteMatch
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Kamp slettet succesfuldt
+
+  /games:
+    get:
+      tags:
+        - Game
+      summary: Hent alle spil
+      operationId: getGames
+      responses:
+        '200':
+          description: En liste over spil
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Game'
+    post:
+      tags:
+        - Game
+      summary: Opret et nyt spil
+      operationId: createGame
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameInput'
+      responses:
+        '201':
+          description: Spil oprettet succesfuldt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+
+  /games/{id}:
+    get:
+      tags:
+        - Game
+      summary: Hent et specifikt spil baseret på ID
+      operationId: getGameById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Et spil
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+    put:
+      tags:
+        - Game
+      summary: Opdater et spil
+      operationId: updateGame
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameInput'
+      responses:
+        '200':
+          description: Spil opdateret succesfuldt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+    delete:
+      tags:
+        - Game
+      summary: Slet et spil
+      operationId: deleteGame
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Spil slettet succesfuldt
+
+  /scores:
+    get:
+      tags:
+        - Score
+      summary: Hent alle scores
+      operationId: getScores
+      responses:
+        '200':
+          description: En liste over scores
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Score'
+    post:
+      tags:
+        - Score
+      summary: Opret en ny score
+      operationId: createScore
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScoreInput'
+      responses:
+        '201':
+          description: Score oprettet succesfuldt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Score'
+
+  /scores/{id}:
+    get:
+      tags:
+        - Score
+      summary: Hent en specifik score baseret på ID
+      operationId: getScoreById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: En score
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Score'
+    put:
+      tags:
+        - Score
+      summary: Opdater en score
+      operationId: updateScore
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScoreInput'
+      responses:
+        '200':
+          description: Score opdateret succesfuldt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Score'
+    delete:
+      tags:
+        - Score
+      summary: Slet en score
+      operationId: deleteScore
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Score slettet succesfuldt
+
+  /tournaments:
+    get:
+      tags:
+        - Tournament
+      summary: Hent alle turneringer
+      operationId: getTournaments
+      responses:
+        '200':
+          description: En liste over turneringer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tournament'
+    post:
+      tags:
+        - Tournament
+      summary: Opret en ny turnering
+      operationId: createTournament
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TournamentInput'
+      responses:
+        '201':
+          description: Turnering oprettet succesfuldt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tournament'
+
+  /tournaments/{id}:
+    get:
+      tags:
+        - Tournament
+      summary: Hent en specifik turnering baseret på ID
+      operationId: getTournamentById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: En turnering
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tournament'
+    put:
+      tags:
+        - Tournament
+      summary: Opdater en turnering
+      operationId: updateTournament
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TournamentInput'
+      responses:
+        '200':
+          description: Turnering opdateret succesfuldt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tournament'
+    delete:
+      tags:
+        - Tournament
+      summary: Slet en turnering
+      operationId: deleteTournament
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Turnering slettet succesfuldt
+
+  /players:
+    get:
+      tags:
+        - Player
+      summary: Hent alle spillere
+      operationId: getPlayers
+      responses:
+        '200':
+          description: En liste over spillere
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Player'
+    post:
+      tags:
+        - Player
+      summary: Opret en ny spiller
+      operationId: createPlayer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlayerInput'
+      responses:
+        '201':
+          description: Spiller oprettet succesfuldt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Player'
+
+  /players/{id}:
+    get:
+      tags:
+        - Player
+      summary: Hent en specifik spiller baseret på ID
+      operationId: getPlayerById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: En spiller
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Player'
+    put:
+      tags:
+        - Player
+      summary: Opdater en spiller
+      operationId: updatePlayer
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlayerInput'
+      responses:
+        '200':
+          description: Spiller opdateret succesfuldt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Player'
+    delete:
+      tags:
+        - Player
+      summary: Slet en spiller
+      operationId: deletePlayer
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Spiller slettet succesfuldt
+
+  /teams:
+    get:
+      tags:
+        - Team
+      summary: Hent alle teams
+      operationId: getTeams
+      responses:
+        '200':
+          description: En liste over teams
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Team'
+    post:
+      tags:
+        - Team
+      summary: Opret et nyt team
+      operationId: createTeam
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamInput'
+      responses:
+        '201':
+          description: Team oprettet succesfuldt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+
+  /teams/{id}:
+    get:
+      tags:
+        - Team
+      summary: Hent et specifikt team baseret på ID
+      operationId: getTeamById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Et team
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+    put:
+      tags:
+        - Team
+      summary: Opdater et team
+      operationId: updateTeam
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamInput'
+      responses:
+        '200':
+          description: Team opdateret succesfuldt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+    delete:
+      tags:
+        - Team
+      summary: Slet et team
+      operationId: deleteTeam
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Team slettet succesfuldt
+
+  /achievements:
+    get:
+      tags:
+        - Achievement
+      summary: Hent alle achievements
+      operationId: getAchievements
+      responses:
+        '200':
+          description: En liste over achievements
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Achievement'
+    post:
+      tags:
+        - Achievement
+      summary: Opret en ny achievement
+      operationId: createAchievement
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AchievementInput'
+      responses:
+        '201':
+          description: Achievement oprettet succesfuldt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Achievement'
+
+  /achievements/{id}:
+    get:
+      tags:
+        - Achievement
+      summary: Hent en specifik achievement baseret på ID
+      operationId: getAchievementById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: En achievement
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Achievement'
+    put:
+      tags:
+        - Achievement
+      summary: Opdater en achievement
+      operationId: updateAchievement
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AchievementInput'
+      responses:
+        '200':
+          description: Achievement opdateret succesfuldt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Achievement'
+    delete:
+      tags:
+        - Achievement
+      summary: Slet en achievement
+      operationId: deleteAchievement
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Achievement slettet succesfuldt
+
+  /levels:
+    get:
+      tags:
+        - Level
+      summary: Hent alle levels
+      operationId: getLevels
+      responses:
+        '200':
+          description: En liste over levels
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Level'
+    post:
+      tags:
+        - Level
+      summary: Opret et nyt level
+      operationId: createLevel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LevelInput'
+      responses:
+        '201':
+          description: Level oprettet succesfuldt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Level'
+
+  /levels/{id}:
+    get:
+      tags:
+        - Level
+      summary: Hent et specifikt level baseret på ID
+      operationId: getLevelById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Et level
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Level'
+    put:
+      tags:
+        - Level
+      summary: Opdater et level
+      operationId: updateLevel
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LevelInput'
+      responses:
+        '200':
+          description: Level opdateret succesfuldt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Level'
+    delete:
+      tags:
+        - Level
+      summary: Slet et level
+      operationId: deleteLevel
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Level slettet succesfuldt
+
+  /challenges:
+    get:
+      tags:
+        - Challenge
+      summary: Hent alle challenges
+      operationId: getChallenges
+      responses:
+        '200':
+          description: En liste over challenges
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Challenge'
+    post:
+      tags:
+        - Challenge
+      summary: Opret en ny challenge
+      operationId: createChallenge
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChallengeInput'
+      responses:
+        '201':
+          description: Challenge oprettet succesfuldt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Challenge'
+
+  /challenges/{id}:
+    get:
+      tags:
+        - Challenge
+      summary: Hent en specifik challenge baseret på ID
+      operationId: getChallengeById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: En challenge
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Challenge'
+    put:
+      tags:
+        - Challenge
+      summary: Opdater en challenge
+      operationId: updateChallenge
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChallengeInput'
+      responses:
+        '200':
+          description: Challenge opdateret succesfuldt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Challenge'
+    delete:
+      tags:
+        - Challenge
+      summary: Slet en challenge
+      operationId: deleteChallenge
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Challenge slettet succesfuldt
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    UserInput:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+
+    Match:
+      type: object
+      properties:
+        id:
+          type: integer
+        winner:
+          type: string
+        loser:
+          type: string
+        player_1_points:
+          type: integer
+        player_2_points:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    MatchInput:
+      type: object
+      properties:
+        winner:
+          type: string
+        loser:
+          type: string
+        player_1_points:
+          type: integer
+        player_2_points:
+          type: integer
+
+    Game:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        genre:
+          type: string
+        release_date:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    GameInput:
+      type: object
+      properties:
+        title:
+          type: string
+        genre:
+          type: string
+        release_date:
+          type: string
+          format: date-time
+
+    Score:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        game_id:
+          type: integer
+        points:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    ScoreInput:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        game_id:
+          type: integer
+        points:
+          type: integer
+
+    Tournament:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        location:
+          type: string
+        start_date:
+          type: string
+          format: date-time
+        end_date:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    TournamentInput:
+      type: object
+      properties:
+        name:
+          type: string
+        location:
+          type: string
+        start_date:
+          type: string
+          format: date-time
+        end_date:
+          type: string
+          format: date-time
+
+    Player:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        team_id:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    PlayerInput:
+      type: object
+      properties:
+        name:
+          type: string
+        team_id:
+          type: integer
+
+    Team:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    TeamInput:
+      type: object
+      properties:
+        name:
+          type: string
+
+    Achievement:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    AchievementInput:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+
+    Level:
+      type: object
+      properties:
+        id:
+          type: integer
+        number:
+          type: integer
+        difficulty:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    LevelInput:
+      type: object
+      properties:
+        number:
+          type: integer
+        difficulty:
+          type: string
+
+    Challenge:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        reward:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    ChallengeInput:
+      type: object
+      properties:
+        name:
+          type: string
+        reward:
+          type: string
