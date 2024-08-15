@@ -5,8 +5,12 @@ import (
 	"token-auth/db"
 	"token-auth/routes"
 
+	_ "token-auth/docs"
+
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func main() {
@@ -26,5 +30,6 @@ func main() {
 
 	db.Connect()
 
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.Run(":8080")
 }

@@ -1,0 +1,49 @@
+definitions:
+  models.User:
+    properties:
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      nick_name:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      profile_photo:
+        type: string
+      stats_id:
+        type: string
+      updated_at:
+        type: string
+    required:
+    - email
+    - name
+    - nick_name
+    - password
+    - phone
+    type: object
+info:
+  contact: {}
+paths:
+  /users:
+    get:
+      description: Retrieves a list of user accounts
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.User'
+            type: array
+      summary: List user accounts
+      tags:
+      - users
+swagger: "2.0"

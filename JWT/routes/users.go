@@ -8,6 +8,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Users handles the request to list all existing user accounts.
+//
+// @Summary      List user accounts
+// @Description  Retrieves a list of user accounts
+// @Tags         users
+// @Success      200  {array}   models.User
+// @Router       /users [get]
 func Users(c *gin.Context) {
 	var users []models.User
 
