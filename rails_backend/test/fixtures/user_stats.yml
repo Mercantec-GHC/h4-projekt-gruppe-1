@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  wins: 1
+  lost: 1
+  skips: 1
+  games_played: 1
+  right_guesses: 1
+
+two:
+  wins: 1
+  lost: 1
+  skips: 1
+  games_played: 1
+  right_guesses: 1

@@ -1,0 +1,451 @@
+openapi: 3.0.0
+info:
+  title: User Stats API
+  version: 1.0.0
+  description: API til at håndtere brugers statistikker, herunder oprettelse, opdatering, visning og sletning.
+
+tags:
+  - name: User
+    description: API til at håndtere brugere  
+  - name: User Stat
+    description: API til at håndtere brugers statistikker
+  - name: Beatboxer
+    description: API til at håndtere beatboxere
+  - name: Match
+    description: API til at håndtere kampe
+
+paths:
+  /user:
+    get:
+      tags:
+        - User
+      summary: Hent liste over alle brugere
+      operationId: getUsers
+      responses:
+        '200':
+          description: En liste over brugere
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+
+    post:
+      tags:
+        - User
+      summary: Opret en ny bruger
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '201':
+          description: Bruger oprettet succesfuldt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '422':
+          description: Ugyldige data indsendt
+
+  /user/name/{name}:
+    get:
+      tags:
+        - User
+      summary: Hent en specifik bruger baseret på navn
+      operationId: getUserByName
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: En bruger
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Bruger ikke fundet
+
+  /user/{id}:
+    put:
+      tags:
+        - User
+      summary: Opdater en eksisterende bruger
+      operationId: updateUser
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '200':
+          description: Bruger opdateret succesfuldt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Bruger ikke fundet
+        '422':
+          description: Ugyldige data indsendt
+
+    delete:
+      tags:
+        - User
+      summary: Slet en bruger
+      operationId: deleteUser
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Bruger slettet succesfuldt
+        '404':
+          description: Bruger ikke fundet
+
+  /match:
+    post:
+      tags:
+        - Match
+      summary: Opret en ny kamp
+      description: Opretter en ny kamp og tilknytter den til flere brugere.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                match:
+                  type: object
+                  properties:
+                    winner:
+                      type: string
+                      description: Navnet på vinderen af kampen
+                      example: "Player 1"
+                    loser:
+                      type: string
+                      description: Navnet på taberen af kampen
+                      example: "Player 2"
+                    player_1_points:
+                      type: integer
+                      description: Point optjent af spiller 1
+                      example: 10
+                    player_2_points:
+                      type: integer
+                      description: Point optjent af spiller 2
+                      example: 8
+                    draw:
+                      type: boolean
+                      description: Om kampen endte uafgjort
+                      example: false
+                user_ids:
+                  type: array
+                  items:
+                    type: integer
+                    description: ID'er på brugere, der deltager i kampen
+                  example: [1, 2]
+      responses:
+        '201':
+          description: Kampen blev oprettet succesfuldt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Match'
+        '422':
+          description: Ugyldig anmodning - valideringsfejl
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                      description: Beskrivelse af fejlen
+
+    get:
+      tags:
+        - Match
+      summary: Hent liste over alle kampe
+      operationId: getMatches
+      responses:
+        '200':
+          description: En liste over kampe
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Match'
+
+  /match/{id}:
+    get:
+      tags:
+        - Match
+      summary: Hent en specifik kamp baseret på ID
+      operationId: getMatchById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: En specifik kamp
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Match'
+        '404':
+          description: Kamp ikke fundet
+
+  /beat_boxer:
+    get:
+      tags:
+        - Beatboxer
+      summary: Hent liste over alle beatboxere
+      operationId: getBeatBoxers
+      responses:
+        '200':
+          description: En liste over beatboxere
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BeatBoxer'
+                    
+  /user_stat:
+    get:
+      tags:
+        - User Stat
+      summary: Hent liste over alle brugerstatistikker
+      operationId: getUserStats
+      responses:
+        '200':
+          description: En liste over brugerstatistikker
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserStat'
+
+    post:
+      tags:
+        - User Stat
+      summary: Opret en ny brugerstatistik
+      operationId: createUserStat
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserStatInput'
+      responses:
+        '201':
+          description: Statistik oprettet succesfuldt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserStat'
+        '422':
+          description: Ugyldige data indsendt
+
+  /user_stat/{id}:
+    get:
+      tags:
+        - User Stat
+      summary: Hent en specifik brugerstatistik baseret på ID
+      operationId: getUserStatById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: En brugerstatistik
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserStat'
+        '404':
+          description: Statistik ikke fundet
+
+    put:
+      tags:
+        - User Stat
+      summary: Opdater en eksisterende brugerstatistik
+      operationId: updateUserStat
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserStatInput'
+      responses:
+        '200':
+          description: Statistik opdateret succesfuldt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserStat'
+        '404':
+          description: Statistik ikke fundet
+        '422':
+          description: Ugyldige data indsendt
+
+    delete:
+      tags:
+        - User Stat
+      summary: Slet en brugerstatistik
+      operationId: deleteUserStat
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Statistik slettet succesfuldt
+        '404':
+          description: Statistik ikke fundet
+
+components:
+  schemas:
+    Match:
+      type: object
+      properties:
+        id:
+          type: integer
+        winner:
+          type: string
+          description: Navnet på vinderen af kampen
+        loser:
+          type: string
+          description: Navnet på taberen af kampen
+        player_1_points:
+          type: integer
+          description: Point optjent af spiller 1
+        player_2_points:
+          type: integer
+          description: Point optjent af spiller 2
+        draw:
+          type: boolean
+          description: Om kampen endte uafgjort
+        created_at:
+          type: string
+          format: date-time
+          description: Oprettelsesdato for kampen
+        updated_at:
+          type: string
+          format: date-time
+          description: Sidst opdateret dato for kampen
+          
+    BeatBoxer:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unikt ID for beatboxeren
+        name:
+          type: string
+          description: Navn på beatboxeren
+        created_at:
+          type: string
+          format: date-time
+          description: Oprettelsesdato for beatboxeren
+        updated_at:
+          type: string
+          format: date-time
+          description: Sidst opdateret dato for beatboxeren
+
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        nick_name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        profile_photo:
+          type: string
+
+    UserStat:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unikt ID for brugerstatistikken
+        wins:
+          type: integer
+          description: Antal vundne spil
+        lost:
+          type: integer
+          description: Antal tabte spil
+        games_played:
+          type: integer
+          description: Antal spil spillet
+        right_guesses:
+          type: integer
+          description: Antal rigtige gæt
+        skips:
+          type: integer
+          description: Antal skips
+        created_at:
+          type: string
+          format: date-time
+          description: Oprettelsesdato for statistikken
+        updated_at:
+          type: string
+          format: date-time
+          description: Sidst opdateret dato for statistikken
+
+    UserStatInput:
+      type: object
+      properties:
+        wins:
+          type: integer
+        lost:
+          type: integer
+        games_played:
+          type: integer
+        right_guesses:
+          type: integer
+        skips:
+          type: integer
