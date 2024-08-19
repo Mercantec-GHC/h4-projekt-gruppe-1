@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'weather.dart';
 
 void main() {
   runApp(const MyApp());
@@ -69,12 +68,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _navigateToWeatherForecastPage() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => WeatherForecastPage()),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,12 +97,6 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: _incrementCounter,
             tooltip: 'Increment',
             child: const Icon(Icons.add),
-          ),
-          SizedBox(width: 10), // Optional: Adds space between buttons
-          FloatingActionButton(
-            onPressed: _navigateToWeatherForecastPage,
-            tooltip: 'Show Weather',
-            child: const Icon(Icons.star),
           ),
         ],
       ),
