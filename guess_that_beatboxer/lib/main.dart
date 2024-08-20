@@ -5,6 +5,8 @@ import 'pages/info.dart';
 import 'pages/account.dart';
 import 'pages/stats.dart';
 import 'pages/register.dart';
+import 'pages/login.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -16,18 +18,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/',
+      initialRoute: '/login',
       routes: {
         '/': (context) => HomePage(),
         '/stats': (context) => StatsPage(),
         '/account': (context) => AccountPage(),
         '/info': (context) => InfoPage(),
         '/register': (context) => Register(),
+        '/login': (context) => Login(),
       },
       theme: ThemeData(
         primarySwatch: Colors.red,
         scaffoldBackgroundColor: Colors.white,
       ),
+      // home: Login(),
     );
   }
 }

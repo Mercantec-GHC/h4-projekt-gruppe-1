@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../main.dart';
+import '../Widgets/buttons.dart';
 
 
 class HomePage extends StatelessWidget {
@@ -10,7 +11,7 @@ class HomePage extends StatelessWidget {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Image.asset('assets/logo.png',
+            Image.asset('../assets/logo.png',
               fit: BoxFit.contain,
               height: 42, 
             ),

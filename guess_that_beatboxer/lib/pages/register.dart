@@ -18,6 +18,11 @@ class Register extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Image.asset('../assets/logo.png',
+                fit: BoxFit.contain,
+                height: 150, 
+              ),
+            Text("Welcome To Guess That Beatboxer!", style: TextStyle(fontSize: 20),),
               inputFields(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -46,7 +51,7 @@ class RegisterBTN extends StatelessWidget {
             TextButton(
               child: Text('OK'),
               onPressed: () {
-                Navigator.of(context).pop(HomePage);
+                Navigator.pushNamed(context, "/login");
               },
             ),
           ],
