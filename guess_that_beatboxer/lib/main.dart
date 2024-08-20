@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'pages/landing.dart';
 import 'pages/info.dart';
 //import 'pages/lobby.dart';
-import 'pages/profile.dart';
+import 'pages/account.dart';
 import 'pages/stats.dart';
 
 void main() {
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => HomePage(),
-        '/analytics': (context) => StatsPage(),
+        '/stats': (context) => StatsPage(),
         '/account': (context) => AccountPage(),
         '/info': (context) => InfoPage(),
       },
@@ -39,7 +39,7 @@ class BottomNavBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _buildIconButton(context, Icons.home, '/'),
-          _buildIconButton(context, Icons.analytics, '/analytics'),
+          _buildIconButton(context, Icons.analytics, '/stats'),
           _buildIconButton(context, Icons.account_box, '/account'),
           _buildIconButton(context, Icons.info, '/info'),
         ],
@@ -56,7 +56,7 @@ class BottomNavBar extends StatelessWidget {
         borderRadius: BorderRadius.circular(20.0),
       ),
       child: IconButton(
-        icon: Icon(icon, color: Colors.red),
+        icon: Icon(icon, color: Colors.black),
         onPressed: () {
           final currentRoute = ModalRoute.of(context)?.settings.name;
           if (currentRoute != route) {
