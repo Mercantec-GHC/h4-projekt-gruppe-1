@@ -26,6 +26,7 @@ class BottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: Colors.red, // Set the background color of the Container
       child: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
@@ -45,9 +46,9 @@ class BottomNavBar extends StatelessWidget {
             label: 'Spil regler',
           ),
         ],
-        selectedItemColor: Colors.black, // Set selected item color
-        unselectedItemColor: Colors.white, // Set unselected item color
-        backgroundColor: Colors.red, // Make background transparent to show container color
+        selectedItemColor: Colors.black, // Color of the selected item
+        unselectedItemColor: Colors.white, // Color of unselected items
+        backgroundColor: Colors.transparent, // Make the navigation bar background transparent
       ),
     );
   }

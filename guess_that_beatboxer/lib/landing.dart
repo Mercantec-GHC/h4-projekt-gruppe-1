@@ -38,9 +38,7 @@ class HomePage extends StatelessWidget {
         centerTitle: true,
       ),
       body: HomePageContent(),
-      bottomNavigationBar: BottomNavBar(
-        
-      ),
+      bottomNavigationBar: BottomNavBar(),
     );
   }
 }
@@ -117,7 +115,7 @@ class StatsSection extends StatelessWidget {
                   onPressed: () {
                     // Define button action here
                   },
-                  child: Text('Stats', style: TextStyle(color: Colors.white),), // Button text
+                  child: Text('All stats', style: TextStyle(color: Colors.white),), // Button text
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,
                   ),
