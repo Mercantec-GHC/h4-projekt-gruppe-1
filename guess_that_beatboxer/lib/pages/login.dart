@@ -50,12 +50,14 @@ class LoginForm extends StatelessWidget {
               hintText: 'Enter your username',
             ),
           ),
+          SizedBox(height: 10),
+          Text("Password"),
           TextFormField(
             decoration: const InputDecoration(
               hintText: 'Enter your password',
             ),
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
