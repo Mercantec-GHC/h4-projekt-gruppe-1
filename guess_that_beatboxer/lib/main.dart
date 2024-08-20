@@ -22,6 +22,34 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class BottomNavBar extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      items: [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Hjem',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.bar_chart),
+          label: 'Stats',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person),
+          label: 'Profil',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.info),
+          label: 'Spil regler',
+        ),
+      ],
+      selectedItemColor: const Color.fromARGB(255, 0, 0, 0),
+      unselectedItemColor: const Color.fromARGB(255, 255, 254, 254),
+    );
+  }
+}
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
