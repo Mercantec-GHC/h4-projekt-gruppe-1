@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
       home: HomePage(),
       theme: ThemeData(
         primarySwatch: Colors.red,
+        scaffoldBackgroundColor: Colors.white,
       ),
     );
   }
@@ -37,7 +38,9 @@ class HomePage extends StatelessWidget {
         centerTitle: true,
       ),
       body: HomePageContent(),
-      bottomNavigationBar: BottomNavBar(),
+      bottomNavigationBar: BottomNavBar(
+        
+      ),
     );
   }
 }
@@ -64,6 +67,7 @@ class HomePageContent extends StatelessWidget {
     );
   }
 }
+
 class ProfileSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -92,12 +96,35 @@ class ProfileSection extends StatelessWidget {
     );
   }
 }
+
 class StatsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start, // Aligns content to the start
         children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0), // Padding around header elements
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Top Stats',
+                  style: Theme.of(context).textTheme.headlineSmall, // Adjust the text style as needed
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    // Define button action here
+                  },
+                  child: Text('Stats', style: TextStyle(color: Colors.white),), // Button text
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          ),
           ListTile(
             leading: Icon(Icons.games),
             title: Text('Total Games Played'),
@@ -118,6 +145,7 @@ class StatsSection extends StatelessWidget {
     );
   }
 }
+
 class CreateLobbyButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -125,7 +153,7 @@ class CreateLobbyButton extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {},
-        child: Text('Create Lobby'),
+        child: Text('Create Lobby', style: TextStyle(color: Colors.white),),
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.black,
         ),
@@ -133,6 +161,7 @@ class CreateLobbyButton extends StatelessWidget {
     );
   }
 }
+
 class RecentGamesSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -182,6 +211,7 @@ class RecentGameTile extends StatelessWidget {
     );
   }
 }
+
 class NearbyPlayersSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -204,9 +234,9 @@ class NearbyPlayersSection extends StatelessWidget {
         Center(
           child: ElevatedButton(
             onPressed: () {},
-            child: Text('Join game'),
+            child: Text('Join game', style: TextStyle(color: Colors.white),),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
+              backgroundColor: Colors.black,
             ),
           ),
         ),

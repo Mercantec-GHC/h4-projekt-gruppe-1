@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       title: 'Guess That Beatboxer',
       theme: ThemeData(
         
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
@@ -25,27 +25,30 @@ class MyApp extends StatelessWidget {
 class BottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      items: [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Hjem',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.bar_chart),
-          label: 'Stats',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          label: 'Profil',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.info),
-          label: 'Spil regler',
-        ),
-      ],
-      selectedItemColor: const Color.fromARGB(255, 0, 0, 0),
-      unselectedItemColor: const Color.fromARGB(255, 255, 254, 254),
+    return Container(
+      child: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Hjem',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.bar_chart),
+            label: 'Stats',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profil',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.info),
+            label: 'Spil regler',
+          ),
+        ],
+        selectedItemColor: Colors.black, // Set selected item color
+        unselectedItemColor: Colors.white, // Set unselected item color
+        backgroundColor: Colors.red, // Make background transparent to show container color
+      ),
     );
   }
 }
