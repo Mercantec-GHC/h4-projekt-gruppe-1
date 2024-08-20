@@ -62,7 +62,7 @@ class BottomNavBar extends StatelessWidget {
         onPressed: () {
           final currentRoute = ModalRoute.of(context)?.settings.name;
           if (currentRoute != route) {
-            Navigator.pushNamed(context, route);
+            Navigator.pushReplacementNamed(context, route,);
           }
         },
       ),
