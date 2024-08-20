@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
         centerTitle: true,
       ),
       body: HomePageContent(),
-      bottomNavigationBar: BottomNavBar(),
+      // bottomNavigationBar: BottomNavigationBarExample(),
     );
   }
 }

@@ -7,7 +7,7 @@ class StatsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text('Stats Page')),
       body: Center(child: Text('This is the stats Page')),
-      bottomNavigationBar: BottomNavBar(),
+      // bottomNavigationBar: BottomNavigationBarExample(),
     );
   }
 }

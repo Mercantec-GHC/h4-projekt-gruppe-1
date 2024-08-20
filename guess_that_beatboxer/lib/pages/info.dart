@@ -7,7 +7,7 @@ class InfoPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text('Info Page')),
       body: Center(child: Text('This is the Info Page')),
-      bottomNavigationBar: BottomNavBar(),
+      // bottomNavigationBar: BottomNavigationBarExample(),
     );
   }
 }

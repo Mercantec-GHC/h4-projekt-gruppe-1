@@ -7,7 +7,7 @@ class AccountPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text('Account Page')),
       body: Center(child: Text('This is the Account Page')),
-      bottomNavigationBar: BottomNavBar(),
+      // bottomNavigationBar: BottomNavigationBarExample(),
     );
   }
 }
