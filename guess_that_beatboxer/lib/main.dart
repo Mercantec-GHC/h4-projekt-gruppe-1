@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'pages/landing.dart';
+import 'pages/info.dart';
+//import 'pages/lobby.dart';
+import 'pages/profile.dart';
+import 'pages/stats.dart';
 
 void main() {
   runApp(const MyApp());
@@ -7,17 +12,20 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Guess That Beatboxer',
+      initialRoute: '/',
+      routes: {
+        '/': (context) => HomePage(),
+        '/analytics': (context) => StatsPage(),
+        '/account': (context) => AccountPage(),
+        '/info': (context) => InfoPage(),
+      },
       theme: ThemeData(
-        
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
-        useMaterial3: true,
+        primarySwatch: Colors.red,
+        scaffoldBackgroundColor: Colors.white,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -25,81 +33,39 @@ class MyApp extends StatelessWidget {
 class BottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.red, // Set the background color of the Container
-      child: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Hjem',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bar_chart),
-            label: 'Stats',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profil',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.info),
-            label: 'Spil regler',
-          ),
+    return BottomAppBar(
+      color: Colors.red,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _buildIconButton(context, Icons.home, '/'),
+          _buildIconButton(context, Icons.analytics, '/analytics'),
+          _buildIconButton(context, Icons.account_box, '/account'),
+          _buildIconButton(context, Icons.info, '/info'),
         ],
-        selectedItemColor: Colors.black, // Color of the selected item
-        unselectedItemColor: Colors.white, // Color of unselected items
-        backgroundColor: Colors.transparent, // Make the navigation bar background transparent
+      ),
+    );
+  }
+
+  Widget _buildIconButton(BuildContext context, IconData icon, String route) {
+    return Container(
+      padding: EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        shape: BoxShape.rectangle,
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+      child: IconButton(
+        icon: Icon(icon, color: Colors.red),
+        onPressed: () {
+          final currentRoute = ModalRoute.of(context)?.settings.name;
+          if (currentRoute != route) {
+            Navigator.pushNamed(context, route);
+          }
+        },
       ),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
 
-  
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
-}

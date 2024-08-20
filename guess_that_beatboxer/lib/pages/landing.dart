@@ -1,23 +1,6 @@
 import 'package:flutter/material.dart';
-import 'main.dart';
+import '../main.dart';
 
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: HomePage(),
-      theme: ThemeData(
-        primarySwatch: Colors.red,
-        scaffoldBackgroundColor: Colors.white,
-      ),
-    );
-  }
-}
 
 class HomePage extends StatelessWidget {
   @override
@@ -29,7 +12,7 @@ class HomePage extends StatelessWidget {
           children: [
             Image.asset('assets/logo.png',
               fit: BoxFit.contain,
-              height: 42, // Adjust the height as needed
+              height: 42, 
             ),
             SizedBox(width: 25),
             Text('Guess That Beatboxer'),
@@ -47,7 +30,7 @@ class HomePageContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: EdgeInsets.all(16),
+      padding: EdgeInsets.all(18),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -100,22 +83,22 @@ class StatsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start, // Aligns content to the start
+        crossAxisAlignment: CrossAxisAlignment.start, 
         children: [
           Padding(
-            padding: const EdgeInsets.all(16.0), // Padding around header elements
+            padding: const EdgeInsets.all(18.0), 
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   'Top Stats',
-                  style: Theme.of(context).textTheme.headlineSmall, // Adjust the text style as needed
+                  style: Theme.of(context).textTheme.headlineSmall, 
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    // Define button action here
+                    
                   },
-                  child: Text('All stats', style: TextStyle(color: Colors.white),), // Button text
+                  child: Text('All stats', style: TextStyle(color: Colors.white),), 
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,
                   ),
