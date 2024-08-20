@@ -1,0 +1,112 @@
+
+import 'package:flutter/material.dart';
+import 'landing.dart';
+class Register extends StatelessWidget {
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    const String appTitle = 'Register';
+    return MaterialApp(
+      title: appTitle,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text(appTitle),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              inputFields(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  RegisterBTN(),
+                ],
+              ), 
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+class RegisterBTN extends StatelessWidget {
+
+  void _register(BuildContext context) {
+        showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Bruger oprettet med succes'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop(HomePage);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 300,
+      height: 50,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12), 
+          ),
+        ),
+        onPressed: () {
+         _register(context);
+        },
+        child: const Text('Create account'),
+      ),
+    );
+  }
+}
+
+
+List<String> labels = [
+  'First Name',
+  'Last Name',
+  'Email',
+  'Password',
+  'Confirm Password',
+];
+
+class inputFields extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: <Widget>[
+            for (var label in labels)  
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: 
+                  TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: label,
+                    hintText: label,
+                  ),
+                ),
+              ),
+
+            ],
+          ),
+          
+        );
+      }
+    }

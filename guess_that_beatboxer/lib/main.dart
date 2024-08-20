@@ -4,6 +4,7 @@ import 'pages/info.dart';
 //import 'pages/lobby.dart';
 import 'pages/account.dart';
 import 'pages/stats.dart';
+import 'pages/register.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
         '/stats': (context) => StatsPage(),
         '/account': (context) => AccountPage(),
         '/info': (context) => InfoPage(),
+        '/register': (context) => Register(),
       },
       theme: ThemeData(
         primarySwatch: Colors.red,
