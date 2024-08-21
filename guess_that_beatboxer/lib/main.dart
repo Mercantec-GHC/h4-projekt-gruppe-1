@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'pages/landing.dart';
 import 'pages/info.dart';
 //import 'pages/lobby.dart';
@@ -17,42 +19,56 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return ChangeNotifierProvider(
+      create: (context) => MyAppState(),
+      child: MaterialApp(
       theme: ThemeData(
         primarySwatch: Colors.red,
         primaryColor: Colors.red,
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: BottomNavigationBarExample(),
+      home: BottomNavBar(),
+    ),
     );
   }
 }
 
-class BottomNavigationBarExample extends StatefulWidget {
-  const BottomNavigationBarExample({super.key});
 
-  @override
-  State<BottomNavigationBarExample> createState() =>
-      _BottomNavigationBarExampleState();
-}
-
-class _BottomNavigationBarExampleState
-    extends State<BottomNavigationBarExample> {
+class MyAppState extends ChangeNotifier {
       int selectedIndex = 0;
-      
 
   void _onItemTapped(int index) {
-    setState(() {
       selectedIndex = index;
-    });
+      notifyListeners();
+
   }
+
+}
+
+class BottomNavBar extends StatefulWidget {
+  const BottomNavBar({super.key});
+
+  @override
+  State<BottomNavBar> createState() =>
+      _BottomNavBarState();
+}
+
+class _BottomNavBarState
+    extends State<BottomNavBar> {
+      
+
   @override
   Widget build(BuildContext context) {
+      var appState = context.watch<MyAppState>();
+      var selectedIndex = appState.selectedIndex;
+      void _onItemTapped(int index) {
+        appState._onItemTapped(index);
+      }
   final themeColor = Theme.of(context).primaryColor;
     Widget page;
       switch (selectedIndex) {
         case 0:
-          page = HomePage();
+          page = HomePage(indexFunction: _onItemTapped,);
         case 1:
           page = StatsPage();
         case 2:

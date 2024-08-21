@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 
 
 class HomePage extends StatelessWidget {
+  final indexFunction;
+  const HomePage({super.key, this.indexFunction});
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,12 +24,19 @@ class HomePage extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: HomePageContent(),
+
+      body: HomePageContent(indexFunction: indexFunction,),
+
     );
   }
 }
 
 class HomePageContent extends StatelessWidget {
+  final indexFunction;
+
+
+  const HomePageContent({super.key, this.indexFunction});
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -35,7 +46,7 @@ class HomePageContent extends StatelessWidget {
         children: [
           ProfileSection(),
           SizedBox(height: 16),
-          StatsSection(),
+          StatsSection(indexFunction: indexFunction,),
           SizedBox(height: 16),
           CreateLobbyButton(),
           SizedBox(height: 16),
@@ -49,13 +60,15 @@ class HomePageContent extends StatelessWidget {
 }
 
 class ProfileSection extends StatelessWidget {
+  const ProfileSection({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         CircleAvatar(
           radius: 40,
-          backgroundColor: Colors.grey.shade300,
+          backgroundColor: const Color.fromARGB(162, 224, 224, 224),
           child: Icon(Icons.person, size: 40, color: Colors.grey),
         ),
         SizedBox(width: 16),
@@ -78,6 +91,9 @@ class ProfileSection extends StatelessWidget {
 }
 
 class StatsSection extends StatelessWidget {
+  final indexFunction;
+  const StatsSection({super.key, this.indexFunction});
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -95,7 +111,7 @@ class StatsSection extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, "/StatsPage");
+                    indexFunction(1);
                   },
                   child: Text('All stats', style: TextStyle(color: Colors.white),), 
                   style: ElevatedButton.styleFrom(
