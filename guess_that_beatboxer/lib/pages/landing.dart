@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import '../main.dart';
-import '../Widgets/buttons.dart';
+
 
 
 class HomePage extends StatelessWidget {
@@ -25,8 +24,9 @@ class HomePage extends StatelessWidget {
         ),
         centerTitle: true,
       ),
+
       body: HomePageContent(indexFunction: indexFunction,),
-      // bottomNavigationBar: BottomNavigationBarExample(),
+
     );
   }
 }

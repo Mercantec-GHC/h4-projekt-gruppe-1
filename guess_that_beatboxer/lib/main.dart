@@ -6,8 +6,8 @@ import 'pages/info.dart';
 //import 'pages/lobby.dart';
 import 'pages/account.dart';
 import 'pages/stats.dart';
-import 'pages/register.dart';
-import 'pages/login.dart';
+//import 'pages/register.dart';
+//import 'pages/login.dart';
 
 
 void main() {
@@ -45,12 +45,24 @@ class MyAppState extends ChangeNotifier {
 
 }
 
-class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({super.key});
+
+class MyAppState extends ChangeNotifier {
+      int selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+      selectedIndex = index;
+      notifyListeners();
+
+  }
+
+}
+
+class BottomNavigationBarExample extends StatefulWidget {
+  const BottomNavigationBarExample({super.key});
 
   @override
-  State<BottomNavBar> createState() =>
-      _BottomNavBarState();
+  State<BottomNavigationBarExample> createState() =>
+      _BottomNavigationBarExampleState();
 }
 
 class _BottomNavBarState

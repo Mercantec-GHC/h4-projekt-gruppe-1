@@ -1,10 +1,26 @@
 
 import 'package:flutter/material.dart';
-import 'landing.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+//import 'landing.dart';
+
+Future<http.Response> createAccount(String firstName, String lastName, String email, String password, String phonenumber) {
+  return http.post(
+    Uri.parse('https://h4-projekt-gruppe-1.onrender.com/api/register'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'firstName': firstName,
+      'lastName': lastName,
+      'email': email,
+      'password': password,
+      'phonenumber': phonenumber,
+    }),
+  );
+}
+
 class Register extends StatelessWidget {
-
-
-
   @override
   Widget build(BuildContext context) {
     const String appTitle = 'Register';
