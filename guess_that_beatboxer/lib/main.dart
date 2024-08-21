@@ -45,24 +45,12 @@ class MyAppState extends ChangeNotifier {
 
 }
 
-
-class MyAppState extends ChangeNotifier {
-      int selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-      selectedIndex = index;
-      notifyListeners();
-
-  }
-
-}
-
-class BottomNavigationBarExample extends StatefulWidget {
-  const BottomNavigationBarExample({super.key});
+class BottomNavBar extends StatefulWidget {
+  const BottomNavBar({super.key});
 
   @override
-  State<BottomNavigationBarExample> createState() =>
-      _BottomNavigationBarExampleState();
+  State<BottomNavBar> createState() =>
+      _BottomNavBarState();
 }
 
 class _BottomNavBarState
