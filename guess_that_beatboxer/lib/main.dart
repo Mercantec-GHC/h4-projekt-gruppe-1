@@ -23,59 +23,21 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.red,
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: BottomNavigationBarExample(),
+      home: BottomNavBar(),
     );
   }
 }
 
-// class BottomNavBar extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return BottomAppBar(
-//       color: Colors.red,
-//       child: Row(
-//         mainAxisAlignment: MainAxisAlignment.spaceAround,
-//         children: [
-//           _buildIconButton(context, Icons.home, '/'),
-//           _buildIconButton(context, Icons.analytics, '/stats'),
-//           _buildIconButton(context, Icons.account_box, '/account'),
-//           _buildIconButton(context, Icons.info, '/info'),
-//         ],
-//       ),
-//     );
-//   }
-
-//   Widget _buildIconButton(BuildContext context, IconData icon, String route) {
-//     return Container(
-//       padding: EdgeInsets.all(8.0),
-//       decoration: BoxDecoration(
-//         color: Colors.white,
-//         shape: BoxShape.rectangle,
-//         borderRadius: BorderRadius.circular(20.0),
-//       ),
-//       child: IconButton(
-//         icon: Icon(icon, color: Colors.black),
-//         onPressed: () {
-//           final currentRoute = ModalRoute.of(context)?.settings.name;
-//           if (currentRoute != route) {
-//             Navigator.pushReplacementNamed(context, route);
-//           }
-//         },
-//       ),
-//     );
-//   }
-// }
-
-class BottomNavigationBarExample extends StatefulWidget {
-  const BottomNavigationBarExample({super.key});
+class BottomNavBar extends StatefulWidget {
+  const BottomNavBar({super.key});
 
   @override
-  State<BottomNavigationBarExample> createState() =>
-      _BottomNavigationBarExampleState();
+  State<BottomNavBar> createState() =>
+      _BottomNavBarState();
 }
 
-class _BottomNavigationBarExampleState
-    extends State<BottomNavigationBarExample> {
+class _BottomNavBarState
+    extends State<BottomNavBar> {
       int selectedIndex = 0;
       
 
