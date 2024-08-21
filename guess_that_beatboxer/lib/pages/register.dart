@@ -1,10 +1,8 @@
 
 import 'package:flutter/material.dart';
-import 'landing.dart';
+//import 'landing.dart';
+
 class Register extends StatelessWidget {
-
-
-
   @override
   Widget build(BuildContext context) {
     const String appTitle = 'Register';

@@ -4,8 +4,8 @@ import 'pages/info.dart';
 //import 'pages/lobby.dart';
 import 'pages/account.dart';
 import 'pages/stats.dart';
-import 'pages/register.dart';
-import 'pages/login.dart';
+//import 'pages/register.dart';
+//import 'pages/login.dart';
 
 
 void main() {
@@ -23,21 +23,21 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.red,
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: BottomNavBar(),
+      home: BottomNavigationBarExample(),
     );
   }
 }
 
-class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({super.key});
+class BottomNavigationBarExample extends StatefulWidget {
+  const BottomNavigationBarExample({super.key});
 
   @override
-  State<BottomNavBar> createState() =>
-      _BottomNavBarState();
+  State<BottomNavigationBarExample> createState() =>
+      _BottomNavigationBarExampleState();
 }
 
-class _BottomNavBarState
-    extends State<BottomNavBar> {
+class _BottomNavigationBarExampleState
+    extends State<BottomNavigationBarExample> {
       int selectedIndex = 0;
       
 

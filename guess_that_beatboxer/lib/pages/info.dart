@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../main.dart';
+
 
 class InfoPage extends StatelessWidget {
   @override

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import '../main.dart';
-import '../Widgets/buttons.dart';
+
 
 
 class HomePage extends StatelessWidget {
@@ -22,7 +21,6 @@ class HomePage extends StatelessWidget {
         centerTitle: true,
       ),
       body: HomePageContent(),
-      // bottomNavigationBar: BottomNavigationBarExample(),
     );
   }
 }
@@ -97,7 +95,7 @@ class StatsSection extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    
+                    Navigator.pushNamed(context, "/StatsPage");
                   },
                   child: Text('All stats', style: TextStyle(color: Colors.white),), 
                   style: ElevatedButton.styleFrom(
