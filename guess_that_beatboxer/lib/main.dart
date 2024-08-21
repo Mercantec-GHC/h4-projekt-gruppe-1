@@ -7,16 +7,20 @@ import 'pages/info.dart';
 import 'pages/account.dart';
 import 'pages/stats.dart';
 //import 'pages/register.dart';
-//import 'pages/login.dart';
-
+import 'pages/login.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -27,7 +31,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.red,
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: BottomNavBar(),
+      home: Login(),
     ),
     );
   }
@@ -35,9 +39,10 @@ class MyApp extends StatelessWidget {
 
 
 class MyAppState extends ChangeNotifier {
+      var user;
       int selectedIndex = 0;
 
-  void _onItemTapped(int index) {
+  void onItemTapped(int index) {
       selectedIndex = index;
       notifyListeners();
 
@@ -62,13 +67,13 @@ class _BottomNavBarState
       var appState = context.watch<MyAppState>();
       var selectedIndex = appState.selectedIndex;
       void _onItemTapped(int index) {
-        appState._onItemTapped(index);
+        appState.onItemTapped(index);
       }
   final themeColor = Theme.of(context).primaryColor;
     Widget page;
       switch (selectedIndex) {
         case 0:
-          page = HomePage(indexFunction: _onItemTapped,);
+          page = HomePage();
         case 1:
           page = StatsPage();
         case 2:

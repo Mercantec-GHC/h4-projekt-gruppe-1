@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import '../main.dart';
 
 class AccountPage extends StatelessWidget {
   @override
@@ -47,6 +48,8 @@ class AccountPageContent extends StatelessWidget {
 class ProfileSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+    var user = appState.user;
     return Row(
       children: [
         CircleAvatar(
@@ -59,7 +62,7 @@ class ProfileSection extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Player name',
+              user.userName,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             Text(

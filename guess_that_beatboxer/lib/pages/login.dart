@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:guess_that_beatboxer/main.dart';
+import 'package:guess_that_beatboxer/models/user.dart';
+import 'package:provider/provider.dart';
+//import 'package:jwt_decoder/jwt_decoder.dart';
+//import 'package:http/http.dart' as http;
 import '../Widgets/buttons.dart';
+import '../api/api_login.dart';
+//import '../models/user.dart';
 
 class Login extends StatelessWidget {
 
@@ -30,14 +37,44 @@ class Login extends StatelessWidget {
 
 }
 
-class LoginForm extends StatelessWidget {
+class LoginForm extends StatefulWidget {
   const LoginForm({
     super.key,
   });
 
   @override
+  State<LoginForm> createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+Future<void> login(appState) async {
+
+    if (_formKey.currentState!.validate()) {
+      try {
+        String username = _usernameController.text;
+        String password = _passwordController.text;
+        var token = await fetchLogin(username, password);
+        appState.user = User(jsonWebToken: token);
+        appState.user.decode();
+        print(appState.user.userName);
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => BottomNavBar()));
+      } catch (e) {
+        _showPopup(context, "Invalid username or password");
+        print(e);
+      }
+      
+    }
+  }
+  @override
   Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+    
     return Form(
+      key: _formKey,
       child:
      Padding(
        padding: const EdgeInsets.all(15),
@@ -46,40 +83,44 @@ class LoginForm extends StatelessWidget {
         [
           Text("Username"),
           TextFormField(
+            controller: _usernameController,
             decoration: const InputDecoration(
               hintText: 'Enter your username',
             ),
+            validator: (value) => value!.isEmpty ? 'Please enter a username' : null,
           ),
           SizedBox(height: 10),
           Text("Password"),
           TextFormField(
+            controller: _passwordController,
             decoration: const InputDecoration(
               hintText: 'Enter your password',
             ),
+            obscureText: true,
+            validator: (value) => value!.isEmpty ? 'Please enter a password' : null,
           ),
           SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-                Buttons( text: "Forgot password", pressFunction: () {_showPopup(context);}, backgroundColor: Colors.white, textColor: Colors.black),
-                Buttons(text: "Login",pressFunction: () {Navigator.pushReplacementNamed(context, "/");}, backgroundColor: Colors.black, textColor: Colors.white),
+                Buttons( text: "Forgot password", pressFunction: () {_showPopup(context, "forgot password");}, backgroundColor: Colors.white, textColor: Colors.black),
+                Buttons(text: "Login",pressFunction: () async {await login(appState);}, backgroundColor: Colors.black, textColor: Colors.white),
             ],
           ),
-          Buttons(text: "Create acccount", pressFunction: () {Navigator.pushReplacementNamed(context, "/register");}, backgroundColor: Colors.black, textColor: Colors.white),
+          Buttons(text: "Create acccount", pressFunction: () {_showPopup(context, "create account");} , backgroundColor: Colors.black, textColor: Colors.white),
         ],
            ),
      ),
     );
   }
 
-
-void _showPopup(BuildContext context) {
+void _showPopup(BuildContext context, error) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Forgot Password'),
-          content: const Text('This is just a popup to show that you clicked forgot password.'),
+          title: const Text('Error'),
+          content: Text('$error'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -93,3 +134,6 @@ void _showPopup(BuildContext context) {
     );
   }
 }
+
+
+

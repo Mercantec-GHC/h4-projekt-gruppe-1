@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../main.dart';
+
 
 
 
 class HomePage extends StatelessWidget {
-  final indexFunction;
-  const HomePage({super.key, this.indexFunction});
+  const HomePage({super.key});
 
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -25,7 +28,7 @@ class HomePage extends StatelessWidget {
         centerTitle: true,
       ),
 
-      body: HomePageContent(indexFunction: indexFunction,),
+      body: HomePageContent(),
 
     );
   }
@@ -46,7 +49,7 @@ class HomePageContent extends StatelessWidget {
         children: [
           ProfileSection(),
           SizedBox(height: 16),
-          StatsSection(indexFunction: indexFunction,),
+          StatsSection(),
           SizedBox(height: 16),
           CreateLobbyButton(),
           SizedBox(height: 16),
@@ -64,6 +67,8 @@ class ProfileSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+    var user = appState.user;
     return Row(
       children: [
         CircleAvatar(
@@ -76,7 +81,7 @@ class ProfileSection extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Player name',
+              user.userName,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             Text(
@@ -91,11 +96,12 @@ class ProfileSection extends StatelessWidget {
 }
 
 class StatsSection extends StatelessWidget {
-  final indexFunction;
-  const StatsSection({super.key, this.indexFunction});
+  const StatsSection({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+    var indexFunction = appState.onItemTapped;
     return Card(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start, 
