@@ -1,29 +1,21 @@
 import 'package:flutter/material.dart';
 //import '../main.dart';
 import '../Widgets/profile.dart';
+import '../Widgets/appBar.dart';
 
 class AccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Image.asset('../assets/logo.png',
-              fit: BoxFit.contain,
-              height: 42, 
-            ),
-            SizedBox(width: 25),
-            Text('Player Profile'),
-          ],
-        ),
-        centerTitle: true,
-      ),
+      appBar: appBarFunction("Account"),
       body: AccountPageContent(),
     );
   }
 }
+
+
+
+ 
 
 class AccountPageContent extends StatelessWidget {
   @override

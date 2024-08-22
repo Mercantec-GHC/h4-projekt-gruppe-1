@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:guess_that_beatboxer/models/user.dart';
 import 'package:guess_that_beatboxer/api/user_register.dart';
 import 'package:guess_that_beatboxer/pages/login.dart';
+import '../Widgets/buttons.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -49,8 +50,12 @@ class _RegisterState extends State<Register> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       RegisterBTN(_controllers, _setLoading),
+                     
                     ],
                   ),
+                   Buttons(backgroundColor: Colors.black, text: 'Cancle', pressFunction: () {
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
+                      }, length: 300, height: 50),
                 ],
               ),
             ),
@@ -87,8 +92,8 @@ class RegisterBTN extends StatelessWidget {
       height: 50,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
           ),
         ),
         onPressed: () async {
@@ -140,7 +145,7 @@ class RegisterBTN extends StatelessWidget {
             TextButton(
               child: Text('Gå til Login'),
               onPressed: () {
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
+                Navigator.pop(context, MaterialPageRoute(builder: (context) => Login()));
               },
             ),
           ],

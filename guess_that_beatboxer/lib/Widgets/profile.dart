@@ -10,7 +10,6 @@ class ProfileSection extends StatelessWidget {
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
     var user = appState.user;
-    print(user.userStats.wins);
     return Row(
       children: [
         CircleAvatar(

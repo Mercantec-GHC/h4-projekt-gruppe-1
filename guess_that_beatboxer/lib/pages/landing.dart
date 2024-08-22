@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guess_that_beatboxer/Widgets/appBar.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
 import '../Widgets/profile.dart';
@@ -14,21 +15,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Image.asset('../assets/logo.png',
-              fit: BoxFit.contain,
-              height: 42, 
-            ),
-            SizedBox(width: 25),
-            Text('Guess That Beatboxer'),
-          ],
-        ),
-        centerTitle: true,
-      ),
-
+      appBar: appBarFunction("Landing page"),  
       body: HomePageContent(),
 
     );

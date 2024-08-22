@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'pages/landing.dart';
-import 'pages/info.dart';
+import 'pages/settings.dart';
 //import 'pages/lobby.dart';
 import 'pages/account.dart';
 import 'pages/stats.dart';
@@ -79,7 +79,7 @@ class _BottomNavBarState
         case 2:
           page = AccountPage();
         case 3:
-          page = InfoPage();
+          page = SettingsPage();
         default:
           throw UnimplementedError();
       }

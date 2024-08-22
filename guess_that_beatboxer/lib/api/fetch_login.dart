@@ -17,7 +17,7 @@ Future<String> fetchLogin(user, password) async {
   if (response.statusCode == 200) {
     return jsonDecode(response.body)['token'];
   } else {
-    throw Exception('Failed to load album');
+    throw Exception('Failed to load');
   }
   
 

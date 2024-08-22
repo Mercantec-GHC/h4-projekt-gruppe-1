@@ -10,7 +10,6 @@ class UserStats {
 
 
     factory UserStats.fromJson(Map<String, dynamic> json) {
-      print(json);
       return UserStats(
         wins: json['wins'],
         lost: json['lost'],

@@ -5,13 +5,14 @@ import 'package:guess_that_beatboxer/pages/register.dart';
 import 'package:provider/provider.dart';
 import '../Widgets/buttons.dart';
 import '../api/fetch_login.dart';
+import '../Widgets/appBar.dart';
 
 class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
+      appBar: appBarFunction("Login"),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
