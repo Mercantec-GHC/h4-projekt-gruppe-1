@@ -120,7 +120,7 @@ class RegisterBTN extends StatelessWidget {
       showErrorDialog(context, 'Du skal vælge et username');
       return false;
     }
-    if (_controllers[2].text.isEmpty || !RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(_controllers[1].text)) {
+    if (_controllers[2].text.isEmpty || !RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(_controllers[2].text)) {
       showErrorDialog(context, 'Skriv en gyldig email');
       return false;
     }
@@ -219,11 +219,6 @@ class inputFields extends StatelessWidget {
 }
 
 Future<bool> submitUser(List<TextEditingController> controllers, BuildContext context) async {
-  print('Full Name: ${controllers[0].text}');
-  print('Full Name: ${controllers[1].text}');
-  print('Email: ${controllers[2].text}');
-  print('Phone: ${controllers[3].text}');
-  print('Password: ${controllers[4].text}');
 
   return await postUser(
     controllers[0].text,
