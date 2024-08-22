@@ -1,27 +1,24 @@
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 //import 'landing.dart';
 
-Future<http.Response> createAccount(String firstName, String lastName, String email, String password, String phonenumber) {
-  return http.post(
-    Uri.parse('https://h4-projekt-gruppe-1.onrender.com/api/register'),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(<String, String>{
-      'firstName': firstName,
-      'lastName': lastName,
-      'email': email,
-      'password': password,
-      'phonenumber': phonenumber,
-    }),
-  );
+class Register extends StatefulWidget {
+  @override
+  State<Register> createState() => _RegisterState();
 }
 
-class Register extends StatelessWidget {
+class _RegisterState extends State<Register> {
+  late Future<User> futureUser;
+
   @override
+    void initState() {
+    super.initState();
+    futureUser = registerUser();
+  }
+
+
   Widget build(BuildContext context) {
     const String appTitle = 'Register';
     return MaterialApp(
@@ -45,7 +42,19 @@ class Register extends StatelessWidget {
                 children: [
                   RegisterBTN(),
                 ],
-              ), 
+              ),
+                FutureBuilder<User>(
+                  future: futureUser,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      print(snapshot.data);
+                    } else if (snapshot.hasError) {
+                      return Text('${snapshot.error}');
+                    }
+                    return const CircularProgressIndicator();
+                  },
+                )
+                              
             ],
           ),
         ),
@@ -93,6 +102,57 @@ class RegisterBTN extends StatelessWidget {
         child: const Text('Create account'),
       ),
     );
+  }
+}
+
+  class User {
+  final int id;
+  final String name;
+  final String nickname;
+  final String email;
+  final String password;
+  final String phone;
+
+  User({
+    required this.id,
+    required this.name,
+    required this.nickname,
+    required this.email,
+    required this.password,
+    required this.phone
+    });
+  
+
+  factory User.fromJson(Map<String, dynamic> json) {
+    return switch (json) {
+      {
+        'id': int id,
+        'name': String name,
+        'nickname': String nickname,
+        'email': String email,
+        'password': String password,
+        'phone': String phone,
+      } => User(
+        id: id,
+        name: name,
+        nickname: nickname,
+        email: email,
+        password: password,
+        phone: phone,
+      ),
+      _=> throw Exception('Failed to load user'),
+    };
+  }
+}
+
+Future<User> registerUser() async {
+  final response = await http.get(Uri.parse('https://h4-projekt-gruppe-1.onrender.com/user/1'));
+
+  if (response.statusCode == 200) {
+    print(response.body);
+    return User.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
+  } else {
+    throw Exception('Failed to load users');
   }
 }
 
