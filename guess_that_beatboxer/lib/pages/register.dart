@@ -88,7 +88,7 @@ class RegisterBTN extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 300,
+      width: 450,
       height: 50,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
@@ -116,19 +116,23 @@ class RegisterBTN extends StatelessWidget {
       showErrorDialog(context, 'Du skal have et navn');
       return false;
     }
-    if (_controllers[1].text.isEmpty || !RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(_controllers[1].text)) {
+    if (_controllers[1].text.isEmpty) {
+      showErrorDialog(context, 'Du skal vælge et username');
+      return false;
+    }
+    if (_controllers[2].text.isEmpty || !RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(_controllers[1].text)) {
       showErrorDialog(context, 'Skriv en gyldig email');
       return false;
     }
-    if (_controllers[2].text.isEmpty) {
+    if (_controllers[3].text.isEmpty) {
       showErrorDialog(context, 'Du skal have et telefonnummer');
       return false;
     }
-    if (_controllers[3].text.isEmpty) {
+    if (_controllers[4].text.isEmpty) {
       showErrorDialog(context, 'Du skal vælge et password');
       return false;
     }
-    if (_controllers[3].text != _controllers[4].text) {
+    if (_controllers[5].text != _controllers[4].text) {
       showErrorDialog(context, 'Passwords matcher ikke');
       return false;
     }
@@ -177,6 +181,7 @@ class RegisterBTN extends StatelessWidget {
 
 List<String> labels = [
   'Navn',
+  'Username',
   'Email',
   'Telefon',
   'Password',
@@ -215,14 +220,16 @@ class inputFields extends StatelessWidget {
 
 Future<bool> submitUser(List<TextEditingController> controllers, BuildContext context) async {
   print('Full Name: ${controllers[0].text}');
-  print('Email: ${controllers[1].text}');
-  print('Phone: ${controllers[2].text}');
-  print('Password: ${controllers[3].text}');
+  print('Full Name: ${controllers[1].text}');
+  print('Email: ${controllers[2].text}');
+  print('Phone: ${controllers[3].text}');
+  print('Password: ${controllers[4].text}');
 
   return await postUser(
     controllers[0].text,
     controllers[1].text,
     controllers[2].text,
     controllers[3].text,
+    controllers[4].text,
   );
 }
