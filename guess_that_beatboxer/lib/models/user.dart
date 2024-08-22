@@ -7,10 +7,10 @@ import 'user_stats.dart';
 class User {
   String jsonWebToken;
   int id = 0;
-  String userName = " ";
+  String name = " ";
   String email = " ";
   String phone = " ";
-  String nickName = " ";
+  String userName = " ";
   String password = " ";
   UserStats userStats = UserStats();
 
@@ -50,7 +50,7 @@ class User {
       userName = decodedToken['sub'];
       email = decodedToken['email'];
       phone = decodedToken['phone'];
-      nickName = decodedToken['nickname'];
+      userName = decodedToken['username'];
     }
 
   expired(){

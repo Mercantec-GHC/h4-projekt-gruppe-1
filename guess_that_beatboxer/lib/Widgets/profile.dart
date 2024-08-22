@@ -22,11 +22,11 @@ class ProfileSection extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              user.userName,
+              user.name,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             Text(
-              user.nickName,
+              user.userName,
               style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
           ],
