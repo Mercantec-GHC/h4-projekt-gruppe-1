@@ -46,6 +46,7 @@ class _LoginFormState extends State<LoginForm> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false;
+
 Future<void> login(appState) async {
     if (_formKey.currentState!.validate()) {
        setState(() {
@@ -56,7 +57,7 @@ Future<void> login(appState) async {
         String password = _passwordController.text;
         var token = await fetchLogin(username, password);
         appState.user = User(jsonWebToken: token);
-        appState.user.decode();
+        appState.user.loadData();
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => BottomNavBar()));
       } catch (e) {
         _showPopup(context, "Invalid username or password");
