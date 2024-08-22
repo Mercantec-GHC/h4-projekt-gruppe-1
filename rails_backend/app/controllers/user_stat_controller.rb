@@ -7,7 +7,10 @@ class UserStatController < LoginController
   end
 
   def show
-    user_stat = UserStat.find(params[:id])
+    user_stat = UserStat.find_by(user_id: params[:id])
+    if user_stat.nil?
+      user_stat = UserStat.new(:wins => 0, :lost => 0, :games_played => 0, :right_guesses => 0, :skips => 0)
+      user_stat.save
     render json: user_stat, status: :ok
   end
 
