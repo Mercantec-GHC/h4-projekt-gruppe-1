@@ -108,9 +108,11 @@ Future<void> login(appState) async {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
                 Buttons( text: "Forgot password", pressFunction: () {_showPopup(context, "forgot password");}, backgroundColor: Colors.white, textColor: Colors.black),
+                SizedBox(width: 10),
                 Buttons(text: "Login",pressFunction: () async {await login(appState);}, backgroundColor: Colors.black, textColor: Colors.white),
             ],
           ),
+          SizedBox(height: 5),
           Buttons(text: "Create acccount", pressFunction: () {Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Register()));} , backgroundColor: Colors.black, textColor: Colors.white),
         ],
            ),

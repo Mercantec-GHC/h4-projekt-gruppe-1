@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 appBarFunction (text){
   return(AppBar(
+        backgroundColor: Colors.white,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [

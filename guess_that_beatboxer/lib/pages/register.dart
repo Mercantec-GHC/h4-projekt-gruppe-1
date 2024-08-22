@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:guess_that_beatboxer/Widgets/appBar.dart';
 import 'package:guess_that_beatboxer/models/user.dart';
 import 'package:guess_that_beatboxer/api/user_register.dart';
 import 'package:guess_that_beatboxer/pages/login.dart';
@@ -27,9 +28,8 @@ class _RegisterState extends State<Register> {
     return MaterialApp(
       title: appTitle,
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text(appTitle),
-        ),
+        appBar: appBarFunction("Register"),
+        backgroundColor: Colors.white,
         body: Stack(
           children: [
             Center(
@@ -53,7 +53,7 @@ class _RegisterState extends State<Register> {
                      
                     ],
                   ),
-                   Buttons(backgroundColor: Colors.black, text: 'Cancle', pressFunction: () {
+                   Buttons(text: 'Cancel', pressFunction: () {
                         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
                       }, length: 300, height: 50),
                 ],
@@ -92,9 +92,9 @@ class RegisterBTN extends StatelessWidget {
       height: 50,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-          ),
+              borderRadius: BorderRadius.circular(8)),
         ),
         onPressed: () async {
           if (!validateFields(context)) return;
@@ -106,7 +106,7 @@ class RegisterBTN extends StatelessWidget {
             showSuccessDialog(context);
           }
         },
-        child: const Text('Create account'),
+        child: const Text('Create account', style: TextStyle(color: Colors.black)),
       ),
     );
   }
@@ -145,7 +145,7 @@ class RegisterBTN extends StatelessWidget {
             TextButton(
               child: Text('Gå til Login'),
               onPressed: () {
-                Navigator.pop(context, MaterialPageRoute(builder: (context) => Login()));
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
               },
             ),
           ],

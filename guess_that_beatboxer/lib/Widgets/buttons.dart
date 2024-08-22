@@ -25,6 +25,9 @@ class Buttons extends StatelessWidget {
     return ElevatedButton(
       onPressed: pressFunction,
       style: ButtonStyle(
+        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8))),
         backgroundColor: WidgetStateProperty.all(backgroundColor),
         padding: WidgetStateProperty.all(EdgeInsets.all(10)),
         minimumSize: WidgetStateProperty.all(Size(length, height)),
