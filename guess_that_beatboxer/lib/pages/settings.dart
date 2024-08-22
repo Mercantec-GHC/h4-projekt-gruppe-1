@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:guess_that_beatboxer/Widgets/appBar.dart';
 import 'package:guess_that_beatboxer/main.dart';
 import 'package:guess_that_beatboxer/pages/login.dart';
 import 'package:guess_that_beatboxer/widgets/buttons.dart';
-import 'package:guess_that_beatboxer/widgets/appBar.dart';
 import 'package:provider/provider.dart';
 
 
