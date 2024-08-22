@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:guess_that_beatboxer/models/user.dart';
 import 'package:guess_that_beatboxer/api/user_register.dart';
@@ -54,8 +55,11 @@ class _RegisterState extends State<Register> {
               ),
             ),
             if (_isLoading)
-              Center(
-                child: CircularProgressIndicator(),
+              BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
               ),
           ],
         ),
@@ -88,6 +92,8 @@ class RegisterBTN extends StatelessWidget {
           ),
         ),
         onPressed: () async {
+          if (!validateFields(context)) return;
+
           setLoading(true);
           bool success = await submitUser(_controllers, context);
           setLoading(false);
@@ -98,6 +104,30 @@ class RegisterBTN extends StatelessWidget {
         child: const Text('Create account'),
       ),
     );
+  }
+
+  bool validateFields(BuildContext context) {
+    if (_controllers[0].text.isEmpty) {
+      showErrorDialog(context, 'Du skal have et navn');
+      return false;
+    }
+    if (_controllers[1].text.isEmpty || !RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(_controllers[1].text)) {
+      showErrorDialog(context, 'Skriv en gyldig email');
+      return false;
+    }
+    if (_controllers[2].text.isEmpty) {
+      showErrorDialog(context, 'Du skal have et telefonnummer');
+      return false;
+    }
+    if (_controllers[3].text.isEmpty) {
+      showErrorDialog(context, 'Du skal vælge et password');
+      return false;
+    }
+    if (_controllers[3].text != _controllers[4].text) {
+      showErrorDialog(context, 'Passwords matcher ikke');
+      return false;
+    }
+    return true;
   }
 
   void showSuccessDialog(BuildContext context) {
@@ -118,6 +148,26 @@ class RegisterBTN extends StatelessWidget {
       },
     );
   }
+
+  void showErrorDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Error'),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
 
 List<String> labels = [
@@ -125,6 +175,7 @@ List<String> labels = [
   'Email',
   'Telefon',
   'Password',
+  'Bekræft Password',
 ];
 
 class inputFields extends StatelessWidget {
@@ -143,6 +194,7 @@ class inputFields extends StatelessWidget {
               padding: const EdgeInsets.all(10),
               child: TextField(
                 controller: _controllers[i],
+                obscureText: labels[i].toLowerCase().contains('password'),
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: labels[i],
