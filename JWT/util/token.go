@@ -9,9 +9,9 @@ import (
 
 var secretKey = []byte("your-secret-key")
 
-func CreateToken(username string, email string, phone string, nickname string) (string, error) {
+func CreateToken(name string, email string, phone string, nickname string) (string, error) {
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub":      username,
+		"sub":      name,
 		"email":    email,
 		"nickname": nickname,
 		"phone":    phone,

@@ -23,6 +23,7 @@ func Register(c *gin.Context) {
 
 	var newUser *models.User
 
+	// Bind the request body to the new user struct
 	if err := c.ShouldBindJSON(&newUser); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
 		return
