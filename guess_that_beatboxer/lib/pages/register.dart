@@ -1,9 +1,7 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:guess_that_beatboxer/models/user.dart';
-import 'package:provider/provider.dart';
-
+import 'package:guess_that_beatboxer/api/user_register.dart';
+import 'package:guess_that_beatboxer/pages/login.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -11,15 +9,18 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  final List<TextEditingController> _controllers = List.generate(labels.length, (index) => TextEditingController());
+  bool _isLoading = false;
 
   @override
-    void initState() {
+  void initState() {
     super.initState();
   }
 
+  var user = User();
 
+  @override
   Widget build(BuildContext context) {
-    var user = User();
     const String appTitle = 'Register';
     return MaterialApp(
       title: appTitle,
@@ -27,51 +28,53 @@ class _RegisterState extends State<Register> {
         appBar: AppBar(
           title: const Text(appTitle),
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image.asset('../assets/logo.png',
-                fit: BoxFit.contain,
-                height: 150, 
-              ),
-            Text("Welcome To Guess That Beatboxer!", style: TextStyle(fontSize: 20),),
-              inputFields(),
-              Row(
+        body: Stack(
+          children: [
+            Center(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  RegisterBTN(),
+                children: <Widget>[
+                  Image.asset(
+                    '../assets/logo.png',
+                    fit: BoxFit.contain,
+                    height: 150,
+                  ),
+                  Text(
+                    "Welcome To Guess That Beatboxer!",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  inputFields(_controllers),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      RegisterBTN(_controllers, _setLoading),
+                    ],
+                  ),
                 ],
-              ),                              
-            ],
-          ),
+              ),
+            ),
+            if (_isLoading)
+              Center(
+                child: CircularProgressIndicator(),
+              ),
+          ],
         ),
       ),
     );
   }
+
+  void _setLoading(bool isLoading) {
+    setState(() {
+      _isLoading = isLoading;
+    });
+  }
 }
 
-
 class RegisterBTN extends StatelessWidget {
+  final List<TextEditingController> _controllers;
+  final Function(bool) setLoading;
 
-  void _register(BuildContext context) {
-        showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Bruger oprettet med succes'),
-          actions: <Widget>[
-            TextButton(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.pushNamed(context, "/login");
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+  RegisterBTN(this._controllers, this.setLoading);
 
   @override
   Widget build(BuildContext context) {
@@ -81,67 +84,88 @@ class RegisterBTN extends StatelessWidget {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12), 
+            borderRadius: BorderRadius.circular(12),
           ),
         ),
-        onPressed: () {
-         _register(context);
+        onPressed: () async {
+          setLoading(true);
+          bool success = await submitUser(_controllers, context);
+          setLoading(false);
+          if (success) {
+            showSuccessDialog(context);
+          }
         },
         child: const Text('Create account'),
       ),
     );
   }
+
+  void showSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Bruger oprettet'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Gå til Login'),
+              onPressed: () {
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
 
-
-
 List<String> labels = [
-  'Full Name',
-  'Username',
+  'Navn',
   'Email',
-  'Phone',
+  'Telefon',
   'Password',
-  'Confirm Password',
 ];
 
-
-
 class inputFields extends StatelessWidget {
-  final TextEditingController _controller = TextEditingController();
-  Future<void> postUser() async {
-    var user = User();
-    user.userName = _controller.text;
-    user.email = _controller.text;
-    user.password = _controller.text;
-    user.phone = _controller.text;
+  final List<TextEditingController> _controllers;
 
-  }
-
+  inputFields(this._controllers);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: <Widget>[
-            for (var label in labels)  
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: 
-                  TextField(
-                    controller: _controller,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: label,
-                    hintText: label,
-                  ),
+      child: Column(
+        children: <Widget>[
+          for (int i = 0; i < labels.length; i++)
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: TextField(
+                controller: _controllers[i],
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: labels[i],
+                  hintText: labels[i],
                 ),
-                
               ),
+            ),
+        ],
+      ),
+    );
+  }
+}
 
-            ],
-          ),
-          
-        );
-      }
-    }
+Future<bool> submitUser(List<TextEditingController> controllers, BuildContext context) async {
+  print('Full Name: ${controllers[0].text}');
+  print('Email: ${controllers[1].text}');
+  print('Phone: ${controllers[2].text}');
+  print('Password: ${controllers[3].text}');
+
+  return await postUser(
+    controllers[0].text,
+    controllers[1].text,
+    controllers[2].text,
+    controllers[3].text,
+  );
+}
