@@ -10,12 +10,10 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  late Future<User> futureUser;
 
   @override
     void initState() {
     super.initState();
-    futureUser = registerUser();
   }
 
 
@@ -43,17 +41,7 @@ class _RegisterState extends State<Register> {
                   RegisterBTN(),
                 ],
               ),
-                FutureBuilder<User>(
-                  future: futureUser,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      print(snapshot.data);
-                    } else if (snapshot.hasError) {
-                      return Text('${snapshot.error}');
-                    }
-                    return const CircularProgressIndicator();
-                  },
-                )
+
                               
             ],
           ),
@@ -105,56 +93,6 @@ class RegisterBTN extends StatelessWidget {
   }
 }
 
-  class User {
-  final int id;
-  final String name;
-  final String nickname;
-  final String email;
-  final String password;
-  final String phone;
-
-  User({
-    required this.id,
-    required this.name,
-    required this.nickname,
-    required this.email,
-    required this.password,
-    required this.phone
-    });
-  
-
-  factory User.fromJson(Map<String, dynamic> json) {
-    return switch (json) {
-      {
-        'id': int id,
-        'name': String name,
-        'nickname': String nickname,
-        'email': String email,
-        'password': String password,
-        'phone': String phone,
-      } => User(
-        id: id,
-        name: name,
-        nickname: nickname,
-        email: email,
-        password: password,
-        phone: phone,
-      ),
-      _=> throw Exception('Failed to load user'),
-    };
-  }
-}
-
-Future<User> registerUser() async {
-  final response = await http.get(Uri.parse('https://h4-projekt-gruppe-1.onrender.com/user/1'));
-
-  if (response.statusCode == 200) {
-    print(response.body);
-    return User.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
-  } else {
-    throw Exception('Failed to load users');
-  }
-}
 
 
 List<String> labels = [
