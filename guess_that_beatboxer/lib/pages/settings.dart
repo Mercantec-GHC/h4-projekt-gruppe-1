@@ -15,12 +15,24 @@ class SettingsPage extends StatelessWidget {
       appBar: appBarFunction("Settings"),
       body: Center(child:
         Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('Settings Page'),
-            Buttons( text: 'Logout', pressFunction: () {
-              user = "";
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
-            }
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Buttons( text: 'Delete account', pressFunction: () {
+                  deleteAccount(context);
+                }, length: 400,
+                 ),
+                 SizedBox(height: 5),
+                Buttons( text: 'Logout', pressFunction: () {
+                  user = "";
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
+                }, length: 400,
+                 ),
+                 SizedBox(height: 20),
+              ],
             ),
           ],
         ),
@@ -28,4 +40,8 @@ class SettingsPage extends StatelessWidget {
       // bottomNavigationBar: BottomNavigationBarExample(),
     );
   }
+}
+
+deleteAccount (context){
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
 }

@@ -9,13 +9,20 @@ class ProfileSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
+    var indexFunction = appState.onItemTapped;
     var user = appState.user;
     return Row(
       children: [
-        CircleAvatar(
-          radius: 40,
-          backgroundColor: Colors.grey.shade300,
-          child: Icon(Icons.person, size: 40, color: Colors.grey),
+        GestureDetector(
+          onTap: () {
+            indexFunction(2);
+            print("Billedet blev klikket");
+          },
+          child: CircleAvatar(
+            radius: 40,
+            backgroundColor: Colors.grey.shade300,
+            child: Icon(Icons.person, size: 40, color: Colors.grey),
+          ),
         ),
         SizedBox(width: 16),
         Column(

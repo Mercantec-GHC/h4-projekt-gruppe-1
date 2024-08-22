@@ -88,7 +88,7 @@ class RegisterBTN extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 450,
+      width: 300,
       height: 50,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(

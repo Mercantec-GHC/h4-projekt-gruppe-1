@@ -47,7 +47,7 @@ class User {
   decode (){
     var decodedToken = JwtDecoder.decode(jsonWebToken);
       id = decodedToken['id'];
-      userName = decodedToken['sub'];
+      name = decodedToken['sub'];
       email = decodedToken['email'];
       phone = decodedToken['phone'];
       userName = decodedToken['username'];
