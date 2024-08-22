@@ -3,7 +3,6 @@ import 'package:guess_that_beatboxer/main.dart';
 import 'package:guess_that_beatboxer/models/user.dart';
 import 'package:guess_that_beatboxer/pages/register.dart';
 import 'package:provider/provider.dart';
-//import 'package:http/http.dart' as http;
 import '../Widgets/buttons.dart';
 import '../api/fetch_login.dart';
 
@@ -55,7 +54,6 @@ Future<void> login(appState) async {
       try {
         String username = _usernameController.text;
         String password = _passwordController.text;
-        
         var token = await fetchLogin(username, password);
         appState.user = User(jsonWebToken: token);
         appState.user.decode();
@@ -73,7 +71,9 @@ Future<void> login(appState) async {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
-    
+    if(_isLoading){
+      return CircularProgressIndicator();
+    }else
     return Form(
       key: _formKey,
       child:
@@ -102,9 +102,7 @@ Future<void> login(appState) async {
           ),
           
           SizedBox(height: 10),
-          _isLoading
-          ? CircularProgressIndicator()
-          : Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
                 Buttons( text: "Forgot password", pressFunction: () {_showPopup(context, "forgot password");}, backgroundColor: Colors.white, textColor: Colors.black),
