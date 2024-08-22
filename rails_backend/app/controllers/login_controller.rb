@@ -9,7 +9,6 @@ class LoginController < ApplicationController
     if token
       begin
         decoded_token = JWT.decode(token, ENV['JWT_SECRET'], true, {algorithm: "HS256"})
-        @test_user = TestUser.new(decoded_token[0]["sub"], "12345678")
       rescue JWT::DecodeError
         render json: {error: "Invalid token"}, status: :unauthorized
       end

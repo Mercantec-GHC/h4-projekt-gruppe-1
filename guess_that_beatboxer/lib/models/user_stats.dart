@@ -1,8 +1,22 @@
 
-class User_stats {
-    String wins = "";
-    String lost = "";
-    String games_played = "";
-    String right_guesses = "";
-    String skips = "";
+class UserStats {
+    int wins; 
+    int lost;
+    int gamesPlayed; 
+    int rightGuesses;
+    int skips;
+    
+    UserStats({this.wins = 0, this.lost = 0, this.gamesPlayed = 0, this.rightGuesses = 0, this.skips = 0});
+
+
+    factory UserStats.fromJson(Map<String, dynamic> json) {
+      print(json);
+      return UserStats(
+        wins: json['wins'],
+        lost: json['lost'],
+        gamesPlayed: json['games_played'],
+        rightGuesses: json['right_guesses'],
+        skips: json['skips'],
+      );
+    }
 }

@@ -57,7 +57,7 @@ Future<void> login(appState) async {
         String password = _passwordController.text;
         var token = await fetchLogin(username, password);
         appState.user = User(jsonWebToken: token);
-        appState.user.loadData();
+        await appState.user.loadData();
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => BottomNavBar()));
       } catch (e) {
         _showPopup(context, "Invalid username or password");

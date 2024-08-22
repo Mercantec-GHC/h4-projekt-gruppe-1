@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:jwt_decoder/jwt_decoder.dart';
 import '../api/fetch_user_stats.dart';
 import 'user_stats.dart';
@@ -10,6 +12,7 @@ class User {
   String phone = " ";
   String nickName = " ";
   String password = " ";
+  UserStats userStats = UserStats();
 
 
   User({this.jsonWebToken = " " });
@@ -18,20 +21,25 @@ class User {
 
 
 
-  loadData (){
+  loadData () async{
     try {
       decode();
-      fetchUserData();
+      await fetchUserData();
     } catch (e) {
-      print(e);
+      throw Exception('Failed to load data');
     }
   }
   
-  fetchUserData (){
+  fetchUserData () async{
     try {
-      FetchUserStats(jsonWebToken, id);
+      if (expired()) {
+        throw Exception('Token expired');
+      }
+    var jsonData =  await FetchUserStats(jsonWebToken, id);
+    var data = jsonDecode(jsonData);
+    userStats = UserStats.fromJson(data);
     } catch (e) {
-      print(e);
+      throw Exception('Failed to load data');
     }
   }
 

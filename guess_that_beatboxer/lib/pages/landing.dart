@@ -38,11 +38,12 @@ class HomePage extends StatelessWidget {
 class HomePageContent extends StatelessWidget {
   final indexFunction;
 
-
   const HomePageContent({super.key, this.indexFunction});
 
   @override
   Widget build(BuildContext context) {
+    final appState = context.watch<MyAppState>();
+    final user = appState.user;
     return SingleChildScrollView(
       padding: EdgeInsets.all(18),
       child: Column(
@@ -50,7 +51,7 @@ class HomePageContent extends StatelessWidget {
         children: [
           ProfileSection(),
           SizedBox(height: 16),
-          StatsSection(),
+          StatsSection(user: user),
           SizedBox(height: 16),
           CreateLobbyButton(),
           SizedBox(height: 16),
@@ -65,7 +66,10 @@ class HomePageContent extends StatelessWidget {
 
 
 class StatsSection extends StatelessWidget {
-  const StatsSection({super.key});
+  final user;
+
+  const StatsSection({super.key, this.user});
+
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +85,7 @@ class StatsSection extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Top Stats',
+                  'Stats',
                   style: Theme.of(context).textTheme.headlineSmall, 
                 ),
                 ElevatedButton(
@@ -99,17 +103,17 @@ class StatsSection extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.games),
             title: Text('Total Games Played'),
-            trailing: Text('25'),
+            trailing: Text(user.userStats.gamesPlayed.toString()),
           ),
           ListTile(
             leading: Icon(Icons.emoji_events),
             title: Text('Games Won'),
-            trailing: Text('18'),
+            trailing: Text(user.userStats.wins.toString()),
           ),
           ListTile(
             leading: Icon(Icons.delete),
             title: Text('Games Lost'),
-            trailing: Text('7'),
+            trailing: Text(user.userStats.lost.toString()),
           ),
         ],
       ),
