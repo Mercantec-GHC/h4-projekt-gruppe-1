@@ -6,6 +6,7 @@ class User {
   String email = " ";
   String phone = " ";
   String nickName = " ";
+  String password = " ";
 
   User({this.jsonWebToken = " " });
 

@@ -1,8 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-//import 'landing.dart';
+import 'package:guess_that_beatboxer/models/user.dart';
+import 'package:provider/provider.dart';
+
 
 class Register extends StatefulWidget {
   @override
@@ -18,6 +19,7 @@ class _RegisterState extends State<Register> {
 
 
   Widget build(BuildContext context) {
+    var user = User();
     const String appTitle = 'Register';
     return MaterialApp(
       title: appTitle,
@@ -94,14 +96,28 @@ class RegisterBTN extends StatelessWidget {
 
 
 List<String> labels = [
-  'First Name',
-  'Last Name',
+  'Full Name',
+  'Username',
   'Email',
+  'Phone',
   'Password',
   'Confirm Password',
 ];
 
+
+
 class inputFields extends StatelessWidget {
+  final TextEditingController _controller = TextEditingController();
+  Future<void> postUser() async {
+    var user = User();
+    user.userName = _controller.text;
+    user.email = _controller.text;
+    user.password = _controller.text;
+    user.phone = _controller.text;
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -113,12 +129,14 @@ class inputFields extends StatelessWidget {
                 padding: const EdgeInsets.all(10),
                 child: 
                   TextField(
+                    controller: _controller,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: label,
                     hintText: label,
                   ),
                 ),
+                
               ),
 
             ],

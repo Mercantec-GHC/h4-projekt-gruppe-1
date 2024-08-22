@@ -9,7 +9,7 @@ import (
 
 var secretKey = []byte("your-secret-key")
 
-func CreateToken(name string, email string, phone string, nickname string) (string, error) {
+func CreateToken(name string, email string, phone string, nickname string, id uint) (string, error) {
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"sub":      name,
 		"email":    email,
@@ -18,6 +18,7 @@ func CreateToken(name string, email string, phone string, nickname string) (stri
 		"iss":      "token-auth",
 		"exp":      time.Now().Add(time.Hour * 24).Unix(),
 		"iat":      time.Now().Unix(),
+		"id":       id,
 	})
 
 	tokenString, err := claims.SignedString(secretKey)
