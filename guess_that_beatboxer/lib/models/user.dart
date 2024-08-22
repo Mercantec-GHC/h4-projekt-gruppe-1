@@ -2,15 +2,21 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 
 class User {
   String jsonWebToken;
-  String userName;
+  String userName = " ";
+  String email = " ";
+  String phone = " ";
+  String nickName = " ";
 
-  User({this.jsonWebToken = " " , this.userName = ''});
+  User({this.jsonWebToken = " " });
 
 
 
   decode (){
     var decodedToken = JwtDecoder.decode(jsonWebToken);
-      userName = decodedToken['sub'];
+      userName = decodedToken['name'];
+      email = decodedToken['email'];
+      phone = decodedToken['phone'];
+      nickName = decodedToken['nickName'];
     }
 
   expired(){

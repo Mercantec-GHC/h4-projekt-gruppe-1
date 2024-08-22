@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
+import '../Widgets/profile.dart';
 
 
 
@@ -62,38 +63,6 @@ class HomePageContent extends StatelessWidget {
   }
 }
 
-class ProfileSection extends StatelessWidget {
-  const ProfileSection({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
-    var user = appState.user;
-    return Row(
-      children: [
-        CircleAvatar(
-          radius: 40,
-          backgroundColor: const Color.fromARGB(162, 224, 224, 224),
-          child: Icon(Icons.person, size: 40, color: Colors.grey),
-        ),
-        SizedBox(width: 16),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              user.userName,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              'Nickname',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-}
 
 class StatsSection extends StatelessWidget {
   const StatsSection({super.key});

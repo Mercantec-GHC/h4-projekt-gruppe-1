@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:guess_that_beatboxer/main.dart';
 import 'package:guess_that_beatboxer/models/user.dart';
+import 'package:guess_that_beatboxer/pages/register.dart';
 import 'package:provider/provider.dart';
-//import 'package:jwt_decoder/jwt_decoder.dart';
 //import 'package:http/http.dart' as http;
 import '../Widgets/buttons.dart';
-import '../api/api_login.dart';
-//import '../models/user.dart';
+import '../api/fetch_login.dart';
 
 class Login extends StatelessWidget {
 
@@ -50,23 +49,28 @@ class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
+  bool _isLoading = false;
 Future<void> login(appState) async {
-
     if (_formKey.currentState!.validate()) {
+       setState(() {
+        _isLoading = true;
+      });
       try {
         String username = _usernameController.text;
         String password = _passwordController.text;
+        
         var token = await fetchLogin(username, password);
         appState.user = User(jsonWebToken: token);
         appState.user.decode();
-        print(appState.user.userName);
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => BottomNavBar()));
       } catch (e) {
         _showPopup(context, "Invalid username or password");
         print(e);
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
       }
-      
     }
   }
   @override
@@ -99,15 +103,18 @@ Future<void> login(appState) async {
             obscureText: true,
             validator: (value) => value!.isEmpty ? 'Please enter a password' : null,
           ),
+          
           SizedBox(height: 10),
-          Row(
+          _isLoading
+          ? CircularProgressIndicator()
+          : Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
                 Buttons( text: "Forgot password", pressFunction: () {_showPopup(context, "forgot password");}, backgroundColor: Colors.white, textColor: Colors.black),
                 Buttons(text: "Login",pressFunction: () async {await login(appState);}, backgroundColor: Colors.black, textColor: Colors.white),
             ],
           ),
-          Buttons(text: "Create acccount", pressFunction: () {_showPopup(context, "create account");} , backgroundColor: Colors.black, textColor: Colors.white),
+          Buttons(text: "Create acccount", pressFunction: () {Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Register()));} , backgroundColor: Colors.black, textColor: Colors.white),
         ],
            ),
      ),
