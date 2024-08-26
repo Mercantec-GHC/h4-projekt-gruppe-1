@@ -3,6 +3,8 @@ import 'package:guess_that_beatboxer/Widgets/appBar.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
 import '../Widgets/profile.dart';
+import 'package:guess_that_beatboxer/pages/lobby.dart';
+
 
 
 
@@ -114,7 +116,9 @@ class CreateLobbyButton extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LobbyPage()));
+        },
         child: Text('Create Lobby', style: TextStyle(color: Colors.white),),
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.black,
