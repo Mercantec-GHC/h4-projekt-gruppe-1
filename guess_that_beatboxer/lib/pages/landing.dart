@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../main.dart';
 import '../Widgets/profile.dart';
 import 'package:guess_that_beatboxer/pages/lobby.dart';
+import 'package:uuid/uuid.dart';
 
 
 
@@ -43,6 +44,7 @@ class HomePageContent extends StatelessWidget {
           StatsSection(user: user),
           SizedBox(height: 16),
           CreateLobbyButton(),
+          JoinLobbyButton(),
           SizedBox(height: 16),
           RecentGamesSection(),
           SizedBox(height: 16),
@@ -117,13 +119,60 @@ class CreateLobbyButton extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LobbyPage()));
+          var uuid = Uuid();
+          String matchId = uuid.v4(); // Generate a unique ID
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => LobbyPage(matchId: matchId),
+            ),
+          );
         },
-        child: Text('Create Lobby', style: TextStyle(color: Colors.white),),
+        child: Text(
+          'Create Lobby',
+          style: TextStyle(color: Colors.white),
+        ),
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.black,
         ),
       ),
+    );
+  }
+}
+
+class JoinLobbyButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    TextEditingController matchIdController = TextEditingController();
+
+    return Column(
+      children: [
+        TextField(
+          controller: matchIdController,
+          decoration: InputDecoration(
+            labelText: 'Enter Match ID',
+          ),
+        ),
+        SizedBox(height: 16),
+        ElevatedButton(
+          onPressed: () {
+            String matchId = matchIdController.text;
+
+            // For simplicity, assume the matchId is valid and navigate to LobbyPage
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LobbyPage(matchId: matchId),
+              ),
+            );
+          },
+          child: Text('Join Lobby', style: TextStyle(color: Colors.white),),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.black,
+          ),
+        ),
+      ],
     );
   }
 }
