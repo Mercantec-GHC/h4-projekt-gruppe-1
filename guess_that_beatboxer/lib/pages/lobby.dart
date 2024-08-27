@@ -5,38 +5,108 @@ import 'package:provider/provider.dart';
 import '../Widgets/closeLobby.dart';
 
 
-class LobbyPage extends StatelessWidget {
-  const LobbyPage({super.key});
+class LobbyPage extends StatefulWidget {
+  final String matchId;
+
+  const LobbyPage({super.key, required this.matchId});
+
+  @override
+  _LobbyPageState createState() => _LobbyPageState();
+}
+
+class _LobbyPageState extends State<LobbyPage> {
+  List<String> players = [];
+
+  void addPlayer(String playerName) {
+    if (!players.contains(playerName)) {
+      setState(() {
+        players.add(playerName);
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('You are already in the lobby!'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarLobbyFunction("Lobby", action: CloseLobbyButton()),
-      body: LobbyPageContent(), 
+      body: LobbyPageContent(
+        matchId: widget.matchId,
+        players: players,
+        addPlayer: addPlayer,
+      ),
     );
   }
 }
 
-
 class LobbyPageContent extends StatelessWidget {
- @override
+  final String matchId;  // Add matchId here
+  final List<String> players;
+  final Function(String) addPlayer;
+
+  const LobbyPageContent({
+    super.key,
+    required this.matchId,  // Make sure matchId is required
+    required this.players,
+    required this.addPlayer,
+  });
+
+  @override
   Widget build(BuildContext context) {
     final appState = context.watch<MyAppState>();
     final user = appState.user;
+
     return SingleChildScrollView(
       padding: EdgeInsets.all(18),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          MatchIdSection(matchId: matchId),
+          SizedBox(height: 16),
           KategoriSection(),
           SizedBox(height: 16),
           SpilTidSection(),
           SizedBox(height: 16),
-          PlayerSection(user: user),
+          PlayerSection(players: players),
+          SizedBox(height: 16),
+          JoinSection(
+            addPlayer: addPlayer,
+            userName: user?.userName,
+          ),
           SizedBox(height: 16),
           StartSection(),
         ],
       ),
+    );
+  }
+}
+
+class MatchIdSection extends StatelessWidget {
+  final String matchId;
+
+  MatchIdSection({required this.matchId});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Match ID',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 8),
+        Text(
+          matchId,
+          style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+        ),
+      ],
     );
   }
 }
@@ -181,9 +251,9 @@ class _TimeSelectorState extends State<TimeSelector> {
 }
 
 class PlayerSection extends StatelessWidget {
-  final user;
+  final List<String> players;
 
-  const PlayerSection({super.key, this.user});
+  PlayerSection({required this.players});
 
   @override
   Widget build(BuildContext context) {
@@ -195,9 +265,7 @@ class PlayerSection extends StatelessWidget {
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 10),
-        user != null
-            ? PlayerCard(playerName: user.userName)
-            : Text('Loading...'),
+        ...players.map((playerName) => PlayerCard(playerName: playerName)).toList(),
       ],
     );
   }
@@ -222,6 +290,30 @@ class PlayerCard extends StatelessWidget {
           SizedBox(width: 10),
           Text(playerName),
         ],
+      ),
+    );
+  }
+}
+
+class JoinSection extends StatelessWidget {
+  final Function(String) addPlayer;
+  final String? userName;
+
+  JoinSection({required this.addPlayer, required this.userName});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: ElevatedButton(
+        onPressed: () {
+          if (userName != null) {
+            addPlayer(userName!);
+          }
+        },
+        child: Text("Join Lobby", style: TextStyle(color: Colors.white)),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.black,
+        ),
       ),
     );
   }
