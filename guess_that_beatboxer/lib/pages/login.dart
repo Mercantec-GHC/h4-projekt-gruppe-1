@@ -44,32 +44,32 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false;
 
-Future<void> login(appState) async {
-    if (_formKey.currentState!.validate()) {
-       setState(() {
-        _isLoading = true;
-      });
-      try {
-        String username = _usernameController.text;
-        String password = _passwordController.text;
-        var token = await fetchLogin(username, password);
-        appState.user = User(jsonWebToken: token);
-        await appState.user.loadData();
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => BottomNavBar()));
-      } catch (e) {
-        _showPopup(context, "Invalid username or password");
-        print(e);
-      } finally {
+  Future<void> login(appState) async {
+      if (_formKey.currentState!.validate()) {
         setState(() {
-          _isLoading = false;
+          _isLoading = true;
         });
+        try {
+          String email = _emailController.text;
+          String password = _passwordController.text;
+          var token = await fetchLogin(email, password);
+          appState.user = User(jsonWebToken: token);
+          await appState.user.loadData();
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => BottomNavBar()));
+        } catch (e) {
+          _showPopup(context, "Invalid email or password");
+          print(e);
+        } finally {
+          setState(() {
+            _isLoading = false;
+          });
+        }
       }
     }
-  }
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
@@ -84,13 +84,13 @@ Future<void> login(appState) async {
        child: Column(
         children: <Widget> 
         [
-          Text("Username"),
+          Text("email"),
           TextFormField(
-            controller: _usernameController,
+            controller: _emailController,
             decoration: const InputDecoration(
-              hintText: 'Enter your username',
+              hintText: 'Enter your email',
             ),
-            validator: (value) => value!.isEmpty ? 'Please enter a username' : null,
+            validator: (value) => value!.isEmpty ? 'Please enter a E-amil' : null,
           ),
           SizedBox(height: 10),
           Text("Password"),
