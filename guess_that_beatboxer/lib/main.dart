@@ -30,6 +30,7 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.red,
         primaryColor: Colors.red,
         scaffoldBackgroundColor: Colors.white,
+        fontFamily: 'Karla',
       ),
       home: Login(),
     ),
