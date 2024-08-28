@@ -32,9 +32,9 @@ func Login(c *gin.Context) {
 	fmt.Printf("Login data received: %+v\n", loginData)
 
 	var user models.User
-	if err := db.DB.Db.Where("name = ?", loginData.Username).First(&user).Error; err != nil {
+	if err := db.DB.Db.Where("email = ?", loginData.Email).First(&user).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid email or password"})
 		} else {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch user data"})
 		}
@@ -42,7 +42,7 @@ func Login(c *gin.Context) {
 	}
 
 	if !util.ComparePassword(user.Password, loginData.Password) {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid email or password"})
 		return
 	}
 
