@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:jwt_decoder/jwt_decoder.dart';
 import '../api/fetch_user_stats.dart';
+import '../api/fetch_user_matches.dart';
 import 'user_stats.dart';
+import 'match_history.dart';
 
 class User {
   String jsonWebToken;
@@ -13,18 +15,17 @@ class User {
   String userName = " ";
   String password = " ";
   UserStats userStats = UserStats();
+  List<MatchHistory> matchHistory = [];
 
 
   User({this.jsonWebToken = " " });
-
-
-
 
 
   loadData () async{
     try {
       decode();
       await fetchUserData();
+      await fetchMatchData();
     } catch (e) {
       throw Exception('Failed to load data');
     }
@@ -43,6 +44,20 @@ class User {
     }
   }
 
+
+fetchMatchData() async {
+  try {
+    if (expired()) {
+      throw Exception('Token expired');
+    }
+    var jsonData = await FetchMatchStats(jsonWebToken, id);
+    var data = jsonDecode(jsonData) as List<dynamic>;
+    matchHistory = data.map((item) => MatchHistory.fromJson(item)).toList();
+  } catch (e) {
+    print(e);
+    throw Exception('Failed to load match data');
+  }
+}
 
   decode (){
     var decodedToken = JwtDecoder.decode(jsonWebToken);

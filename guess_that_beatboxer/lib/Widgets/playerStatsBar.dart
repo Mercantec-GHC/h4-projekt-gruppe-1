@@ -22,7 +22,6 @@ class PlayerStatsBar extends StatelessWidget {
               style: TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
-                
               ),
             ),
         ),
@@ -41,10 +40,10 @@ List<String> statCardsLabels = [
   'Matches played',
   'Wins',
   'Losses',
-  'rightGuesses'
+  'right guesses'
 ];
 
-List<String> statsCardCall = [
+List<String> statsCardDataCall = [
   'gamesPlayed',
   'wins',
   'lost',
@@ -91,19 +90,19 @@ class StatCards extends StatelessWidget {
                       Text(
                         statCardsLabels[i],
                           style: TextStyle(
-                          fontSize: 10,
+                          fontSize: 15,
                           fontWeight: FontWeight.w300,
                             ),
                         ),
                       Text(
-                        userStatsMap[statsCardCall[i]].toString(),
+                        userStatsMap[statsCardDataCall[i]].toString(),
                         style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
-                        "${(userStatsMap[statsCardCall[i]] / userStatsMap[statsCardCall[0]] * 100).toStringAsFixed(2)}%",
+                        "${(userStatsMap[statsCardDataCall[i]] / userStatsMap[statsCardDataCall[0]] * 100).toStringAsFixed(2)}%",
                       ),
                     ],
                   ),

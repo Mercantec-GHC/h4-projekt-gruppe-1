@@ -78,12 +78,13 @@ func DeleteUser(c *gin.Context) {
 // @Summary      Update user with specific id
 // @Description  Update user
 // @Tags         user
-// @Param        id path string true "User ID"
+// @Param        request body models.User true "User data"
 // @Accept       json
 // @Produce      application/json
 // @Success      200
 // @Router       /user/{id} [patch]
 func UpdateUser(c *gin.Context) {
+
 	id := c.Param("id")
 	var user models.User
 
@@ -98,7 +99,7 @@ func UpdateUser(c *gin.Context) {
 		return
 	}
 
-	if err := db.DB.Db.Save(&user).Error; err != nil {
+	if err := db.DB.Db.Model(&user).Updates(updatedUser).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update user", "details": err.Error()})
 		return
 	}

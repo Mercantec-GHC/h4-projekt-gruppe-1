@@ -16,7 +16,7 @@ class Buttons extends StatelessWidget {
     this.backgroundColor = Colors.black,
     this.textColor = Colors.white,
     this.hoverColor = Colors.grey,  
-    this.length = 130,
+    this.length = 100,
     this.height = 50,
   });
 
@@ -27,7 +27,7 @@ class Buttons extends StatelessWidget {
       style: ButtonStyle(
         shape: WidgetStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8))),
+              borderRadius: BorderRadius.circular(5))),
         backgroundColor: WidgetStateProperty.all(backgroundColor),
         padding: WidgetStateProperty.all(EdgeInsets.all(10)),
         minimumSize: WidgetStateProperty.all(Size(length, height)),

@@ -4,6 +4,8 @@ import '../main.dart';
 import '../Widgets/profile.dart';
 import '../Widgets/appBar.dart';
 import '../Widgets/playerStatsBar.dart';
+import '../Widgets/MatchHistory.dart';
+import '../Widgets/ChangeUsername.dart';
 import 'package:provider/provider.dart';
 
 
@@ -34,9 +36,10 @@ class AccountPageContent extends StatelessWidget {
           ProfileSection(),
           PlayerStatsBar(user:user),
           SizedBox(height: 16),
+          MatchHistory(user:user),
           //StatsSection(),
           SizedBox(height: 16),
-          //WinLoseSection(),
+          ChangeUsername(user:user),
           SizedBox(height: 16),
         ],
       ),
