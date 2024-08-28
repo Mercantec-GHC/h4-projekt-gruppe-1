@@ -1,12 +1,14 @@
-class UserController < LoginController
+class UserController < ApplicationController
   def index
     user = User.all
     render json: user , except: [:id, :created_at, :updated_at], status: :ok
   end
 
   def show
-    user = User.find_by(name: params[:name])
-    render json: user, except: [:id, :created_at, :updated_at], status: :ok
+    user = User.find(params[:id])
+    user.match_ids
+    match = Match.find(user.match_ids)
+    render json: match, except: [:id, :created_at, :updated_at], status: :ok
   end
 
   def create

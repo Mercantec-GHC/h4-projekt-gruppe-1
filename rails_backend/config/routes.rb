@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   mount Rswag::Ui::Engine => '/'
   mount Rswag::Api::Engine => '/api-docs'
+  mount ActionCable.server => '/cable'
 
   # get '/user/:name', to: 'user#show', as: 'user_by_name'
   resources :user_stat

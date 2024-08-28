@@ -52,21 +52,21 @@ paths:
         '422':
           description: Ugyldige data indsendt
 
-  /user/name/{name}:
+  /user/{id}:
     get:
       tags:
         - User
-      summary: Hent en specifik bruger baseret på navn
-      operationId: getUserByName
+      summary: Hent alle matches for en specifik bruger
+      operationId: getUserById
       parameters:
-        - name: name
+        - name: id
           in: path
           required: true
           schema:
-            type: string
+            type: integer
       responses:
         '200':
-          description: En bruger
+          description: alle kampe
           content:
             application/json:
               schema:
@@ -74,7 +74,6 @@ paths:
         '404':
           description: Bruger ikke fundet
 
-  /user/{id}:
     put:
       tags:
         - User
@@ -126,7 +125,7 @@ paths:
       tags:
         - Match
       summary: Opret en ny kamp
-      description: Opretter en ny kamp og tilknytter den til flere brugere.
+      description: Opretter en ny kamp. Hvis nogle parametre ikke er til stede, bruges standardværdier.
       requestBody:
         required: true
         content:
@@ -139,29 +138,45 @@ paths:
                   properties:
                     winner:
                       type: string
-                      description: Navnet på vinderen af kampen
+                      description: Navnet på vinderen af kampen, standard er 'N/A'
                       example: "Player 1"
                     loser:
                       type: string
-                      description: Navnet på taberen af kampen
+                      description: Navnet på taberen af kampen, standard er 'N/A'
                       example: "Player 2"
                     player_1_points:
                       type: integer
-                      description: Point optjent af spiller 1
+                      description: Point optjent af spiller 1, standard er 0
                       example: 10
                     player_2_points:
                       type: integer
-                      description: Point optjent af spiller 2
+                      description: Point optjent af spiller 2, standard er 0
                       example: 8
                     draw:
                       type: boolean
-                      description: Om kampen endte uafgjort
+                      description: Om kampen endte uafgjort, standard er false
                       example: false
+                    player_1_comment:
+                      type: string
+                      description: Kommentar fra spiller 1, standard er en tom streng
+                      example: "God kamp!"
+                    player_2_comment:
+                      type: string
+                      description: Kommentar fra spiller 2, standard er en tom streng
+                      example: "Spændende spil!"
+                    player_1_user_name:
+                      type: string
+                      description: Brugernavn for spiller 1, standard er 'Unknown'
+                      example: "player1"
+                    player_2_user_name:
+                      type: string
+                      description: Brugernavn for spiller 2, standard er 'Unknown'
+                      example: "player2"
                 user_ids:
                   type: array
                   items:
                     type: integer
-                    description: ID'er på brugere, der deltager i kampen
+                    description: ID'er på brugere, der deltager i kampen. Dette felt er valgfrit.
                   example: [1, 2]
       responses:
         '201':
@@ -213,6 +228,104 @@ paths:
       responses:
         '200':
           description: En specifik kamp
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Match'
+        '404':
+          description: Kamp ikke fundet
+
+    put:
+      tags:
+        - Match
+      summary: Opdater en eksisterende kamp
+      description: Opdaterer en kamp. Hvis nogle parametre ikke er til stede, bruges standardværdier.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                winner:
+                  type: string
+                  description: Navnet på vinderen af kampen, standard er 'N/A'
+                  example: "Player 1"
+                loser:
+                  type: string
+                  description: Navnet på taberen af kampen, standard er 'N/A'
+                  example: "Player 2"
+                player_1_points:
+                  type: integer
+                  description: Point optjent af spiller 1, standard er 0
+                  example: 10
+                player_2_points:
+                  type: integer
+                  description: Point optjent af spiller 2, standard er 0
+                  example: 8
+                draw:
+                  type: boolean
+                  description: Om kampen endte uafgjort, standard er false
+                  example: false
+                player_1_comment:
+                  type: string
+                  description: Kommentar fra spiller 1, standard er en tom streng
+                  example: "God kamp!"
+                player_2_comment:
+                  type: string
+                  description: Kommentar fra spiller 2, standard er en tom streng
+                  example: "Spændende spil!"
+                player_1_user_name:
+                  type: string
+                  description: Brugernavn for spiller 1, standard er 'Unknown'
+                  example: "player1"
+                player_2_user_name:
+                  type: string
+                  description: Brugernavn for spiller 2, standard er 'Unknown'
+                  example: "player2"
+                user_ids:
+                  type: array
+                  items:
+                    type: integer
+                    description: ID'er på brugere, der deltager i kampen. Dette felt er valgfrit.
+                  example: [1, 2]
+      responses:
+        '200':
+          description: Kamp opdateret succesfuldt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Match'
+        '404':
+          description: Kamp ikke fundet
+        '422':
+          description: Ugyldig anmodning - valideringsfejl
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                      description: Beskrivelse af fejlen
+
+    delete:
+      tags:
+        - Match
+      summary: Slet en kamp
+      description: Sletter en specifik kamp baseret på ID.
+      operationId: deleteMatch
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Kamp slettet succesfuldt
           content:
             application/json:
               schema:
@@ -350,19 +463,31 @@ components:
           type: integer
         winner:
           type: string
-          description: Navnet på vinderen af kampen
+          description: Navnet på vinderen af kampen, standard er 'N/A'
         loser:
           type: string
-          description: Navnet på taberen af kampen
+          description: Navnet på taberen af kampen, standard er 'N/A'
         player_1_points:
           type: integer
-          description: Point optjent af spiller 1
+          description: Point optjent af spiller 1, standard er 0
         player_2_points:
           type: integer
-          description: Point optjent af spiller 2
+          description: Point optjent af spiller 2, standard er 0
         draw:
           type: boolean
-          description: Om kampen endte uafgjort
+          description: Om kampen endte uafgjort, standard er false
+        player_1_comment:
+          type: string
+          description: Kommentar fra spiller 1, standard er en tom streng
+        player_2_comment:
+          type: string
+          description: Kommentar fra spiller 2, standard er en tom streng
+        player_1_user_name:
+          type: string
+          description: Brugernavn for spiller 1, standard er 'Unknown'
+        player_2_user_name:
+          type: string
+          description: Brugernavn for spiller 2, standard er 'Unknown'
         created_at:
           type: string
           format: date-time
@@ -397,13 +522,13 @@ components:
           type: integer
         name:
           type: string
-        nick_name:
+        username:
           type: string
         email:
           type: string
-        phone:
+        password:
           type: string
-        profile_photo:
+        phone:
           type: string
 
     UserStat:
