@@ -5,6 +5,7 @@ import '../api/fetch_user_stats.dart';
 import '../api/fetch_user_matches.dart';
 import 'user_stats.dart';
 import 'match_history.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class User {
   String jsonWebToken;
@@ -17,9 +18,21 @@ class User {
   UserStats userStats = UserStats();
   List<MatchHistory> matchHistory = [];
 
+  static final storage = FlutterSecureStorage();
 
   User({this.jsonWebToken = " " });
 
+  Future<void> saveToken() async {
+    await storage.write(key: 'jwtToken', value: jsonWebToken);
+  }
+
+  static Future<String?> getToken() async {
+    return await storage.read(key: 'jwtToken');
+  }
+
+  Future<void> deleteToken() async {
+    await storage.delete(key: 'jwtToken');
+  }
 
   loadData () async{
     try {

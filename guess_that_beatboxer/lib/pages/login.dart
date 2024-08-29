@@ -7,7 +7,34 @@ import '../Widgets/buttons.dart';
 import '../api/fetch_login.dart';
 import '../Widgets/appBar.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
+  @override
+  _LoginState createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  @override
+  void initState() {
+    super.initState();
+    checkForToken();
+  }
+
+  Future<void> checkForToken() async {
+    var token = await User.getToken();
+    if (token != null) {
+      var user = User(jsonWebToken: token);
+      if (!user.expired()) {
+        user.decode();
+        var appState = context.read<MyAppState>();
+        appState.user = user;
+        await user.loadData();
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => BottomNavBar()),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,18 +43,21 @@ class Login extends StatelessWidget {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-
           children: [
-            Image.asset('../assets/logo.png',
+            Image.asset(
+              '../assets/logo.png',
               fit: BoxFit.contain,
-              height: 150, 
+              height: 150,
             ),
-            Text("Welcome To Guess That Beatboxer!", style: TextStyle(fontSize: 20),),
+            Text(
+              "Welcome To Guess That Beatboxer!",
+              style: TextStyle(fontSize: 20),
+            ),
             SizedBox(height: 20),
             LoginForm(),
             SizedBox(height: 200),
           ],
-          ),
+        ),
       ),
     );
   }
@@ -49,27 +79,29 @@ class _LoginFormState extends State<LoginForm> {
   bool _isLoading = false;
 
   Future<void> login(appState) async {
-      if (_formKey.currentState!.validate()) {
-        setState(() {
-          _isLoading = true;
-        });
-        try {
-          String email = _emailController.text;
-          String password = _passwordController.text;
-          var token = await fetchLogin(email, password);
-          appState.user = User(jsonWebToken: token);
-          await appState.user.loadData();
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => BottomNavBar()));
-        } catch (e) {
-          _showPopup(context, "Invalid email or password");
-          print(e);
-        } finally {
-          setState(() {
-            _isLoading = false;
-          });
-        }
-      }
+  if (_formKey.currentState!.validate()) {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      String email = _emailController.text;
+      String password = _passwordController.text;
+      var token = await fetchLogin(email, password);
+      appState.user = User(jsonWebToken: token);
+      await appState.user.saveToken();
+      await appState.user.loadData();
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => BottomNavBar()));
+    } catch (e) {
+      _showPopup(context, "Invalid email or password");
+      print(e);
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
+  }
+}
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
