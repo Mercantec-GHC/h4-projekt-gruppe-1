@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:guess_that_beatboxer/models/game.dart';
 
 import 'pages/landing.dart';
 import 'pages/settings.dart';
@@ -10,7 +11,12 @@ import 'pages/stats.dart';
 import 'pages/login.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp( MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => Game()),
+      ],
+      child: MyApp(),
+    ),);
 }
 
 class MyApp extends StatefulWidget {

@@ -1,7 +1,12 @@
 class MatchController < ApplicationController
   def show
     match = Match.find(params[:id])
-    render json: match, except: [:id, :created_at, :updated_at], status: :ok
+    if match
+      render json: match, except: [ :created_at, :updated_at], status: :ok
+    else
+      render json: {error: "Match not found"}, status: :not_found
+    end
+    
   end
 
   def create
@@ -57,8 +62,8 @@ def match_params
           match_params[:draw] ||= false
           match_params[:player_1_comment] ||= ''
           match_params[:player_2_comment] ||= ''
-          match_params[:player_1_user_name] ||= 'Unknown'
-          match_params[:player_2_user_name] ||= 'Unknown'
+          match_params[:player_1_user_name] ||= ' '
+          match_params[:player_2_user_name] ||= ' '
         end
 end
 

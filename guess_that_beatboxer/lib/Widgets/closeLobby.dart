@@ -1,15 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:guess_that_beatboxer/pages/landing.dart';
+import 'package:guess_that_beatboxer/models/game.dart';
+import 'package:provider/provider.dart';
 
 class CloseLobbyButton extends StatelessWidget {
+final player_type;
+
+  const CloseLobbyButton({
+    Key? key,
+    required this.player_type,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
+    final game = context.watch<Game>();
     return Center(
       child: ElevatedButton(
         onPressed: () {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage())); // Go back to the previous screen
+          if (player_type == "host"){
+          game.delete();
+          }else{
+            game.leaveGame();
+          }
+
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()),);
         },
-        child: Text('Close Lobby', style: TextStyle(color: Colors.white),),
+        child: Text(
+          'Close Lobby',
+          style: TextStyle(color: Colors.white),
+        ),
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.black,
         ),

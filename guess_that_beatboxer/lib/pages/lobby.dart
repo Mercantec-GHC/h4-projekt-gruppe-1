@@ -1,64 +1,123 @@
 import 'package:flutter/material.dart';
 import 'package:guess_that_beatboxer/Widgets/appBarLobby.dart';
+import 'package:guess_that_beatboxer/helpers/initialize_game.dart';
+import 'package:guess_that_beatboxer/models/game.dart';
 import '../main.dart';
 import 'package:provider/provider.dart';
 import '../Widgets/closeLobby.dart';
+import 'package:guess_that_beatboxer/api/create_match.dart';
 
 
-class LobbyPage extends StatefulWidget {
-  final String matchId;
+class LobbyPage extends StatelessWidget {
+  final player_type;
+  final match_id;
+  const LobbyPage({super.key, this.player_type, this.match_id = 0});
 
-  const LobbyPage({super.key, required this.matchId});
-
+ 
   @override
-  _LobbyPageState createState() => _LobbyPageState();
+Widget build(BuildContext context) {
+  if (player_type == "host") {
+    return Host();
+  } else if(player_type == "join") {
+    return Join(match_id: match_id,); 
+  } else{
+    return Scaffold(
+      body: Center(
+        child: Column(
+          children: [
+            Text("Error: Invalid player type"),
+          ],
+        ),
+      ),
+    );
+  }
+}
 }
 
-class _LobbyPageState extends State<LobbyPage> {
-  List<String> players = [];
 
-  void addPlayer(String playerName) {
-    if (!players.contains(playerName)) {
-      setState(() {
-        players.add(playerName);
-      });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('You are already in the lobby!'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-    }
-  }
+
+class Join extends StatelessWidget {
+  final match_id;
+  const Join({
+    super.key,
+    this.match_id,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final game = context.read<Game>();
+    final appState = context.read<MyAppState>();
+    final user = appState.user;
+    game.gameContext = context;
     return Scaffold(
-      appBar: appBarLobbyFunction("Lobby", action: CloseLobbyButton()),
-      body: LobbyPageContent(
-        matchId: widget.matchId,
-        players: players,
-        addPlayer: addPlayer,
+      appBar: appBarLobbyFunction("Lobby", action: CloseLobbyButton(player_type: "join")),
+      body: Center(
+          child: FutureBuilder<dynamic>(
+          future: initializeGame("join", game, user, match_id: match_id),
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else if (snapshot.hasData) {
+              return LobbyPageContent();
+            } else {
+              return Center(child: Text('No data available'));
+            }
+          },
+        ),
+        ),
+      );
+  }
+}
+
+
+
+
+class Host extends StatelessWidget {
+  const Host({
+    super.key,
+  });
+
+
+  @override
+  Widget build(BuildContext context) {
+    final game = context.read<Game>();
+    final appState = context.read<MyAppState>();
+    final user = appState.user;
+    game.gameContext = context;
+
+    return Scaffold(
+      appBar: appBarLobbyFunction("Lobby", action: CloseLobbyButton(player_type: "host",)),
+      body: Center(
+        child: FutureBuilder<dynamic>(
+          future: initializeGame("host", game, user),
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else if (snapshot.hasData) {
+              return LobbyPageContent();
+            } else {
+              return Center(child: Text('No data available'));
+            }
+          },
+        ),
       ),
     );
   }
 }
 
 class LobbyPageContent extends StatelessWidget {
-  final String matchId;  // Add matchId here
-  final List<String> players;
-  final Function(String) addPlayer;
 
   const LobbyPageContent({
     super.key,
-    required this.matchId,  // Make sure matchId is required
-    required this.players,
-    required this.addPlayer,
   });
 
   @override
   Widget build(BuildContext context) {
+    final game = context.watch<Game>();
     final appState = context.watch<MyAppState>();
     final user = appState.user;
 
@@ -67,18 +126,13 @@ class LobbyPageContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          MatchIdSection(matchId: matchId),
+          MatchIdSection(matchId: game.id.toString()),
           SizedBox(height: 16),
           KategoriSection(),
           SizedBox(height: 16),
           SpilTidSection(),
           SizedBox(height: 16),
-          PlayerSection(players: players),
-          SizedBox(height: 16),
-          JoinSection(
-            addPlayer: addPlayer,
-            userName: user?.userName,
-          ),
+          PlayerSection(),
           SizedBox(height: 16),
           StartSection(),
         ],
@@ -155,7 +209,7 @@ class CategoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Handle selection logic here
+
       },
       child: Container(
         decoration: BoxDecoration(
@@ -251,12 +305,11 @@ class _TimeSelectorState extends State<TimeSelector> {
 }
 
 class PlayerSection extends StatelessWidget {
-  final List<String> players;
-
-  PlayerSection({required this.players});
 
   @override
   Widget build(BuildContext context) {
+    final game = context.watch<Game>();
+    print(game.player_1_user_name);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -265,7 +318,8 @@ class PlayerSection extends StatelessWidget {
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 10),
-        ...players.map((playerName) => PlayerCard(playerName: playerName)).toList(),
+        Text(game.player_1_user_name),
+        Text(game.player_2_user_name),
       ],
     );
   }
@@ -295,37 +349,14 @@ class PlayerCard extends StatelessWidget {
   }
 }
 
-class JoinSection extends StatelessWidget {
-  final Function(String) addPlayer;
-  final String? userName;
-
-  JoinSection({required this.addPlayer, required this.userName});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: ElevatedButton(
-        onPressed: () {
-          if (userName != null) {
-            addPlayer(userName!);
-          }
-        },
-        child: Text("Join Lobby", style: TextStyle(color: Colors.white)),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.black,
-        ),
-      ),
-    );
-  }
-}
-
 class StartSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var game = context.watch<Game>();
     return Center(
       child: ElevatedButton(
         onPressed: () {
-          // Handle start game logic
+          print(game.player_1_user_name);
         },
         child: Text("Start game", style: TextStyle(color: Colors.white),),
         style: ElevatedButton.styleFrom(
