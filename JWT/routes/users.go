@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"token-auth/db"
 	"token-auth/models"
+	"token-auth/util"
 
 	"github.com/gin-gonic/gin"
 )
@@ -107,5 +108,16 @@ func UpdateUser(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "User updated"})
+	if err := db.DB.Db.Where("id = ?", id).First(&user).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve updated user", "details": err.Error()})
+		return
+	}
+
+	token, err := util.CreateToken(user.Name, user.Email, user.Phone, user.Username, user.ID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token", "details": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "User updated", "token": token})
 }
