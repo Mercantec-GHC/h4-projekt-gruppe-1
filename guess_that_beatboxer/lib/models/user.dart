@@ -34,6 +34,11 @@ class User {
     await storage.delete(key: 'jwtToken');
   }
 
+  Future<void> updateToken(String newToken) async {
+    jsonWebToken = newToken;
+    await saveToken();
+  }
+
   loadData () async{
     try {
       decode();

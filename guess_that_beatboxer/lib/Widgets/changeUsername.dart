@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import '../api/patch_user.dart';
+import '../models/user.dart';
 
 class ChangeUsername extends StatefulWidget {
-  final user;
+  final User user;
 
   ChangeUsername({Key? key, required this.user}) : super(key: key);
 
@@ -24,11 +25,11 @@ class _ChangeUsernameState extends State<ChangeUsername> {
     try {
       final newUsername = _usernameController.text;
 
-      String token = await patchUser(newUsername, widget.user.id);
+      String newToken= await patchUser(newUsername, widget.user.id);
+      await widget.user.updateToken(newToken);
 
       setState(() {
         _statusMessage = "Username changed successfully!";
-        widget.user.jsonWebToken = token;
         _isLoading = false;
       });
 
