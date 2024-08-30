@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 
 Future<dynamic> fetchMatch(token, id) async {
   final response = await http.get(
-    Uri.parse('https://h4-projekt-gruppe-1-1.onrender.com/match/$id'),
+    Uri.parse('https://kim.magsapi.com/match/$id'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $token',

@@ -5,7 +5,7 @@ import 'dart:convert';
 Future<dynamic> createMatch(token) async {
 
   final response = await http.post(
-    Uri.parse('https://h4-projekt-gruppe-1-1.onrender.com/match'),
+    Uri.parse('https://kim.magsapi.com/match'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $token',

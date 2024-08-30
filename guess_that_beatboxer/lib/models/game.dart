@@ -54,7 +54,7 @@ class Game extends ChangeNotifier {
 
     Future<void> connectToGameChannel() async{
         WebSocketChannel channel  = await WebSocketChannel.connect(
-            Uri.parse('ws://h4-projekt-gruppe-1-1.onrender.com/cable'),
+            Uri.parse('wss:///kim.magsapi.com/cable'),
         );
         final identifier = jsonEncode({"channel": "GameChannel", "game_id": this.id});
         channel.sink.add(jsonEncode({"command": "subscribe", "identifier": identifier}));
