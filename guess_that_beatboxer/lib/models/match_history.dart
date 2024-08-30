@@ -1,6 +1,6 @@
 class MatchHistory {
   String winner;
-  String looser;
+  String loser;
   int player_1_points;
   int player_2_points;
   bool draw;
@@ -11,7 +11,7 @@ class MatchHistory {
 
   MatchHistory({
     this.winner = "",
-    this.looser = "",
+    this.loser = "",
     this.player_1_points = 0,
     this.player_2_points = 0,
     this.draw = false,
@@ -24,7 +24,7 @@ class MatchHistory {
   factory MatchHistory.fromJson(Map<String, dynamic> json) {
     return MatchHistory(
       winner: json['winner'],
-      looser: json['loser'],
+      loser: json['loser'],
       player_1_points: json['player_1_points'],
       player_2_points: json['player_2_points'],
       draw: json['draw'],
@@ -34,5 +34,4 @@ class MatchHistory {
       player_2_user_name: json['player_2_user_name'],
     );
   }
-
 }

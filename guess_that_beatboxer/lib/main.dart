@@ -5,7 +5,7 @@ import 'package:guess_that_beatboxer/models/game.dart';
 import 'pages/landing.dart';
 import 'pages/settings.dart';
 //import 'pages/lobby.dart';
-import 'pages/account.dart';
+import 'pages/userStats.dart';
 import 'pages/stats.dart';
 //import 'pages/register.dart';
 import 'pages/login.dart';
@@ -86,7 +86,7 @@ class _BottomNavBarState
         case 2:
           page = AccountPage();
         case 3:
-          page = SettingsPage();
+          page = SettingsPage(user: appState.user);
         default:
           throw UnimplementedError();
       }

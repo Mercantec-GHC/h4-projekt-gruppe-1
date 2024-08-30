@@ -12,7 +12,7 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  final List<TextEditingController> _controllers = List.generate(labels.length, (index) => TextEditingController());
+  final List<TextEditingController> _controllers = List.generate(RegisterLabels.length, (index) => TextEditingController());
   bool _isLoading = false;
 
   @override
@@ -45,7 +45,7 @@ class _RegisterState extends State<Register> {
                     "Welcome To Guess That Beatboxer!",
                     style: TextStyle(fontSize: 20),
                   ),
-                  inputFields(_controllers),
+                  inputFields(_controllers, RegisterLabels, RegisterLabels),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -181,7 +181,7 @@ class RegisterBTN extends StatelessWidget {
   }
 }
 
-List<String> labels = [
+List<String> RegisterLabels = [
   'Navn',
   'Username',
   'Email',
@@ -192,8 +192,10 @@ List<String> labels = [
 
 class inputFields extends StatelessWidget {
   final List<TextEditingController> _controllers;
+  final List<String> labels;
+  final List<String> userInfo;
 
-  inputFields(this._controllers);
+  inputFields(this._controllers, this.labels, this.userInfo);
 
   @override
   Widget build(BuildContext context) {
@@ -209,7 +211,7 @@ class inputFields extends StatelessWidget {
                 obscureText: labels[i].toLowerCase().contains('password'),
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: labels[i],
+                  labelText: userInfo[i],
                   hintText: labels[i],
                 ),
               ),

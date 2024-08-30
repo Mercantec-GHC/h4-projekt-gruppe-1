@@ -88,6 +88,20 @@ func DeleteUser(c *gin.Context) {
 // @Failure      404 {object} map[string]interface{} "User not found"
 // @Failure      500 {object} map[string]interface{} "Failed to update user"
 // @Router       /user/{id} [patch]
+// Update user.
+//
+// @Summary      Update user with specific id
+// @Description  Update user
+// @Tags         user
+// @Param        id path string true "User ID"
+// @Param        request body models.User true "User data"
+// @Accept       json
+// @Produce      application/json
+// @Success      200 {object} map[string]interface{} "User updated"
+// @Failure      400 {object} map[string]interface{} "Invalid request"
+// @Failure      404 {object} map[string]interface{} "User not found"
+// @Failure      500 {object} map[string]interface{} "Failed to update user"
+// @Router       /user/{id} [patch]
 func UpdateUser(c *gin.Context) {
 	id := c.Param("id")
 	var user models.User
@@ -101,6 +115,15 @@ func UpdateUser(c *gin.Context) {
 	if err := c.ShouldBindJSON(&updatedUser); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request", "details": err.Error()})
 		return
+	}
+
+	if updatedUser.Password != user.Password {
+		hashedPassword, err := util.HashPassword(updatedUser.Password)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to hash password", "details": err.Error()})
+			return
+		}
+		updatedUser.Password = hashedPassword
 	}
 
 	if err := db.DB.Db.Model(&user).Updates(updatedUser).Error; err != nil {

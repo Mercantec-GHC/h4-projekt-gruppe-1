@@ -22,8 +22,6 @@ class Game extends ChangeNotifier {
     var gameContext;
     int timer;
 
-
-
     Game({
     this.id = 0, 
     this.winner = " ", 
@@ -38,7 +36,6 @@ class Game extends ChangeNotifier {
     this.timer = 0 
     });
 
-
     updateGameData(data){
         this.id = data['id'];
         this.winner = data['winner'];
@@ -51,9 +48,6 @@ class Game extends ChangeNotifier {
         this.player_1_user_name = data['player_1_user_name'];
         this.player_2_user_name = data['player_2_user_name'];
     }
-
-
-
 
     Future<void> connectToGameChannel() async{
         WebSocketChannel channel  = await WebSocketChannel.connect(
@@ -87,8 +81,6 @@ class Game extends ChangeNotifier {
             this.channel!.sink.close(1000);
         }
     }
-
-
 
     joinGame(player, type) {
         final message = {

@@ -1,9 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-Future<String> patchUser(String username, int id) async {
+Future<dynamic> patchUser(String username,String email, String phone, String password, int id) async {
   final Map<String, dynamic> body = {
     'username': username,
+    'email': email,
+    'phone': phone,
+    'password': password,
   };
 
   final response = await http.patch(
@@ -12,6 +15,7 @@ Future<String> patchUser(String username, int id) async {
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(body), 
+    
   );
 
   if (response.statusCode == 200) {

@@ -7,7 +7,8 @@ class MatchHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double winRate = calculateWinRate(user.matchHistory, user.userName);
+
+    int winRate = user.userStats.wins / user.userStats.gamesPlayed * 100 as int;
 
     return Container(
       margin: EdgeInsets.only(top: 25),
@@ -64,7 +65,7 @@ class MatchHistory extends StatelessWidget {
                         ),
                         SizedBox(height: 16),
                         Text(
-                          "Looser: ${user.matchHistory[i].looser}",
+                          "Loser: ${user.matchHistory[i].loser}",
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
                             color: Colors.red,
@@ -103,16 +104,4 @@ class MatchHistory extends StatelessWidget {
     );
   }
 
-  double calculateWinRate(List<dynamic> matchHistory, String username) {
-    int wins = 0;
-    int totalMatches = matchHistory.length;
-
-    for (var match in matchHistory) {
-      if (match.winner == username) {
-        wins++;
-      }
-    }
-
-    return (wins / totalMatches) * 100;
-  }
 }

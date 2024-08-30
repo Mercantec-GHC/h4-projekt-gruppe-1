@@ -1,48 +1,152 @@
 import 'package:flutter/material.dart';
 import 'package:guess_that_beatboxer/Widgets/appBar.dart';
-import 'package:guess_that_beatboxer/main.dart';
+import 'package:guess_that_beatboxer/models/user.dart';
 import 'package:guess_that_beatboxer/pages/login.dart';
-import 'package:guess_that_beatboxer/widgets/buttons.dart';
-import 'package:provider/provider.dart';
+import 'package:guess_that_beatboxer/pages/register.dart';
+import '../Widgets/buttons.dart';
+import '../../api/patch_user.dart';
 
 
-class SettingsPage extends StatelessWidget {
+import 'dart:ui';
+
+class SettingsPage extends StatefulWidget {
+  final user;
+
+  SettingsPage({Key? key, required this.user}) : super(key: key);
+
+  
+  
+
+  @override
+  State<SettingsPage> createState() => _SettingsPageState(user:user);
+  
+}
+
+class _SettingsPageState extends State<SettingsPage> {
+    
+    final User user;
+    _SettingsPageState({ required this.user});
+    final List<TextEditingController> _controllers = List.generate(Updatelabels.length, (index) => TextEditingController());
+
+    bool _isLoading = false;
+
+
+    @override
+    void initState() {
+    super.initState();
+    }
+
+    void _updateUser() async {
+
+
+      
+    try {
+
+      setState(() {
+        _isLoading = true;
+      });
+
+       final  newuser = (
+          userName: _controllers[0].text,
+          email: _controllers[1].text,
+          phone: _controllers[2].text,
+          password: _controllers[3].text,
+        );
+         
+      String newToken= await patchUser(newuser.userName, newuser.email, newuser.phone, newuser.password, widget.user.id);
+      await widget.user.updateToken(newToken);
+        setState(() {
+        _isLoading = false;
+      });
+
+    } catch (e) {
+      print(e);
+
+    }
+    }
+
+
   @override
   Widget build(BuildContext context) {
-    MyAppState appState = context.watch<MyAppState>();
-    var user = appState.user;
+
+    
+List<String> userInfo = [
+  user.userName,
+  user.email,
+  user.phone,
+  'Password',
+  'Bekræft Password',
+];
+
+
+    
     return Scaffold(
       appBar: appBarFunction("Settings"),
-      body: Center(child:
-        Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('Settings Page'),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Buttons( text: 'Delete account', pressFunction: () {
-                  deleteAccount(context);
-                }, length: 400,
-                 ),
-                 SizedBox(height: 5),
-                Buttons( text: 'Logout', pressFunction: () async {
-                  await user.deleteToken();
-                  user = "";
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
-                }, length: 400,
-                 ),
-                 SizedBox(height: 20),
+      backgroundColor: Colors.white,
+      body: Stack(
+        children: [
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                inputFields(_controllers, Updatelabels, userInfo),
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Buttons(
+                          text: 'Update',
+                          pressFunction: () {
+                            _updateUser();
+                          },
+                          length: double.infinity,
+                          height: 50,
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: Buttons(
+                          text: 'Cancel',
+                          pressFunction: () {
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
+                          },
+                          length: double.infinity,
+                          height: 50,
+                          backgroundColor: Colors.white,
+                          textColor: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
-          ],
-        ),
+          ),
+          if (_isLoading)
+            BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
+        ],
       ),
-      // bottomNavigationBar: BottomNavigationBarExample(),
     );
   }
 }
 
-deleteAccount (context){
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
+List<String> Updatelabels = [
+  'Username',
+  'Email',
+  'Telefon',
+  'Password',
+  'Bekræft Password',
+];
+
+
+
+deleteAccount(context) {
+  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
 }
