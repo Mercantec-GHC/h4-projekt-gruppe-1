@@ -32,7 +32,7 @@ class StatsPageContent extends StatelessWidget {
           SizedBox(height: 16),
           StatsSection(user: user),
           SizedBox(height: 16),
-          //WinLoseSection(),
+          WinLoseSection(user: user),
           SizedBox(height: 16),
         ],
       ),
@@ -123,6 +123,51 @@ class StatsSection extends StatelessWidget {
           ],
         ),
       ],
+    );
+  }
+}
+
+class WinLoseSection extends StatelessWidget {
+  final user;
+
+  const WinLoseSection({super.key, this.user});
+
+  @override
+  Widget build(BuildContext context) {
+    // Calculate the win/lose ratio
+    final int gamesWon = user.userStats.wins;
+    final int gamesLost = user.userStats.lost;
+    final double winLoseRatio = gamesLost == 0
+        ? gamesWon.toDouble()
+        : gamesWon / gamesLost;
+
+    return Center(
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Win/Lose Ratio',
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+              SizedBox(height: 16),
+              Text(
+                winLoseRatio.toStringAsFixed(2),
+                style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

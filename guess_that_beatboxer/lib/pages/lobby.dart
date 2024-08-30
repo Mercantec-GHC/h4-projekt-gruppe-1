@@ -249,14 +249,14 @@ class SpilTidSection extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TimeSelector(title: "Minutes"),
+            TimeSelector(title: "Minutes", defaultValue: 1),
             SizedBox(width: 8,),
             Text(
               ":",
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(width: 8,),
-            TimeSelector(title: "Seconds"),
+            TimeSelector(title: "Seconds", defaultValue: 0),
           ],
         ),
       ],
@@ -266,8 +266,9 @@ class SpilTidSection extends StatelessWidget {
 
 class TimeSelector extends StatefulWidget {
   final String title;
+  final int defaultValue;
 
-  TimeSelector({required this.title});
+  TimeSelector({required this.title, required this.defaultValue});
 
   @override
   _TimeSelectorState createState() => _TimeSelectorState();
@@ -275,6 +276,12 @@ class TimeSelector extends StatefulWidget {
 
 class _TimeSelectorState extends State<TimeSelector> {
   int? _selectedValue;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedValue = widget.defaultValue;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -305,49 +312,65 @@ class _TimeSelectorState extends State<TimeSelector> {
 }
 
 class PlayerSection extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     final game = context.watch<Game>();
-    print(game.player_1_user_name);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "All Players",
+          "Players",
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 10),
-        Text(game.player_1_user_name),
-        Text(game.player_2_user_name),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Expanded(
+              child: Card(
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(  
+                    child: Text(
+                      game.player_1_user_name,
+                      style: TextStyle(fontSize: 14),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(width: 10),
+            Expanded(
+              child: Card(
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: Text(
+                      game.player_2_user_name,
+                      style: TextStyle(fontSize: 14),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }
 }
 
-class PlayerCard extends StatelessWidget {
-  final String playerName;
-
-  PlayerCard({required this.playerName});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: Colors.grey[200],
-      ),
-      child: Row(
-        children: [
-          Icon(Icons.person),
-          SizedBox(width: 10),
-          Text(playerName),
-        ],
-      ),
-    );
-  }
-}
 
 class StartSection extends StatelessWidget {
   @override
