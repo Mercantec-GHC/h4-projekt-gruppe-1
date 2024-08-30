@@ -26,7 +26,8 @@ class SettingsPage extends StatelessWidget {
                 }, length: 400,
                  ),
                  SizedBox(height: 5),
-                Buttons( text: 'Logout', pressFunction: () {
+                Buttons( text: 'Logout', pressFunction: () async {
+                  await user.deleteToken();
                   user = "";
                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
                 }, length: 400,
