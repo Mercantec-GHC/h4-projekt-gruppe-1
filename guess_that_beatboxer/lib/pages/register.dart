@@ -149,7 +149,9 @@ class RegisterBTN extends StatelessWidget {
             TextButton(
               child: Text('Gå til Login'),
               onPressed: () {
+                Navigator.of(context).pop();
                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
+
               },
             ),
           ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guess_that_beatboxer/Widgets/popup.dart';
 import 'package:guess_that_beatboxer/api/destroy_match.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'dart:convert';
@@ -19,6 +20,7 @@ class Game extends ChangeNotifier {
     bool joined = false;
     bool host = false;
     var gameContext;
+    int timer;
 
 
 
@@ -32,7 +34,8 @@ class Game extends ChangeNotifier {
     this.player_1_comment = "", 
     this.player_2_comment = "",
     this.player_1_user_name = "",
-    this.player_2_user_name = ""
+    this.player_2_user_name = "",
+    this.timer = 0 
     });
 
 
@@ -104,8 +107,6 @@ class Game extends ChangeNotifier {
         };
         channel!.sink.add(jsonEncode(message));
     }
-
-
     
     delete()
     {
@@ -115,9 +116,29 @@ class Game extends ChangeNotifier {
             "data": jsonEncode({"action": "delete"}),
         };
         channel!.sink.add(jsonEncode(message));
+    }
 
-          
+    initGame(){
+        if(this.host){
+        if(this.player_2_user_name == " "){
+          popup(this.gameContext, "Waiting for player to join");
+        }else{
+                  final message = {
+            "command": "message",
+            "identifier": jsonEncode({"channel": "GameChannel", "game_id": this.id}),
+            "data": jsonEncode({"action": "start", "timer": this.timer}),
+        };
+        channel!.sink.add(jsonEncode(message));
 
+        }
+
+      }
+    }
+
+  
+
+    startGame() {
+      print("Game started");
     }
 
     resetGame(){

@@ -44,6 +44,9 @@ handleMessage(data, game){
           game.resetGame();
         }
       }
+      if(data["type"] == "game_start"){
+        game.startGame();
+      }
 
       if(data["type"] == "game_delete"){
         game.closeChannel();

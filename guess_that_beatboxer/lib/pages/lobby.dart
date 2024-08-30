@@ -379,7 +379,7 @@ class StartSection extends StatelessWidget {
     return Center(
       child: ElevatedButton(
         onPressed: () {
-          print(game.player_1_user_name);
+          game.initGame();
         },
         child: Text("Start game", style: TextStyle(color: Colors.white),),
         style: ElevatedButton.styleFrom(
