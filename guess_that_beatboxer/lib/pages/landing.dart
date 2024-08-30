@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guess_that_beatboxer/Widgets/appBar.dart';
+import 'package:guess_that_beatboxer/Widgets/popup.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
 import '../Widgets/profile.dart';
@@ -154,7 +155,9 @@ class JoinLobbyButton extends StatelessWidget {
         SizedBox(height: 16),
         ElevatedButton(
           onPressed: () {
-
+            if (matchIdController.text.isEmpty) {
+              popup(context, "Please enter a match ID");
+            }
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -171,6 +174,8 @@ class JoinLobbyButton extends StatelessWidget {
     );
   }
 }
+
+
 
 class RecentGamesSection extends StatelessWidget {
   @override

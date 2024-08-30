@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:guess_that_beatboxer/pages/landing.dart';
+import 'package:guess_that_beatboxer/main.dart';
 import 'package:guess_that_beatboxer/models/game.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +23,7 @@ final player_type;
             game.leaveGame();
           }
 
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()),);
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => BottomNavBar()));
         },
         child: Text(
           'Close Lobby',
