@@ -8,6 +8,7 @@ class MatchHistory {
   String player_2_comment;
   String player_1_user_name;
   String player_2_user_name;
+  DateTime createdAt;
 
   MatchHistory({
     this.winner = "",
@@ -19,6 +20,7 @@ class MatchHistory {
     this.player_2_comment = "",
     this.player_1_user_name = "",
     this.player_2_user_name = "",
+    required this.createdAt
   });
 
   factory MatchHistory.fromJson(Map<String, dynamic> json) {
@@ -32,6 +34,9 @@ class MatchHistory {
       player_2_comment: json['player_2_comment'],
       player_1_user_name: json['player_1_user_name'],
       player_2_user_name: json['player_2_user_name'],
+      createdAt: json['created_at'] != null
+        ? DateTime.parse(json['created_at'])
+        : DateTime.now(),
     );
   }
 }

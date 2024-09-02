@@ -79,6 +79,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
     var selectedIndex = appState.selectedIndex;
+
     void _onItemTapped(int index) {
       appState.onItemTapped(index);
     }
@@ -104,36 +105,59 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
     return Scaffold(
       body: Center(
-        child: Container(
-          child: page,
-        ),
+        child: page,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-            backgroundColor: themeColor,
+      bottomNavigationBar: Stack(
+        alignment: Alignment.topCenter,
+        clipBehavior: Clip.none,
+        children: [
+          BottomNavigationBar(
+            items: <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
+                backgroundColor: themeColor,
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.analytics),
+                label: 'Stats',
+                backgroundColor: themeColor,
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.account_box),
+                label: 'Account',
+                backgroundColor: themeColor,
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.settings),
+                label: 'Settings',
+                backgroundColor: themeColor,
+              ),
+            ],
+            currentIndex: selectedIndex,
+            selectedItemColor: Colors.black,
+            onTap: _onItemTapped,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.analytics),
-            label: 'Stats',
-            backgroundColor: themeColor,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_box),
-            label: 'Account',
-            backgroundColor: themeColor,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-            backgroundColor: themeColor,
+          Positioned(
+            top: -20.0, 
+            child: Container(
+              width: 40, 
+              height: 40, 
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(
+                  color: themeColor, 
+                  width: 3, 
+                ),
+                borderRadius: BorderRadius.circular(30),
+                image: DecorationImage(
+                  image: AssetImage('assets/logo.png'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
           ),
         ],
-        currentIndex: selectedIndex,
-        selectedItemColor: Colors.black,
-        onTap: _onItemTapped,
       ),
     );
   }

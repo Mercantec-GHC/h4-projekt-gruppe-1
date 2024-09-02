@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guess_that_beatboxer/Widgets/appBar.dart';
+import 'package:guess_that_beatboxer/Widgets/playerFeedback.dart';
 import 'package:guess_that_beatboxer/Widgets/popup.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
@@ -46,9 +47,8 @@ class HomePageContent extends StatelessWidget {
           CreateLobbyButton(),
           JoinLobbyButton(),
           SizedBox(height: 16),
-          RecentGamesSection(),
-          SizedBox(height: 16),
-          NearbyPlayersSection(),
+          PlayerFeedback(user: user),
+          //NearbyPlayersSection(),
         ],
       ),
     );
@@ -176,30 +176,6 @@ class JoinLobbyButton extends StatelessWidget {
 }
 
 
-
-class RecentGamesSection extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Recent Games',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(height: 8),
-        Row(
-          children: [
-            Expanded(child: RecentGameTile(player: 'Player 2', feedback: 'Great beatboxing session!')),
-            SizedBox(width: 8),
-            Expanded(child: RecentGameTile(player: 'Player 4', feedback: 'Fun and competitive')),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
 class RecentGameTile extends StatelessWidget {
   final String player;
   final String feedback;
@@ -244,16 +220,6 @@ class NearbyPlayersSection extends StatelessWidget {
             SizedBox(width: 8),
             Expanded(child: NearbyPlayerTile(player: 'Player 5')),
           ],
-        ),
-        SizedBox(height: 8),
-        Center(
-          child: ElevatedButton(
-            onPressed: () {},
-            child: Text('Join game', style: TextStyle(color: Colors.white),),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.black,
-            ),
-          ),
         ),
       ],
     );
