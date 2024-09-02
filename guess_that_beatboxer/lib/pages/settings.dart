@@ -38,8 +38,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
     void _updateUser() async {
 
-
-      
     try {
 
       setState(() {

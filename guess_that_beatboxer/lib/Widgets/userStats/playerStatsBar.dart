@@ -101,6 +101,7 @@ class StatCards extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                       if (userStatsMap[statsCardDataCall[0]] != 0)
                       Text(
                         "${(userStatsMap[statsCardDataCall[i]] / userStatsMap[statsCardDataCall[0]] * 100).toStringAsFixed(2)}%",
                       ),

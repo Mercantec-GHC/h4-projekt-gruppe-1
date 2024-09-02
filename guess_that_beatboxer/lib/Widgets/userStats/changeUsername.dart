@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:guess_that_beatboxer/models/user.dart';
-import '../../api/patch_user.dart';
 
 class ChangeUsername extends StatefulWidget {
   final User user;

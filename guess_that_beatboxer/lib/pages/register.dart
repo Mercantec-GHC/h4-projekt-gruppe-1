@@ -55,7 +55,7 @@ class _RegisterState extends State<Register> {
                   ),
                    Buttons(text: 'Cancel', pressFunction: () {
                         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
-                      }, length: 300, height: 50),
+                      }, length: double.infinity, height: double.infinity),
                 ],
               ),
             ),

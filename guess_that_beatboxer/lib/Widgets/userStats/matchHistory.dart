@@ -7,8 +7,13 @@ class MatchHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int winRate = 0;
+    if (user.userStats.gamesPlayed != 0) {
+      winRate = (user.userStats.wins / user.userStats.gamesPlayed * 100).toInt();
+    }
+    winRate = winRate.isNaN ? 0 : winRate;
 
-    int winRate = user.userStats.wins / user.userStats.gamesPlayed * 100 as int;
+
 
     return Container(
       margin: EdgeInsets.only(top: 25),
@@ -34,6 +39,16 @@ class MatchHistory extends StatelessWidget {
               mainAxisSpacing: 10,
               padding: EdgeInsets.only(bottom: 20),
               children: [
+                if (user.matchHistory.isEmpty)
+                  Center(
+                    child: Text(
+                      "No matches played yet",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
                 for (var i = 0; i < user.matchHistory.length; i++)
                   Container(
                     width: 75,
@@ -49,7 +64,7 @@ class MatchHistory extends StatelessWidget {
                       verticalDirection: VerticalDirection.down,
                       children: [
                         Text(
-                          "Winner: ${user.matchHistory[i].winner}",
+                          "Winner: ${user.matchHistory[i].winner }",
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
                             color: Colors.green,
@@ -90,7 +105,7 @@ class MatchHistory extends StatelessWidget {
                 ),
               ),
               Text(
-                "${winRate.toStringAsFixed(2)}%",
+                "${winRate.toString()}%",
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w300,
@@ -103,5 +118,4 @@ class MatchHistory extends StatelessWidget {
       ),
     );
   }
-
 }

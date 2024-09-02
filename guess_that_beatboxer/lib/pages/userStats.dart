@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:guess_that_beatboxer/models/user_stats.dart';
 import '../main.dart';
 import '../Widgets/profile.dart';
 import '../Widgets/appBar.dart';
 import '../Widgets/userStats/playerStatsBar.dart';
 import '../Widgets/userStats/MatchHistory.dart';
-import '../Widgets/userStats/ChangeUsername.dart';
 
 import 'package:provider/provider.dart';
 
@@ -38,10 +36,7 @@ class AccountPageContent extends StatelessWidget {
           PlayerStatsBar(user:user),
           SizedBox(height: 16),
           MatchHistory(user:user),
-          //StatsSection(),
-          SizedBox(height: 16),
-          /* ChangeUsername(user:user), */
-          SizedBox(height: 16),
+
         ],
       ),
     );
