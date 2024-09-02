@@ -47,82 +47,59 @@ class StatsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(18.0),
-          child: Center(
-            child: Text(
-              'Stats',
-              style: Theme.of(context).textTheme.headlineLarge,
-            ),
-          ),
-        ),
-        Row(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        int columns = constraints.maxWidth < 600 ? 2 : 3;
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: AspectRatio(
-                aspectRatio: 1, // 1:1 aspect ratio for a square box
-                child: StatsBox(
+            Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: Center(
+                child: Text(
+                  'Stats',
+                  style: Theme.of(context).textTheme.headlineLarge,
+                ),
+              ),
+            ),
+            GridView.count(
+              crossAxisCount: columns,
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              childAspectRatio: 1,
+              mainAxisSpacing: 16,
+              crossAxisSpacing: 16,
+              children: [
+                StatsBox(
                   title: 'Matches Played',
                   value: user.userStats.gamesPlayed.toString(),
                 ),
-              ),
-            ),
-            Expanded(
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: StatsBox(
+                StatsBox(
                   title: 'Games Won',
                   value: user.userStats.wins.toString(),
                 ),
-              ),
-            ),
-            Expanded(
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: StatsBox(
+                StatsBox(
                   title: 'Games Lost',
                   value: user.userStats.lost.toString(),
                 ),
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: 16),
-        Row(
-          children: [
-            Expanded(
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: StatsBox(
+                StatsBox(
                   title: 'Skips',
                   value: user.userStats.skips.toString(),
                 ),
-              ),
-            ),
-            Expanded(
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: StatsBox(
+                StatsBox(
                   title: 'Right guesses',
                   value: user.userStats.rightGuesses.toString(),
                 ),
-              ),
-            ),
-            Expanded(
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: StatsBox(
-                  title: 'Right guesses',
+                StatsBox(
+                  title: 'Wrong guesses',
                   value: user.userStats.rightGuesses.toString(),
                 ),
-              ),
+              ],
             ),
           ],
-        ),
-      ],
+        );
+      },
     );
   }
 }
@@ -134,40 +111,46 @@ class WinLoseSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Calculate the win/lose ratio
     final int gamesWon = user.userStats.wins;
     final int gamesLost = user.userStats.lost;
     final double winLoseRatio = gamesLost == 0
         ? gamesWon.toDouble()
         : gamesWon / gamesLost;
 
-    return Center(
-      child: Card(
-        elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'Win/Lose Ratio',
-                style: Theme.of(context).textTheme.headlineSmall,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Adjust padding based on the available width
+        final padding = constraints.maxWidth < 400 ? 16.0 : 24.0;
+
+        return Center(
+          child: Card(
+            elevation: 4,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(padding),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Win/Lose Ratio',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    winLoseRatio.toStringAsFixed(2),
+                    style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                  ),
+                ],
               ),
-              SizedBox(height: 16),
-              Text(
-                winLoseRatio.toStringAsFixed(2),
-                style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
