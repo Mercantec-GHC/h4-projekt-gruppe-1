@@ -4,8 +4,9 @@ import 'package:guess_that_beatboxer/models/user.dart';
 import 'package:guess_that_beatboxer/pages/login.dart';
 import 'package:guess_that_beatboxer/pages/register.dart';
 import '../Widgets/buttons.dart';
+import '../Widgets/settings/notificationsBTN.dart';
 import '../../api/patch_user.dart';
-
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'dart:ui';
 
@@ -14,79 +15,74 @@ class SettingsPage extends StatefulWidget {
 
   SettingsPage({Key? key, required this.user}) : super(key: key);
 
-  
-  
-
   @override
-  State<SettingsPage> createState() => _SettingsPageState(user:user);
-  
+  State<SettingsPage> createState() => _SettingsPageState(user: user);
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-    
-    final User user;
-    _SettingsPageState({ required this.user});
-    final List<TextEditingController> _controllers = List.generate(Updatelabels.length, (index) => TextEditingController());
+  final User user;
+  _SettingsPageState({required this.user});
+  final List<TextEditingController> _controllers = List.generate(Updatelabels.length, (index) => TextEditingController());
 
-    bool _isLoading = false;
+  bool _isLoading = false;
+  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
-
-    @override
-    void initState() {
+  @override
+  void initState() {
     super.initState();
-    }
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    var initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
+    var initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+    );
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
 
-    void _updateUser() async {
-
+  void _updateUser() async {
     try {
-
       setState(() {
         _isLoading = true;
       });
 
-       final  newuser = (
-          userName: _controllers[0].text,
-          email: _controllers[1].text,
-          phone: _controllers[2].text,
-          password: _controllers[3].text,
-        );
-         
-      String newToken= await patchUser(newuser.userName, newuser.email, newuser.phone, newuser.password, widget.user.id);
+      final newuser = (
+        userName: _controllers[0].text,
+        email: _controllers[1].text,
+        phone: _controllers[2].text,
+        password: _controllers[3].text,
+      );
+
+      String newToken = await patchUser(newuser.userName, newuser.email, newuser.phone, newuser.password, widget.user.id);
       await widget.user.updateToken(newToken);
-        setState(() {
+      setState(() {
         _isLoading = false;
       });
-
     } catch (e) {
       print(e);
-
     }
-    }
-
+  }
 
   @override
   Widget build(BuildContext context) {
+    List<String> userInfo = [
+      user.userName,
+      user.email,
+      user.phone,
+      'Password',
+      'Bekræft Password',
+    ];
 
-    
-List<String> userInfo = [
-  user.userName,
-  user.email,
-  user.phone,
-  'Password',
-  'Bekræft Password',
-];
-
-
-    
     return Scaffold(
       appBar: appBarFunction("Settings"),
       backgroundColor: Colors.white,
       body: Stack(
         children: [
+          NotificationButton(flutterLocalNotificationsPlugin),
           Center(
             child: Column(
+              verticalDirection: VerticalDirection.down,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                
                 inputFields(_controllers, Updatelabels, userInfo),
                 Padding(
                   padding: const EdgeInsets.all(20),
@@ -142,8 +138,6 @@ List<String> Updatelabels = [
   'Password',
   'Bekræft Password',
 ];
-
-
 
 deleteAccount(context) {
   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
