@@ -45,7 +45,7 @@ class _GamePageState extends State<GamePage> {
 class gameController extends StatelessWidget {
   bool ready = false;
   var gameStats;
-  gameController(data) {
+   gameController(data) {
     gameStats = GameStats(beat_boxer_string: data);
     gameStats.beatBoxerToJson();
   }
@@ -71,11 +71,11 @@ class PlayerOne extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: BoxConstraints.expand(),
+      constraints: const BoxConstraints.expand(),
       color: const Color.fromARGB(255, 0, 0, 0),
       child: Column(
         children: [
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text("Player 1: 10", style: TextStyle(color: Colors.white)),
