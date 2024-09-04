@@ -1,20 +1,48 @@
 import 'package:flutter/material.dart';
+import '../pages/howToPlay.dart';
 
-
-appBarFunction (text){
-  return(AppBar(
-        backgroundColor: Colors.white,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Image.asset('assets/logo.png',
-              fit: BoxFit.contain,
-              height: 42, 
-            ),
-            SizedBox(width: 25),
-            Text(text),
-          ],
+void showHowToPlayPopup(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: EdgeInsets.all(20),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.black,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: HowToPlayPageContent(),
         ),
-        centerTitle: true,
-      ));
- }
+      );
+    },
+  );
+}
+
+AppBar appBarFunction(String text, BuildContext context) {
+  return AppBar(
+    backgroundColor: Colors.white,
+    title: Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Image.asset(
+          '../assets/logo.png',
+          fit: BoxFit.contain,
+          height: 42,
+        ),
+        SizedBox(width: 25),
+        Text(text),
+      ],
+    ),
+    centerTitle: true,
+    actions: [
+      IconButton(
+        icon: Icon(Icons.help_outline, color: Colors.black),
+        onPressed: () {
+          showHowToPlayPopup(context);
+        },
+      ),
+    ],
+  );
+}

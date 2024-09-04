@@ -80,7 +80,7 @@ class _SettingsPageState extends State<SettingsPage> {
     ];
 
     return Scaffold(
-      appBar: appBarFunction("Settings"),
+      appBar: appBarFunction("Settings", context),
       backgroundColor: Colors.white,
       body: Stack(
         children: [

@@ -19,7 +19,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: appBarFunction("Landing page"),  
+      appBar: appBarFunction("Landing page", context),  
       body: HomePageContent(),
 
     );

@@ -12,7 +12,7 @@ class StatsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarFunction("Player stats"),
+      appBar: appBarFunction("Player stats", context),
       body: StatsPageContent(),
     );
   }
@@ -92,7 +92,7 @@ class StatsSection extends StatelessWidget {
                   value: user.userStats.rightGuesses.toString(),
                 ),
                 StatsBox(
-                  title: 'Wrong guesses',
+                  title: 'Right guesses',
                   value: user.userStats.rightGuesses.toString(),
                 ),
               ],
