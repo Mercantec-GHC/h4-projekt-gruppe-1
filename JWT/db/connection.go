@@ -37,7 +37,7 @@ func Connect() {
 
 	db.Logger.LogMode(logger.Info)
 
-	db.AutoMigrate(&models.User{})
+	db.AutoMigrate(&models.User{}, &models.Image{})
 
 	DB = DbInstance{Db: db}
 

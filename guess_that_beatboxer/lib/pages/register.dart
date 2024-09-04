@@ -5,6 +5,10 @@ import 'package:guess_that_beatboxer/models/user.dart';
 import 'package:guess_that_beatboxer/api/user_register.dart';
 import 'package:guess_that_beatboxer/pages/login.dart';
 import '../Widgets/buttons.dart';
+import 'package:image_field/image_field.dart';
+import 'dart:convert';
+
+import 'package:image_picker/image_picker.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -14,6 +18,7 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   final List<TextEditingController> _controllers = List.generate(RegisterLabels.length, (index) => TextEditingController());
   bool _isLoading = false;
+  String? imageData;
 
   @override
   void initState() {
@@ -45,17 +50,20 @@ class _RegisterState extends State<Register> {
                     "Welcome To Guess That Beatboxer!",
                     style: TextStyle(fontSize: 20),
                   ),
-                  inputFields(_controllers, RegisterLabels, RegisterLabels),
+                  inputFields(_controllers, RegisterLabels, RegisterLabels, (data) {
+                    setState(() {
+                      imageData = data;
+                    });
+                  }),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      RegisterBTN(_controllers, _setLoading),
-                     
+                      RegisterBTN(_controllers, _setLoading, imageData),
                     ],
                   ),
-                   Buttons(text: 'Cancel', pressFunction: () {
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
-                      }, length: double.infinity, height: double.infinity),
+                  Buttons(text: 'Cancel', pressFunction: () {
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
+                  }, length: 50, height: 50),
                 ],
               ),
             ),
@@ -78,12 +86,12 @@ class _RegisterState extends State<Register> {
     });
   }
 }
-
 class RegisterBTN extends StatelessWidget {
   final List<TextEditingController> _controllers;
   final Function(bool) setLoading;
+  final String? imageData; 
 
-  RegisterBTN(this._controllers, this.setLoading);
+  RegisterBTN(this._controllers, this.setLoading, this.imageData);
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +108,7 @@ class RegisterBTN extends StatelessWidget {
           if (!validateFields(context)) return;
 
           setLoading(true);
-          bool success = await submitUser(_controllers, context);
+          bool success = await submitUser(_controllers, context, imageData ?? '');
           setLoading(false);
           if (success) {
             showSuccessDialog(context);
@@ -190,12 +198,20 @@ List<String> RegisterLabels = [
   'Bekræft Password',
 ];
 
-class inputFields extends StatelessWidget {
+class inputFields extends StatefulWidget {
   final List<TextEditingController> _controllers;
   final List<String> labels;
   final List<String> userInfo;
+  final Function(String?) imageData;
 
-  inputFields(this._controllers, this.labels, this.userInfo);
+  inputFields(this._controllers, this.labels, this.userInfo, this.imageData);
+
+  @override
+  _inputFieldsState createState() => _inputFieldsState();
+}
+
+class _inputFieldsState extends State<inputFields> {
+  String? imageData;
 
   @override
   Widget build(BuildContext context) {
@@ -203,26 +219,39 @@ class inputFields extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: <Widget>[
-          for (int i = 0; i < labels.length; i++)
+
+          for (int i = 0; i < widget.labels.length; i++)
             Padding(
               padding: const EdgeInsets.all(10),
               child: TextField(
-                controller: _controllers[i],
-                obscureText: labels[i].toLowerCase().contains('password'),
+                controller: widget._controllers[i],
+                obscureText: widget.labels[i].toLowerCase().contains('password'),
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: userInfo[i],
-                  hintText: labels[i],
+                  labelText: widget.userInfo[i],
+                  hintText: widget.labels[i],
                 ),
               ),
             ),
+            ImageField(
+            multipleUpload: false,
+            onUpload: (dataSource, controllerLinearProgressIndicator) async {
+              if (dataSource is XFile) {
+                final bytes = await dataSource.readAsBytes();
+                setState(() {
+                  imageData = base64Encode(bytes);
+                  widget.imageData(imageData);
+                });
+              }
+            },
+          ),
         ],
       ),
     );
   }
 }
 
-Future<bool> submitUser(List<TextEditingController> controllers, BuildContext context) async {
+Future<bool> submitUser(List<TextEditingController> controllers, BuildContext context, String imageData) async {
 
   return await postUser(
     controllers[0].text,
@@ -230,5 +259,6 @@ Future<bool> submitUser(List<TextEditingController> controllers, BuildContext co
     controllers[2].text,
     controllers[3].text,
     controllers[4].text,
+    imageData
   );
 }

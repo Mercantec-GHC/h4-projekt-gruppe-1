@@ -21,7 +21,7 @@ import (
 // @Router       /register [post]
 func Register(c *gin.Context) {
 
-	var newUser *models.User
+	var newUser models.User
 
 	// Bind the request body to the new user struct
 	if err := c.ShouldBindJSON(&newUser); err != nil {
@@ -43,5 +43,5 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, gin.H{"message": "User registered"})
+	c.JSON(http.StatusCreated, gin.H{"message": "User registered", "user_id": newUser.ID})
 }

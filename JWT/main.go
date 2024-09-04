@@ -38,6 +38,10 @@ func main() {
 	r.DELETE("/user/:id", routes.DeleteUser)
 	r.PATCH("/user/:id", routes.UpdateUser)
 	r.POST("/register", routes.Register)
+	r.POST("/image/:id", routes.UploadImage)
+	r.PATCH("/image/:id", routes.UpdateImage)
+	r.GET("/image/:id", routes.GetImage)
+	r.DELETE("/image/:id", routes.DeleteImage)
 	r.POST("/login", routes.Login)
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

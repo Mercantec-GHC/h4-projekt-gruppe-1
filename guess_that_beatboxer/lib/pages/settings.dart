@@ -26,6 +26,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   bool _isLoading = false;
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+  String? imageData;
 
   @override
   void initState() {
@@ -38,20 +39,27 @@ class _SettingsPageState extends State<SettingsPage> {
     flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
-  void _updateUser() async {
+    void _updateUser() async {
     try {
       setState(() {
         _isLoading = true;
       });
 
-      final newuser = (
+      final newUser = (
         userName: _controllers[0].text,
         email: _controllers[1].text,
         phone: _controllers[2].text,
         password: _controllers[3].text,
       );
 
-      String newToken = await patchUser(newuser.userName, newuser.email, newuser.phone, newuser.password, widget.user.id);
+      String newToken = await patchUser(
+        newUser.userName,
+        newUser.email,
+        newUser.phone,
+        newUser.password,
+        image: imageData, 
+        widget.user.id,
+      );
       await widget.user.updateToken(newToken);
       setState(() {
         _isLoading = false;
@@ -81,9 +89,12 @@ class _SettingsPageState extends State<SettingsPage> {
             child: Column(
               verticalDirection: VerticalDirection.down,
               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                
-                inputFields(_controllers, Updatelabels, userInfo),
+              children: <Widget>[            
+                inputFields(_controllers, Updatelabels, userInfo, (data) {
+                  setState(() {
+                    imageData = data; 
+                  });
+                }),
                 Padding(
                   padding: const EdgeInsets.all(20),
                   child: Row(

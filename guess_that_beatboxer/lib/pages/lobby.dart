@@ -34,8 +34,6 @@ Widget build(BuildContext context) {
 }
 }
 
-
-
 class Join extends StatelessWidget {
   final match_id;
   const Join({
