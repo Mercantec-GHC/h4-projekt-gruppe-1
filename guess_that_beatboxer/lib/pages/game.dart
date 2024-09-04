@@ -1,75 +1,94 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:guess_that_beatboxer/api/fetch_beatboxer.dart';
-import 'package:guess_that_beatboxer/main.dart';
+import 'package:flutter/services.dart';
+import 'package:guess_that_beatboxer/Widgets/buttons.dart';
+import 'package:guess_that_beatboxer/models/game.dart';
 import 'package:provider/provider.dart';
-import 'package:guess_that_beatboxer/api/fetch_beatboxer.dart';
-import 'package:guess_that_beatboxer/models/game_stats.dart';
-
-class GamePage extends StatefulWidget {
-
-  @override
-  State<GamePage> createState() => _GamePageState();
-
-}
+import 'package:sensors_plus/sensors_plus.dart';
 
 
-class _GamePageState extends State<GamePage> {
+
+class GamePage extends StatelessWidget{
 
 
+ GamePage();
 
 
   @override
  Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
   return Scaffold(
     body: Center(
-      child: FutureBuilder<String>(
-        future: fetchBeatboxer(),
-        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
-          } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          } else if (snapshot.hasData) {
-            return gameController(snapshot.data);
-          } else {
-            return Text('No data available');
-          }
-        },
+      child: gameController()
+        
+
       ),
-    ),
-  );
+    );
+  
 }
 }
 
 
 class gameController extends StatelessWidget {
-  bool ready = false;
-  var gameStats;
-  gameController(data) {
-    gameStats = GameStats(beat_boxer_string: data);
-    gameStats.beatBoxerToJson();
-  }
 
   @override
   Widget build(BuildContext context) {
+  var game = context.watch<Game>();
     return Container(
       constraints: BoxConstraints.expand(),
       color: Colors.blue,
-      child: Center(
-        child: PlayerOne(gameStats),
+      child: Center( 
+      
+        child: game.gameController.myTurn ? PlayerOne(game) : PlayerTwo(game.gameController.gameStarted),
       ),
     );
   }
   
 }
 
-class PlayerOne extends StatelessWidget {
-  GameStats gameStats;
+class PlayerOne extends StatefulWidget {
+  final game;
+  const PlayerOne(this.game);
 
-  PlayerOne(this.gameStats);
+  @override
+  State<PlayerOne> createState() => _PlayerOneState(game);
+}
+
+class _PlayerOneState extends State<PlayerOne> {
+  final game;
+  _PlayerOneState(this.game);
+    DateTime? lastPrintedTime ;
+
+    @override
+    initState() {
+      super.initState();
+
+        accelerometerEventStream(samplingPeriod: Duration(milliseconds: 150)).listen((AccelerometerEvent event) {
+
+          final currentTime = DateTime.now();
+          if (game.gameController.gameStarted) {            
+            if (lastPrintedTime == null || currentTime.difference(lastPrintedTime!).inSeconds >= 1) {
+              if (event.z > 6.0) {
+                lastPrintedTime = currentTime;
+                game.gameController.skip();
+              }
+              if (event.z < -6.0) {
+                lastPrintedTime = currentTime;
+                game.gameController.point();
+
+              }
+            }
+          }
+        });
+    }
 
   @override
   Widget build(BuildContext context) {
+    var game = context.read<Game>();
     return Container(
       constraints: BoxConstraints.expand(),
       color: const Color.fromARGB(255, 0, 0, 0),
@@ -78,30 +97,87 @@ class PlayerOne extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text("Player 1: 10", style: TextStyle(color: Colors.white)),
-              Text("Player 2: 5", style: TextStyle(color: Colors.white)),
+              Text("${game.player_1_user_name} : ${game.player_1_points}", style: TextStyle(color: Colors.white, fontSize: MediaQuery.of(context).size.width * 0.05)),
+              Text("${game.player_2_user_name} :${game.player_1_points}", style: TextStyle(color: Colors.white, fontSize: MediaQuery.of(context).size.width * 0.05)),
             ],
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.20),
+          game.gameController.gameStarted?
           Center( 
-            child: Text(gameStats.beat_boxer_list[0]["name"], style: TextStyle(color: Colors.white, fontSize: MediaQuery.of(context).size.width * 0.1)),
-          ),
+            child: Text(game.gameController.currentBeatboxer ?? 'Unknown Beatboxer', style: TextStyle(color: Colors.white, fontSize: MediaQuery.of(context).size.width * 0.06)),
+          )
+          :
+          Center(child: Text("Place this on your forehead", style: TextStyle(color: Colors.white, fontSize: MediaQuery.of(context).size.width * 0.06),)
+          )
         ],
       ),
     );
   }
 }
 
+
+
 class PlayerTwo extends StatelessWidget {
+  var gameStated = false;
+  PlayerTwo(this.gameStated);
+
+
+
+ 
+  
+
+  String  timerText(timer) {
+    int minutes = timer ~/ 60;
+    int seconds = timer % 60;
+    String minuteStr = minutes.toString().padLeft(2, '0');
+    String secondStr = seconds.toString().padLeft(2, '0');
+    return "$minuteStr:$secondStr";
+  }
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
+    var game = context.read<Game>();
     return Container(
       constraints: BoxConstraints.expand(),
-      color: Colors.blue,
-      child: Center(
-        child: Text('Player Two'),
-      ),
+      color: const Color.fromARGB(255, 255, 255, 255),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Text("${game.player_1_user_name} : ${game.player_1_points}", style: TextStyle(color: Colors.black, fontSize: MediaQuery.of(context).size.width * 0.05)),
+          Text("${game.player_2_user_name} :${game.player_1_points}", style: TextStyle(color: Colors.black, fontSize: MediaQuery.of(context).size.width * 0.05)),
+        ],
+        ),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.20),
+        game.gameController.gameStarted?  
+        Center(child: Text(timerText(game.gameController.timer), style: TextStyle(color: Colors.black, fontSize: MediaQuery.of(context).size.width * 0.1))
+        ,)
+        :
+        Center(
+          child:ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.black,
+              shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15)),
+              padding: EdgeInsets.all(10),
+              minimumSize: Size(MediaQuery.of(context).size.width * 0.3, MediaQuery.of(context).size.height * 0.3),
+            ),
+          onPressed: (){
+            game.gameController.startGame();
+          },
+          child: Text("Start Game", style: TextStyle(color: Colors.white, fontSize: MediaQuery.of(context).size.width * 0.05)),
+
+        ),
+          )
+        
+
+        ],
+      ) 
     );
   }
 }

@@ -5,7 +5,6 @@ import 'package:guess_that_beatboxer/models/game.dart';
 import '../main.dart';
 import 'package:provider/provider.dart';
 import '../Widgets/closeLobby.dart';
-import 'package:guess_that_beatboxer/api/create_match.dart';
 
 
 class LobbyPage extends StatelessWidget {
@@ -107,17 +106,20 @@ class Host extends StatelessWidget {
   }
 }
 
-class LobbyPageContent extends StatelessWidget {
+class LobbyPageContent extends StatefulWidget {
+  const LobbyPageContent({super.key});
 
-  const LobbyPageContent({
-    super.key,
-  });
+  @override
+  _LobbyPageContentState createState() => _LobbyPageContentState();
+}
+
+class _LobbyPageContentState extends State<LobbyPageContent> {
+  int selectedMinutes = 1;
+  int selectedSeconds = 0; 
 
   @override
   Widget build(BuildContext context) {
     final game = context.watch<Game>();
-    final appState = context.watch<MyAppState>();
-    final user = appState.user;
 
     return SingleChildScrollView(
       padding: EdgeInsets.all(18),
@@ -128,11 +130,27 @@ class LobbyPageContent extends StatelessWidget {
           SizedBox(height: 16),
           KategoriSection(),
           SizedBox(height: 16),
-          SpilTidSection(),
+          SpilTidSection(
+            selectedMinutes: selectedMinutes,
+            selectedSeconds: selectedSeconds,
+            onMinutesChanged: (int minutes) {
+              setState(() {
+                selectedMinutes = minutes;
+              });
+            },
+            onSecondsChanged: (int seconds) {
+              setState(() {
+                selectedSeconds = seconds;
+              });
+            },
+          ),
           SizedBox(height: 16),
           PlayerSection(),
           SizedBox(height: 16),
-          StartSection(),
+          StartSection(
+            minutes: selectedMinutes,
+            seconds: selectedSeconds,
+          ),
         ],
       ),
     );
@@ -213,7 +231,7 @@ class CategoryCard extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           image: DecorationImage(
-            image: AssetImage('../assets/beatbox.png'), // Replace with actual image path
+            image: AssetImage('assets/beatbox.png'), // Replace with actual image path
             fit: BoxFit.cover,
           ),
         ),
@@ -234,6 +252,19 @@ class CategoryCard extends StatelessWidget {
 }
 
 class SpilTidSection extends StatelessWidget {
+  final int selectedMinutes;
+  final int selectedSeconds;
+  final ValueChanged<int> onMinutesChanged;
+  final ValueChanged<int> onSecondsChanged;
+
+
+    SpilTidSection({
+    required this.selectedMinutes,
+    required this.selectedSeconds,
+    required this.onMinutesChanged,
+    required this.onSecondsChanged,
+  });
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -247,14 +278,20 @@ class SpilTidSection extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TimeSelector(title: "Minutes", defaultValue: 1),
+            TimeSelector(title: "Minutes",
+              defaultValue: selectedMinutes,
+              onChanged: onMinutesChanged,
+            ),
             SizedBox(width: 8,),
             Text(
               ":",
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(width: 8,),
-            TimeSelector(title: "Seconds", defaultValue: 0),
+            TimeSelector(title: "Seconds",
+              defaultValue: selectedSeconds,
+              onChanged: onSecondsChanged,
+            ),
           ],
         ),
       ],
@@ -265,8 +302,13 @@ class SpilTidSection extends StatelessWidget {
 class TimeSelector extends StatefulWidget {
   final String title;
   final int defaultValue;
+  final ValueChanged<int> onChanged;
 
-  TimeSelector({required this.title, required this.defaultValue});
+  TimeSelector({
+    required this.title,
+    required this.defaultValue,
+    required this.onChanged,
+  });
 
   @override
   _TimeSelectorState createState() => _TimeSelectorState();
@@ -299,6 +341,7 @@ class _TimeSelectorState extends State<TimeSelector> {
             onChanged: (value) {
               setState(() {
                 _selectedValue = value;
+                widget.onChanged(_selectedValue!);
               });
             },
           ),
@@ -371,13 +414,20 @@ class PlayerSection extends StatelessWidget {
 
 
 class StartSection extends StatelessWidget {
+  final int minutes;
+  final int seconds;
+
+  StartSection({required this.minutes, required this.seconds});
+
   @override
   Widget build(BuildContext context) {
     var game = context.watch<Game>();
+    int totalseconds = (minutes * 60) + seconds;
+
     return Center(
       child: ElevatedButton(
         onPressed: () {
-          game.initGame();
+          game.initGame(totalseconds);
         },
         child: Text("Start game", style: TextStyle(color: Colors.white),),
         style: ElevatedButton.styleFrom(

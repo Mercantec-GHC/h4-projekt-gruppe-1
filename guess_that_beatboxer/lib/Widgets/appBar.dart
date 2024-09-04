@@ -7,7 +7,7 @@ appBarFunction (text){
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Image.asset('../assets/logo.png',
+            Image.asset('assets/logo.png',
               fit: BoxFit.contain,
               height: 42, 
             ),
