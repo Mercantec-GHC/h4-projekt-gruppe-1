@@ -7,6 +7,7 @@ class MatchTile extends StatelessWidget {
   final String player1Feedback;
   final String player2;
   final String player2Feedback;
+  final String winner;
 
   MatchTile({
     required this.matchNumber,
@@ -14,6 +15,7 @@ class MatchTile extends StatelessWidget {
     required this.player1Feedback,
     required this.player2,
     required this.player2Feedback,
+    required this.winner,
   });
 
   @override
@@ -31,19 +33,23 @@ class MatchTile extends StatelessWidget {
                 fontSize: 16,
               ),
             ),
+            Text(
+              "Winner of the match: $winner",
+              style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+            ),
             SizedBox(height: 8),
             Text(
               "Player 1: $player1",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 4),
+            SizedBox(height: 2),
             Text("Comment: $player1Feedback"),
             SizedBox(height: 8),
             Text(
               "Player 2: $player2",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 4),
+            SizedBox(height: 2),
             Text("Comment: $player2Feedback"),
           ],
         ),
@@ -61,7 +67,6 @@ class PlayerFeedback extends StatelessWidget {
   Widget build(BuildContext context) {
     user.matchHistory.sort((a, b) => b.createdAt.compareTo(a.createdAt));
     final recentMatches = user.matchHistory.take(3).toList();
-
     return Container(
       margin: EdgeInsets.only(top: 25),
       height: 250,
@@ -90,6 +95,7 @@ class PlayerFeedback extends StatelessWidget {
                   player1Feedback: match.player_1_comment,
                   player2: match.player_2_user_name,
                   player2Feedback: match.player_2_comment,
+                  winner: match.winner,
                 );
               },
             ),
