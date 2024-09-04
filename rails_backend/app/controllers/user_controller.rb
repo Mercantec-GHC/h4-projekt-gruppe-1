@@ -8,7 +8,7 @@ class UserController < ApplicationController
     user = User.find(params[:id])
     user.match_ids
     match = Match.find(user.match_ids)
-    render json: match, except: [:id, :created_at, :updated_at], status: :ok
+    render json: match, status: :ok
   end
 
   def create
