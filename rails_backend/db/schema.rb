@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_27_064248) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_03_121449) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -32,6 +32,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_27_064248) do
     t.string "player_2_comment"
     t.string "player_1_user_name"
     t.string "player_2_user_name"
+    t.integer "timer", default: 0
+    t.integer "rounds", default: 0
   end
 
   create_table "matches_users", id: false, force: :cascade do |t|
@@ -58,6 +60,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_27_064248) do
     t.text "email"
     t.text "password"
     t.text "phone"
+    t.text "image"
 
     t.unique_constraint ["email"], name: "uni_users_email"
   end
