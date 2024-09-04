@@ -35,6 +35,8 @@ dependencies:
   uuid: ^3.0.6
   flutter_local_notifications: ^17.2.2
   firebase_messaging: ^14.7.2
+  uuid: ^4.5.0
+  flutter_local_notifications: ^17.2.2
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -46,6 +48,8 @@ dependencies:
   image_field: ^0.0.10
   image_picker: ^1.1.2
   linear_progress_bar: "^1.1.2"
+  web_socket_channel: ^3.0.1
+  sensors_plus: ^6.0.1
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +71,7 @@ flutter:
 
   assets:
     - assets/logo.png
+    - assets/beatbox.png
 
   fonts:
     - family: Karla

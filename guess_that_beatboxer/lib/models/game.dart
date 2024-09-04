@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:guess_that_beatboxer/Widgets/popup.dart';
+import 'package:guess_that_beatboxer/models/game_controller.dart';
+import 'package:guess_that_beatboxer/pages/game.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'dart:convert';
 import 'package:guess_that_beatboxer/helpers/message_brokker.dart';
@@ -18,8 +21,8 @@ class Game extends ChangeNotifier {
     WebSocketChannel? channel;
     bool joined = false;
     bool host = false;
-    var gameContext;
-    int timer;
+    late BuildContext gameContext;
+    late GameController gameController;
 
     Game({
     this.id = 0, 
@@ -32,7 +35,6 @@ class Game extends ChangeNotifier {
     this.player_2_comment = "",
     this.player_1_user_name = "",
     this.player_2_user_name = "",
-    this.timer = 0 
     });
 
     updateGameData(data){
@@ -50,7 +52,7 @@ class Game extends ChangeNotifier {
 
     Future<void> connectToGameChannel() async{
         WebSocketChannel channel  = await WebSocketChannel.connect(
-            Uri.parse('wss:///kim.magsapi.com/cable'),
+            Uri.parse('wss://kim.magsapi.com/cable'),
         );
         final identifier = jsonEncode({"channel": "GameChannel", "game_id": this.id});
         channel.sink.add(jsonEncode({"command": "subscribe", "identifier": identifier}));
@@ -67,14 +69,14 @@ class Game extends ChangeNotifier {
 
             if (mapData != null) {
               handleMessage(mapData, this);
-             notifyListeners();
+              notifyListeners();
             }
 
 
         });
     
     }
-    
+  
     closeChannel() {
         if (this.channel != null) {
             this.channel!.sink.close(1000);
@@ -82,54 +84,41 @@ class Game extends ChangeNotifier {
     }
 
     joinGame(player, type) {
-        final message = {
-            "command": "message",
-            "identifier": jsonEncode({"channel": "GameChannel", "game_id": this.id}),
-            "data": jsonEncode({"action": "join", "playerInfo":{"user_name": player, "player_type": type}}),
-        };
-        channel!.sink.add(jsonEncode(message));
+        sendMessage({"action": "join", "playerInfo":{"user_name": player, "player_type": type}});
+
     }
 
     leaveGame() {
-        final message = {
-            "command": "message",
-            "identifier": jsonEncode({"channel": "GameChannel", "game_id": this.id}),
-            "data": jsonEncode({"action": "leave"}),
-        };
-        channel!.sink.add(jsonEncode(message));
+        sendMessage({"action": "leave"});
     }
     
     delete()
     {
-          final message = {
-            "command": "message",
-            "identifier": jsonEncode({"channel": "GameChannel", "game_id": this.id}),
-            "data": jsonEncode({"action": "delete"}),
-        };
-        channel!.sink.add(jsonEncode(message));
+      sendMessage({"action": "delete"});
     }
 
-    initGame(){
+    initGame(time){
         if(this.host){
-        if(this.player_2_user_name == " "){
-          popup(this.gameContext, "Waiting for player to join");
-        }else{
-                  final message = {
-            "command": "message",
-            "identifier": jsonEncode({"channel": "GameChannel", "game_id": this.id}),
-            "data": jsonEncode({"action": "start", "timer": this.timer}),
+          if(this.player_2_user_name == " "){
+            popup(this.gameContext, "Waiting for player to join");
+          }
+          else{
+            sendMessage({"action": "start", "timer": time});
         };
-        channel!.sink.add(jsonEncode(message));
 
         }
 
       }
-    }
+    
 
   
 
-    startGame() {
-      print("Game started");
+    startGame(beatBoxerList) {
+
+      this.gameController = GameController(myTurn: this.host, beatBoxer: beatBoxerList, game: this);
+      this.gameController.randomBeatBoxer();
+     Navigator.pushReplacement(this.gameContext, MaterialPageRoute(builder: (context) => GamePage()));
+
     }
 
     resetGame(){
@@ -145,4 +134,21 @@ class Game extends ChangeNotifier {
         this.joined = false;
         this.host = false;
     }
+
+
+    void sendMessage(message)
+    {
+      final jsonMessage = {
+            "command": "message",
+            "identifier": jsonEncode({"channel": "GameChannel", "game_id": this.id}),
+            "data": jsonEncode(message),
+        };
+        channel!.sink.add(jsonEncode(jsonMessage));
+
+    }
+    
+    @override
+  void notifyListeners() {
+    super.notifyListeners();
+  }
 }

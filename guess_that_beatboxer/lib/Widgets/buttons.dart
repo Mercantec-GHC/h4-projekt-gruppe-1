@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class Buttons extends StatelessWidget {
     final backgroundColor;
     final textColor;
-    final length;
-    final height;
+    final double length;
+    final double height;
     final String text;
     final VoidCallback? pressFunction;
     final hoverColor;
@@ -16,8 +16,8 @@ class Buttons extends StatelessWidget {
     this.backgroundColor = Colors.black,
     this.textColor = Colors.white,
     this.hoverColor = Colors.grey,  
-    this.length = 100,
-    this.height = 50,
+    this.length = 100.0,
+    this.height = 50.0,
   });
 
   @override
