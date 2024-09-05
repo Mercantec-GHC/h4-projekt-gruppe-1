@@ -27,7 +27,7 @@ AppBar appBarFunction(String text, BuildContext context) {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Image.asset(
-          '../assets/logo.png',
+          'assets/logo.png',
           fit: BoxFit.contain,
           height: 42,
         ),
