@@ -1,8 +1,9 @@
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:guess_that_beatboxer/Widgets/buttons.dart';
+import 'package:guess_that_beatboxer/main.dart';
 import 'package:guess_that_beatboxer/models/game.dart';
 import 'package:provider/provider.dart';
 import 'package:sensors_plus/sensors_plus.dart';
@@ -38,12 +39,13 @@ class gameController extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
   var game = context.watch<Game>();
+    final user = context.watch<MyAppState>().user;
     return Container(
       constraints: BoxConstraints.expand(),
       color: Colors.blue,
       child: Center( 
       
-        child: game.gameController.myTurn ? PlayerOne(game) : PlayerTwo(game.gameController.gameStarted),
+        child: game.gameController.myTurn ? PlayerOne(game, user) : PlayerTwo(game.gameController.gameStarted),
       ),
     );
   }
@@ -52,38 +54,47 @@ class gameController extends StatelessWidget {
 
 class PlayerOne extends StatefulWidget {
   final game;
-  const PlayerOne(this.game);
+  final user;
+  PlayerOne(this.game, this.user);
 
   @override
-  State<PlayerOne> createState() => _PlayerOneState(game);
+  State<PlayerOne> createState() => _PlayerOneState(game, user);
+  var stream; 
 }
 
 class _PlayerOneState extends State<PlayerOne> {
   final game;
-  _PlayerOneState(this.game);
+  final user;
+  _PlayerOneState(this.game, this.user);
     DateTime? lastPrintedTime ;
+    StreamSubscription<AccelerometerEvent>? stream; // Declare the 'stream' variable
 
     @override
     initState() {
       super.initState();
 
-        accelerometerEventStream(samplingPeriod: Duration(milliseconds: 150)).listen((AccelerometerEvent event) {
-
+        stream = accelerometerEventStream(samplingPeriod: Duration(milliseconds: 150)).listen((AccelerometerEvent event) {
+          
           final currentTime = DateTime.now();
           if (game.gameController.gameStarted) {            
             if (lastPrintedTime == null || currentTime.difference(lastPrintedTime!).inSeconds >= 1) {
               if (event.z > 6.0) {
                 lastPrintedTime = currentTime;
-                game.gameController.skip();
+                game.gameController.skip(user.id);
               }
               if (event.z < -6.0) {
                 lastPrintedTime = currentTime;
-                game.gameController.point();
+                game.gameController.point(user.id);
 
               }
             }
           }
         });
+    }
+    @override
+    dispose() {
+      super.dispose();
+      stream!.cancel();
     }
 
   @override
@@ -98,7 +109,7 @@ class _PlayerOneState extends State<PlayerOne> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text("${game.player_1_user_name} : ${game.player_1_points}", style: TextStyle(color: Colors.white, fontSize: MediaQuery.of(context).size.width * 0.05)),
-              Text("${game.player_2_user_name} :${game.player_1_points}", style: TextStyle(color: Colors.white, fontSize: MediaQuery.of(context).size.width * 0.05)),
+              Text("${game.player_2_user_name} :${game.player_2_points}", style: TextStyle(color: Colors.white, fontSize: MediaQuery.of(context).size.width * 0.05)),
             ],
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.20),
@@ -150,7 +161,7 @@ class PlayerTwo extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Text("${game.player_1_user_name} : ${game.player_1_points}", style: TextStyle(color: Colors.black, fontSize: MediaQuery.of(context).size.width * 0.05)),
-          Text("${game.player_2_user_name} :${game.player_1_points}", style: TextStyle(color: Colors.black, fontSize: MediaQuery.of(context).size.width * 0.05)),
+          Text("${game.player_2_user_name} :${game.player_2_points}", style: TextStyle(color: Colors.black, fontSize: MediaQuery.of(context).size.width * 0.05)),
         ],
         ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.20),

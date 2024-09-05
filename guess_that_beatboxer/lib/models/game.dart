@@ -48,6 +48,7 @@ class Game extends ChangeNotifier {
         this.player_2_comment = data['player_2_comment'];
         this.player_1_user_name = data['player_1_user_name'];
         this.player_2_user_name = data['player_2_user_name'];
+
     }
 
     Future<void> connectToGameChannel() async{

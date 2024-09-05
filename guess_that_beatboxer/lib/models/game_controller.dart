@@ -42,13 +42,11 @@ class GameController {
 
   void skip(id){
     game.sendMessage({"action": "skip", "host": "${game.host}", "user_id" : "$id"});
-    print("skip");
-
+    this.randomBeatBoxer();
   }
-  void point(){
-    print("point");
-    randomBeatBoxer();
-    game.notifyListeners();
+  void point(id){
+    game.sendMessage({"action": "point", "host": "${game.host}", "user_id" : "$id"});
+    this.randomBeatBoxer();
   }
 
 }
