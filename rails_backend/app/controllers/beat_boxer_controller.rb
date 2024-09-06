@@ -6,7 +6,11 @@ class BeatBoxerController < ApplicationController
   end
 
   def create
-
+    beat_boxers = beat_boxer_names
+    beat_boxers.each do |beat_boxer|
+      BeatBoxer.create(name: beat_boxer)
+    end
+    render json: {message: "Beat Boxers created"}, status: :ok
     
   end
 
@@ -15,6 +19,7 @@ class BeatBoxerController < ApplicationController
 
   def index
     beat_boxers = BeatBoxer.all
+    create() if beat_boxers.length == 0
     render json: beat_boxers, except: [:id, :created_at, :updated_at], status: :ok
   end
 
