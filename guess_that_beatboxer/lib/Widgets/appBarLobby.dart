@@ -16,6 +16,6 @@ appBarLobbyFunction (text, {Widget? action}) {
       ],
     ),
     centerTitle: true,
-    actions: action != null ? [action] : [], // Add the action here
+    actions: action != null ? [action] : [],
   );
 }

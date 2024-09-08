@@ -257,8 +257,7 @@ class SpilTidSection extends StatelessWidget {
   final ValueChanged<int> onMinutesChanged;
   final ValueChanged<int> onSecondsChanged;
 
-
-    SpilTidSection({
+  SpilTidSection({
     required this.selectedMinutes,
     required this.selectedSeconds,
     required this.onMinutesChanged,
@@ -278,18 +277,22 @@ class SpilTidSection extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TimeSelector(title: "Minutes",
+            TimeSelector(
+              title: "Minutes",
               defaultValue: selectedMinutes,
+              maxValue: 4,
               onChanged: onMinutesChanged,
             ),
-            SizedBox(width: 8,),
+            SizedBox(width: 8),
             Text(
               ":",
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            SizedBox(width: 8,),
-            TimeSelector(title: "Seconds",
+            SizedBox(width: 8),
+            TimeSelector(
+              title: "Seconds",
               defaultValue: selectedSeconds,
+              maxValue: 60,
               onChanged: onSecondsChanged,
             ),
           ],
@@ -302,11 +305,13 @@ class SpilTidSection extends StatelessWidget {
 class TimeSelector extends StatefulWidget {
   final String title;
   final int defaultValue;
-  final ValueChanged<int> onChanged;
+  final int maxValue;
+  final ValueChanged<int> onChanged;  
 
   TimeSelector({
     required this.title,
     required this.defaultValue,
+    required this.maxValue,
     required this.onChanged,
   });
 
@@ -332,7 +337,7 @@ class _TimeSelectorState extends State<TimeSelector> {
           child: DropdownButton<int>(
             value: _selectedValue,
             items: List.generate(
-              60,
+              widget.maxValue,
               (index) => DropdownMenuItem(
                 value: index,
                 child: Text(index.toString().padLeft(2, '0')),
@@ -341,7 +346,9 @@ class _TimeSelectorState extends State<TimeSelector> {
             onChanged: (value) {
               setState(() {
                 _selectedValue = value;
-                widget.onChanged(_selectedValue!);
+                if (value != null) {
+                  widget.onChanged(value);  
+                }
               });
             },
           ),

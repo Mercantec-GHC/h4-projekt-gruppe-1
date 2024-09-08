@@ -84,9 +84,6 @@ func DeleteUser(c *gin.Context) {
 // @Accept       json
 // @Produce      application/json
 // @Success      200 {object} map[string]interface{} "User updated"
-// @Failure      400 {object} map[string]interface{} "Invalid request"
-// @Failure      404 {object} map[string]interface{} "User not found"
-// @Failure      500 {object} map[string]interface{} "Failed to update user"
 // @Router       /user/{id} [patch]
 // Update user.
 //

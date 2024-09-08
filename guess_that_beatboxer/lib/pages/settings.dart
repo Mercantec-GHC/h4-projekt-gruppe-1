@@ -80,7 +80,7 @@ class _SettingsPageState extends State<SettingsPage> {
     ];
 
     return Scaffold(
-      appBar: appBarFunction("Settings"),
+      appBar: appBarFunction("Settings", context),
       backgroundColor: Colors.white,
       body: Stack(
         children: [
@@ -100,6 +100,10 @@ class _SettingsPageState extends State<SettingsPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                          Buttons( text: 'Logout', pressFunction: () async {
+                              await user.deleteToken();
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
+                            }, length: 50, height: 50),
                       Expanded(
                         child: Buttons(
                           text: 'Update',
@@ -125,8 +129,11 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                     ],
                   ),
+                  
                 ),
+                
               ],
+              
             ),
           ),
           if (_isLoading)

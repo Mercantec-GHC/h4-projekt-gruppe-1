@@ -13,7 +13,7 @@ class AccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarFunction("Account"),
+      appBar: appBarFunction("Account", context),
       body: AccountPageContent(),
     );
   }

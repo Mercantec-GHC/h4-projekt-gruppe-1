@@ -5,7 +5,7 @@ import 'package:guess_that_beatboxer/pages/register.dart';
 import 'package:provider/provider.dart';
 import '../Widgets/buttons.dart';
 import '../api/fetch_login.dart';
-import '../Widgets/appBar.dart';
+import '../Widgets/appBarLogin.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -39,7 +39,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarFunction("Login"),
+      appBar: appBarLoginFunction("Login"),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:guess_that_beatboxer/Widgets/appBar.dart';
+import 'package:guess_that_beatboxer/Widgets/appBarLogin.dart';
 import 'package:guess_that_beatboxer/models/user.dart';
 import 'package:guess_that_beatboxer/api/user_register.dart';
 import 'package:guess_that_beatboxer/pages/login.dart';
@@ -33,7 +33,7 @@ class _RegisterState extends State<Register> {
     return MaterialApp(
       title: appTitle,
       home: Scaffold(
-        appBar: appBarFunction("Register"),
+        appBar: appBarLoginFunction("Register"),
         backgroundColor: Colors.white,
         body: Stack(
           children: [
