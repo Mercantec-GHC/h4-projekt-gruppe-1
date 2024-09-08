@@ -18,6 +18,7 @@ class GamePage extends StatelessWidget{
 
   @override
  Widget build(BuildContext context) {
+  context.read<Game>().gameContext = context;
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
@@ -39,6 +40,7 @@ class gameController extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
   var game = context.watch<Game>();
+  
     final user = context.watch<MyAppState>().user;
     return Container(
       constraints: BoxConstraints.expand(),
@@ -85,7 +87,6 @@ class _PlayerOneState extends State<PlayerOne> {
               if (event.z < -6.0) {
                 lastPrintedTime = currentTime;
                 game.gameController.point(user.id);
-
               }
             }
           }
@@ -94,7 +95,9 @@ class _PlayerOneState extends State<PlayerOne> {
     @override
     dispose() {
       super.dispose();
-      stream!.cancel();
+        if (stream != null) {
+        stream!.cancel();
+        }
     }
 
   @override
@@ -109,6 +112,7 @@ class _PlayerOneState extends State<PlayerOne> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text("${game.player_1_user_name} : ${game.player_1_points}", style: TextStyle(color: Colors.white, fontSize: MediaQuery.of(context).size.width * 0.05)),
+              Text("Round: ${(game.round / 2).ceil()}", style: TextStyle(color: Colors.white, fontSize: MediaQuery.of(context).size.width * 0.04)),
               Text("${game.player_2_user_name} :${game.player_2_points}", style: TextStyle(color: Colors.white, fontSize: MediaQuery.of(context).size.width * 0.05)),
             ],
           ),
@@ -161,6 +165,7 @@ class PlayerTwo extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Text("${game.player_1_user_name} : ${game.player_1_points}", style: TextStyle(color: Colors.black, fontSize: MediaQuery.of(context).size.width * 0.05)),
+          Text("Round: ${(game.round / 2).ceil()}", style: TextStyle(color: Colors.black, fontSize: MediaQuery.of(context).size.width * 0.04)),
           Text("${game.player_2_user_name} :${game.player_2_points}", style: TextStyle(color: Colors.black, fontSize: MediaQuery.of(context).size.width * 0.05)),
         ],
         ),

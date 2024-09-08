@@ -126,6 +126,7 @@ class _LoginFormState extends State<LoginForm> {
           ),
           SizedBox(height: 10),
           Text("Password"),
+          //fejl lige her !!!!!
           TextFormField(
             controller: _passwordController,
             decoration: const InputDecoration(

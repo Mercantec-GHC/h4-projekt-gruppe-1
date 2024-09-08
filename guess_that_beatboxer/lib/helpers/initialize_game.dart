@@ -1,9 +1,7 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:guess_that_beatboxer/Widgets/popup.dart';
 import 'package:guess_that_beatboxer/api/fetch_match.dart';
-import 'package:guess_that_beatboxer/models/game.dart';
 import '../main.dart';
 import 'package:guess_that_beatboxer/api/create_match.dart';
 
@@ -23,7 +21,7 @@ Future<dynamic> initializeGame(player_type, game, user, {match_id = 0}) async {
     while(!game.joined){
       await Future.delayed(Duration(seconds: 1));
     }
-    await game.joinGame(user.userName, player_type);
+    await game.joinGame(user.userName, player_type, user.id);
     return "test";
 
     
@@ -43,7 +41,7 @@ Future<dynamic> initializeGame(player_type, game, user, {match_id = 0}) async {
         while(!game.joined){
         await Future.delayed(Duration(seconds: 1));
         }
-        await game.joinGame(user.userName, player_type);
+        await game.joinGame(user.userName, player_type, user.id);
         return "test";
       }
     } catch (e) {

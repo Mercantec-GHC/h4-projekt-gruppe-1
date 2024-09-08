@@ -23,6 +23,7 @@ class Game extends ChangeNotifier {
     bool host = false;
     late BuildContext gameContext;
     late GameController gameController;
+    double round = 1.0;
 
     Game({
     this.id = 0, 
@@ -84,9 +85,8 @@ class Game extends ChangeNotifier {
         }
     }
 
-    joinGame(player, type) {
-        sendMessage({"action": "join", "playerInfo":{"user_name": player, "player_type": type}});
-
+    joinGame(player, type, userId) {
+        sendMessage({"action": "join", "playerInfo":{"user_name": player, "player_type": type, "user_id": userId}});
     }
 
     leaveGame() {
@@ -104,6 +104,7 @@ class Game extends ChangeNotifier {
             popup(this.gameContext, "Waiting for player to join");
           }
           else{
+
             sendMessage({"action": "start", "timer": time});
         };
 
@@ -134,20 +135,26 @@ class Game extends ChangeNotifier {
         this.player_2_user_name = "";
         this.joined = false;
         this.host = false;
+        this.round = 1.0;
     }
 
 
-    void sendMessage(message)
-    {
-      final jsonMessage = {
-            "command": "message",
-            "identifier": jsonEncode({"channel": "GameChannel", "game_id": this.id}),
-            "data": jsonEncode(message),
-        };
-        channel!.sink.add(jsonEncode(jsonMessage));
+Future<void> sendMessage(message) async {
+  final jsonMessage = {
+    "command": "message",
+    "identifier": jsonEncode({"channel": "GameChannel", "game_id": this.id}),
+    "data": jsonEncode(message),
+  };
+  channel!.sink.add(jsonEncode(jsonMessage));
+}
 
-    }
-    
+Future<void> sendComment(comment) async {
+  await sendMessage({"action": "comment", "comment": comment, "host": this.host});
+  // await Future.delayed(Duration(milliseconds: 100));
+  
+  this.closeChannel();
+  this.resetGame();
+}
     @override
   void notifyListeners() {
     super.notifyListeners();

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:guess_that_beatboxer/main.dart';
+import 'package:guess_that_beatboxer/pages/game_over.dart';
 
 dynamic findData(data){
 if (!isMessage(data)) {
@@ -61,8 +63,14 @@ handleMessage(data, game){
       }
       if(data["type"] == "round_over"){
         game.gameController.timer = 0;
+        game.round = (data["rounds"] as int).toDouble();
         game.gameController.newRound();
         
+      }
+      if(data["type"] == "game_over"){
+        game.sendMessage({"action": "game_over"});
+        game.updateGameData(data['game']);
+        Navigator.pushReplacement(game.gameContext, MaterialPageRoute(builder: (context) => GameOver()));
       }
 
 }
