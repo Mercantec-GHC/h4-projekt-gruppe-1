@@ -95,7 +95,7 @@ class GameChannel < ApplicationCable::Channel
   end
 
   def comment(data)
-    
+    puts data
   end
 
 
