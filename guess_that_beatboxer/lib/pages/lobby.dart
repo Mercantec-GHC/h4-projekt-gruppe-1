@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guess_that_beatboxer/Widgets/appBarLobby.dart';
+import 'package:guess_that_beatboxer/Widgets/popup.dart';
 import 'package:guess_that_beatboxer/helpers/initialize_game.dart';
 import 'package:guess_that_beatboxer/models/game.dart';
 import '../main.dart';
@@ -15,29 +16,17 @@ class LobbyPage extends StatelessWidget {
  
   @override
 Widget build(BuildContext context) {
-  if (player_type == "host") {
-    return Host();
-  } else if(player_type == "join") {
-    return Join(match_id: match_id,); 
-  } else{
-    return Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            Text("Error: Invalid player type"),
-          ],
-        ),
-      ),
-    );
+    return Join(match_id: match_id, player_type: player_type); 
   }
-}
 }
 
 class Join extends StatelessWidget {
+  final player_type;
   final match_id;
   const Join({
     super.key,
     this.match_id,
+    this.player_type,
   });
 
   @override
@@ -47,10 +36,10 @@ class Join extends StatelessWidget {
     final user = appState.user;
     game.gameContext = context;
     return Scaffold(
-      appBar: appBarLobbyFunction("Lobby", action: CloseLobbyButton(player_type: "join")),
+      appBar: appBarLobbyFunction("Lobby", action: CloseLobbyButton(player_type: player_type,)),
       body: Center(
           child: FutureBuilder<dynamic>(
-          future: initializeGame("join", game, user, match_id: match_id),
+          future: initializeGame(player_type == "host"? "host" : "join", game, user, match_id: match_id),
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return CircularProgressIndicator();
@@ -70,41 +59,6 @@ class Join extends StatelessWidget {
 
 
 
-class Host extends StatelessWidget {
-  const Host({
-    super.key,
-  });
-
-
-  @override
-  Widget build(BuildContext context) {
-    final game = context.read<Game>();
-    final appState = context.read<MyAppState>();
-    final user = appState.user;
-    game.gameContext = context;
-
-    return Scaffold(
-      appBar: appBarLobbyFunction("Lobby", action: CloseLobbyButton(player_type: "host",)),
-      body: Center(
-        child: FutureBuilder<dynamic>(
-          future: initializeGame("host", game, user),
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
-            } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else if (snapshot.hasData) {
-              return LobbyPageContent();
-            } else {
-              return Center(child: Text('No data available'));
-            }
-          },
-        ),
-      ),
-    );
-  }
-}
-
 class LobbyPageContent extends StatefulWidget {
   const LobbyPageContent({super.key});
 
@@ -113,12 +67,20 @@ class LobbyPageContent extends StatefulWidget {
 }
 
 class _LobbyPageContentState extends State<LobbyPageContent> {
-  int selectedMinutes = 1;
+  int selectedMinutes = 0;
   int selectedSeconds = 0; 
 
   @override
   Widget build(BuildContext context) {
     final game = context.watch<Game>();
+
+    selectedMinutes = game.timer ~/ 60;
+    selectedSeconds = game.timer % 60;
+
+    
+    updateTime(){
+      game.sendMessage({"action": "update_timer", "timer": selectedMinutes * 60 + selectedSeconds});
+    }
 
     return SingleChildScrollView(
       padding: EdgeInsets.all(18),
@@ -129,17 +91,20 @@ class _LobbyPageContentState extends State<LobbyPageContent> {
           SizedBox(height: 16),
           KategoriSection(),
           SizedBox(height: 16),
-          SpilTidSection(
+          GameTimeSection(
             selectedMinutes: selectedMinutes,
             selectedSeconds: selectedSeconds,
             onMinutesChanged: (int minutes) {
               setState(() {
                 selectedMinutes = minutes;
+                updateTime();
+
               });
             },
             onSecondsChanged: (int seconds) {
               setState(() {
                 selectedSeconds = seconds;
+                updateTime();
               });
             },
           ),
@@ -250,13 +215,13 @@ class CategoryCard extends StatelessWidget {
   }
 }
 
-class SpilTidSection extends StatelessWidget {
+class GameTimeSection extends StatelessWidget {
   final int selectedMinutes;
   final int selectedSeconds;
   final ValueChanged<int> onMinutesChanged;
   final ValueChanged<int> onSecondsChanged;
 
-  SpilTidSection({
+  GameTimeSection({
     required this.selectedMinutes,
     required this.selectedSeconds,
     required this.onMinutesChanged,
@@ -321,20 +286,19 @@ class TimeSelector extends StatefulWidget {
 class _TimeSelectorState extends State<TimeSelector> {
   int? _selectedValue;
 
-  @override
-  void initState() {
-    super.initState();
-    _selectedValue = widget.defaultValue;
-  }
+
+  
 
   @override
   Widget build(BuildContext context) {
+    var game = context.read<Game>();
+
     return Column(
       children: [
         Container(
           width: 100,
           child: DropdownButton<int>(
-            value: _selectedValue,
+            value: widget.defaultValue,
             items: List.generate(
               widget.maxValue,
               (index) => DropdownMenuItem(
@@ -344,9 +308,12 @@ class _TimeSelectorState extends State<TimeSelector> {
             ),
             onChanged: (value) {
               setState(() {
-                _selectedValue = value;
-                if (value != null) {
-                  widget.onChanged(value);  
+                if(!game.host){
+                  popup(context, "Only the host can change the time per round");
+                }else{
+                  if (value != null) {
+                    widget.onChanged(value);  
+                  }
                 }
               });
             },

@@ -22,13 +22,13 @@ Future<dynamic> initializeGame(player_type, game, user, {match_id = 0}) async {
       await Future.delayed(Duration(seconds: 1));
     }
     await game.joinGame(user.userName, player_type, user.id);
-    return "test";
-
+    return "";
+    
     
   } else if(player_type == "join") {
     try {
       var data = await fetchMatch(user.jsonWebToken, match_id);
-      if(data == "No match found"){
+      if(data == "No match found" || match_id == ""){
         Navigator.pushReplacement(game.gameContext, MaterialPageRoute(builder: (context) => BottomNavBar()));
         popup(game.gameContext, "Match not found");
       }else if (data["player_2_user_name"] != " "){

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:guess_that_beatboxer/Widgets/popup.dart';
 import 'package:guess_that_beatboxer/models/game_controller.dart';
 import 'package:guess_that_beatboxer/pages/game.dart';
@@ -24,6 +23,7 @@ class Game extends ChangeNotifier {
     late BuildContext gameContext;
     late GameController gameController;
     double round = 1.0;
+    int timer = 60;
 
     Game({
     this.id = 0, 
@@ -49,6 +49,7 @@ class Game extends ChangeNotifier {
         this.player_2_comment = data['player_2_comment'];
         this.player_1_user_name = data['player_1_user_name'];
         this.player_2_user_name = data['player_2_user_name'];
+        this.timer = data['timer'];
 
     }
 
@@ -136,6 +137,7 @@ class Game extends ChangeNotifier {
         this.joined = false;
         this.host = false;
         this.round = 1.0;
+        this.timer = 60;
     }
 
 
@@ -150,7 +152,7 @@ Future<void> sendMessage(message) async {
 
 Future<void> sendComment(comment) async {
   await sendMessage({"action": "comment", "comment": comment, "host": this.host});
-  // await Future.delayed(Duration(milliseconds: 100));
+  await Future.delayed(Duration(milliseconds: 200));
   
   this.closeChannel();
   this.resetGame();
@@ -159,4 +161,7 @@ Future<void> sendComment(comment) async {
   void notifyListeners() {
     super.notifyListeners();
   }
+
+
+ 
 }

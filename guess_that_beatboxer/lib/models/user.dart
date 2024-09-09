@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 import '../api/fetch_user_stats.dart';
 import '../api/fetch_user_matches.dart';

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:guess_that_beatboxer/Widgets/popup.dart';
 import 'package:guess_that_beatboxer/main.dart';
 import 'package:guess_that_beatboxer/pages/game_over.dart';
 
@@ -51,9 +52,13 @@ handleMessage(data, game){
       }
 
       if(data["type"] == "game_delete"){
+        print(data);
         game.closeChannel();
-        game.resetGame();
         Navigator.pushReplacement(game.gameContext, MaterialPageRoute(builder: (context) => BottomNavBar()));
+        if (!game.host){
+          popup(game.gameContext, "Host has left the game");
+        }
+        game.resetGame();
       }
       if(data["type"] == "timer_started"){
         game.gameController.gameStarted = true;
@@ -71,6 +76,10 @@ handleMessage(data, game){
         game.sendMessage({"action": "game_over"});
         game.updateGameData(data['game']);
         Navigator.pushReplacement(game.gameContext, MaterialPageRoute(builder: (context) => GameOver()));
+      }
+
+      if(data["type"] == "timer_update"){
+        game.timer = data["timer"];
       }
 
 }
