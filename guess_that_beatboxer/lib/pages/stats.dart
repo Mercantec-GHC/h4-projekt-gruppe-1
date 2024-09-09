@@ -73,7 +73,7 @@ class StatsSection extends StatelessWidget {
               children: [
                 StatsBox(
                   title: 'Matches Played',
-                  value: user.userStats.gamesPlayed.toString(),
+                  value: user.userStats.games_played.toString(),
                 ),
                 StatsBox(
                   title: 'Games Won',
@@ -92,8 +92,8 @@ class StatsSection extends StatelessWidget {
                   value: user.userStats.rightGuesses.toString(),
                 ),
                 StatsBox(
-                  title: 'Right guesses',
-                  value: user.userStats.rightGuesses.toString(),
+                  title: 'Draw',
+                  value: user.userStats.draw.toString(),
                 ),
               ],
             ),
