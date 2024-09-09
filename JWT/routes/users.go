@@ -100,7 +100,6 @@ func UpdateUser(c *gin.Context) {
 		return
 	}
 
-	// If the password has been changed, hash the new password
 	if updatedUser.Password != user.Password {
 		hashedPassword, err := util.HashPassword(updatedUser.Password)
 		if err != nil {
@@ -120,7 +119,6 @@ func UpdateUser(c *gin.Context) {
 		return
 	}
 
-	// Generate a new token for the updated user
 	token, err := util.CreateToken(user.Name, user.Email, user.Phone, user.Username, user.ID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token", "details": err.Error()})

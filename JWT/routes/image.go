@@ -97,7 +97,6 @@ func UpdateImage(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update image"})
 		return
 	}
-
 }
 
 // delete image.
