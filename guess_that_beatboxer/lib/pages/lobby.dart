@@ -145,7 +145,14 @@ class MatchIdSection extends StatelessWidget {
   }
 }
 
-class KategoriSection extends StatelessWidget {
+class KategoriSection extends StatefulWidget {
+  @override
+  _KategoriSectionState createState() => _KategoriSectionState();
+}
+
+class _KategoriSectionState extends State<KategoriSection> {
+  int selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
@@ -157,9 +164,17 @@ class KategoriSection extends StatelessWidget {
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
       ),
-      itemCount: 4, // Number of categories
+      itemCount: 4, 
       itemBuilder: (context, index) {
-        return CategoryCard(title: getTitle(index));
+        return CategoryCard(
+          title: getTitle(index),
+          isSelected: index == selectedIndex, 
+          onTap: () {
+            setState(() {
+              selectedIndex = index; 
+            });
+          },
+        );
       },
     );
   }
@@ -182,21 +197,25 @@ class KategoriSection extends StatelessWidget {
 
 class CategoryCard extends StatelessWidget {
   final String title;
+  final bool isSelected;
+  final VoidCallback onTap;
 
-  CategoryCard({required this.title});
+  CategoryCard({required this.title, required this.isSelected, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-
-      },
+      onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           image: DecorationImage(
-            image: AssetImage('assets/beatbox.png'), // Replace with actual image path
+            image: AssetImage('assets/beatbox.png'), 
             fit: BoxFit.cover,
+          ),
+          border: Border.all(
+            color: isSelected ? Colors.red : Colors.transparent, 
+            width: 4,
           ),
         ),
         child: Center(

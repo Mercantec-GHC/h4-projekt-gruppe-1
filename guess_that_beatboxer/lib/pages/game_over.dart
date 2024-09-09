@@ -74,13 +74,20 @@ class _GameOverState extends State<GameOver> {
               padding: EdgeInsets.symmetric(vertical: 16.0), // Tilføj lidt polstring
               child: Column(
                 children: [
-                  TextField(
-                      controller: _commentController,
-                      decoration: InputDecoration(
-                        labelText: "Leave a comment",
-                        hintText: "Comment",
+                  Center(
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      child: TextField(
+                        controller: _commentController,
+                        decoration: InputDecoration(
+                          labelText: "Leave a comment",
+                          hintText: "Comment",
+                          border: OutlineInputBorder(),
+                        ),
                       ),
                     ),
+                  ),
+                  SizedBox(height: 12,),
                   Buttons(
                     pressFunction: () {
                       game.sendComment(_commentController.text);

@@ -6,8 +6,9 @@ class UserStats {
     int rightGuesses;
     int skips;
     String updated;
+    int draw;
     
-    UserStats({this.wins = 0, this.lost = 0, this.gamesPlayed = 0, this.rightGuesses = 0, this.skips = 0, this.updated = " "});
+    UserStats({this.wins = 0, this.lost = 0, this.gamesPlayed = 0, this.rightGuesses = 0, this.skips = 0, this.updated = " ", this.draw = 0});
 
 
     factory UserStats.fromJson(Map<String, dynamic> json) {
@@ -18,6 +19,7 @@ class UserStats {
         rightGuesses: json['right_guesses'],
         skips: json['skips'],
         updated: json['updated_at'],
+        draw: json['draw']
       );
     }
 }

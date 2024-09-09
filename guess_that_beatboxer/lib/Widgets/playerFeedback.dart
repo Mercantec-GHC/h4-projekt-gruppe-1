@@ -7,7 +7,8 @@ class MatchTile extends StatelessWidget {
   final String player1Feedback;
   final String player2;
   final String player2Feedback;
-  final String winner;
+  final String? winner;
+  final bool? draw;
 
   MatchTile({
     required this.matchNumber,
@@ -15,7 +16,8 @@ class MatchTile extends StatelessWidget {
     required this.player1Feedback,
     required this.player2,
     required this.player2Feedback,
-    required this.winner,
+    this.winner,
+    this.draw,
   });
 
   @override
@@ -33,9 +35,14 @@ class MatchTile extends StatelessWidget {
                 fontSize: 16,
               ),
             ),
-            Text(
-              "Winner of the match: $winner",
-              style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+           Text(
+              draw == true
+                  ? "The match ended in a draw"
+                  : "Winner of the match: $winner",
+              style: TextStyle(
+                color: draw == true ? Colors.pink.shade300 : Colors.green,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             SizedBox(height: 8),
             Text(
@@ -96,6 +103,7 @@ class PlayerFeedback extends StatelessWidget {
                   player2: match.player_2_user_name,
                   player2Feedback: match.player_2_comment,
                   winner: match.winner,
+                  draw: match.draw,
                 );
               },
             ),

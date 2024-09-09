@@ -73,7 +73,7 @@ class StatsSection extends StatelessWidget {
               children: [
                 StatsBox(
                   title: 'Matches Played',
-                  value: user.userStats.games_played.toString(),
+                  value: user.userStats.gamesPlayed.toString(),
                 ),
                 StatsBox(
                   title: 'Games Won',
