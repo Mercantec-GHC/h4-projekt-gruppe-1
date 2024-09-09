@@ -78,7 +78,6 @@ class User {
     }
   }
 
-
   decode () {
     var decodedToken = JwtDecoder.decode(jsonWebToken);
     id = decodedToken['id'];

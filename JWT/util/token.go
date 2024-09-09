@@ -2,14 +2,18 @@ package util
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt"
+	"github.com/joho/godotenv"
 )
 
-var secretKey = []byte("your-secret-key")
-
 func CreateToken(name string, email string, phone string, username string, id uint) (string, error) {
+	godotenv.Load()
+
+	var secretKey = []byte(os.Getenv("SECRET_KEY"))
+
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"sub":      name,
 		"email":    email,
@@ -31,17 +35,23 @@ func CreateToken(name string, email string, phone string, username string, id ui
 	return tokenString, nil
 }
 
-/*func CreateRefreshToken(id uint) (string, error) {
-	refreshClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"id":  id,
+func CreateRefreshToken(id uint) (string, error) {
+	godotenv.Load()
+
+	var secretKey = []byte(os.Getenv("SECRET_KEY"))
+
+	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"iss": "token-auth",
 		"exp": time.Now().Add(time.Hour * 24 * 7).Unix(),
 		"iat": time.Now().Unix(),
+		"id":  id,
 	})
 
-	refreshTokenString, err := refreshClaims.SignedString(secretKey)
+	tokenString, err := claims.SignedString(secretKey)
 	if err != nil {
 		return "", err
 	}
 
-	return refreshTokenString, nil
-}*/
+	fmt.Printf("Refresh token claims added: %+v\n", claims)
+	return tokenString, nil
+}

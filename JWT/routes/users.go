@@ -19,13 +19,13 @@ import (
 func Users(c *gin.Context) {
 	var users []models.User
 
+	// Query the database to find all users
 	if result := db.DB.Db.Find(&users); result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
 		return
 	}
 
 	c.JSON(http.StatusOK, users)
-
 }
 
 // GetSingleUser handles the request to get a single user by ID.
@@ -50,7 +50,7 @@ func GetSingleUser(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, user)
 }
 
-// Delete user.
+// DeleteUser handles the request to delete a user by ID.
 //
 // @Summary      Delete user with specific id
 // @Description  Delete user
@@ -74,18 +74,7 @@ func DeleteUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "User deleted"})
 }
 
-// Update user.
-//
-// @Summary      Update user with specific id
-// @Description  Update user
-// @Tags         user
-// @Param        id path string true "User ID"
-// @Param        request body models.User true "User data"
-// @Accept       json
-// @Produce      application/json
-// @Success      200 {object} map[string]interface{} "User updated"
-// @Router       /user/{id} [patch]
-// Update user.
+// UpdateUser handles the request to update a user by ID.
 //
 // @Summary      Update user with specific id
 // @Description  Update user
@@ -111,6 +100,7 @@ func UpdateUser(c *gin.Context) {
 		return
 	}
 
+	// If the password has been changed, hash the new password
 	if updatedUser.Password != user.Password {
 		hashedPassword, err := util.HashPassword(updatedUser.Password)
 		if err != nil {
@@ -130,6 +120,7 @@ func UpdateUser(c *gin.Context) {
 		return
 	}
 
+	// Generate a new token for the updated user
 	token, err := util.CreateToken(user.Name, user.Email, user.Phone, user.Username, user.ID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token", "details": err.Error()})

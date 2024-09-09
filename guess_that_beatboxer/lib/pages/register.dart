@@ -215,38 +215,35 @@ class _inputFieldsState extends State<inputFields> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: <Widget>[
-
-          for (int i = 0; i < widget.labels.length; i++)
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: TextField(
-                controller: widget._controllers[i],
-                obscureText: widget.labels[i].toLowerCase().contains('password'),
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: widget.userInfo[i],
-                  hintText: widget.labels[i],
-                ),
+    return Column(
+      children: <Widget>[
+    
+        for (int i = 0; i < widget.labels.length; i++)
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: widget._controllers[i],
+              obscureText: widget.labels[i].toLowerCase().contains('password'),
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: widget.userInfo[i],
+                hintText: widget.labels[i],
               ),
             ),
-            ImageField(
-            multipleUpload: false,
-            onUpload: (dataSource, controllerLinearProgressIndicator) async {
-              if (dataSource is XFile) {
-                final bytes = await dataSource.readAsBytes();
-                setState(() {
-                  imageData = base64Encode(bytes);
-                  widget.imageData(imageData);
-                });
-              }
-            },
           ),
-        ],
-      ),
+          ImageField(
+          multipleUpload: false,
+          onUpload: (dataSource, controllerLinearProgressIndicator) async {
+            if (dataSource is XFile) {
+              final bytes = await dataSource.readAsBytes();
+              setState(() {
+                imageData = base64Encode(bytes);
+                widget.imageData(imageData);
+              });
+            }
+          },
+        ),
+      ],
     );
   }
 }
