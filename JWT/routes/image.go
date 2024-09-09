@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"encoding/base64"
 	"net/http"
 	"strconv"
 	"token-auth/db"
@@ -29,6 +30,14 @@ func UploadImage(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
 		return
 	}
+
+	// Decode base64 image data to binary
+	imageData, err := base64.StdEncoding.DecodeString(string(newImage.Image))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid base64 image data"})
+		return
+	}
+	newImage.Image = imageData
 
 	// Set the UserID for the image
 	userIDUint, err := strconv.ParseUint(userID, 10, 64)
@@ -66,6 +75,9 @@ func GetImage(c *gin.Context) {
 		return
 	}
 
+	// Encode binary image data to base64
+	image.Image = []byte(base64.StdEncoding.EncodeToString(image.Image))
+
 	c.JSON(http.StatusOK, image)
 }
 
@@ -90,6 +102,14 @@ func UpdateImage(c *gin.Context) {
 		return
 	}
 
+	// Decode base64 image data to binary
+	imageData, err := base64.StdEncoding.DecodeString(string(updatedImage.Image))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid base64 image data"})
+		return
+	}
+	updatedImage.Image = imageData
+
 	// Set the UserID for the image
 	userIDUint, err := strconv.ParseUint(userID, 10, 64)
 	if err != nil {
@@ -103,6 +123,8 @@ func UpdateImage(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update image"})
 		return
 	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Image updated"})
 }
 
 // delete image.
