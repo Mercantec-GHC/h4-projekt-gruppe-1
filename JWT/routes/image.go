@@ -24,13 +24,11 @@ func UploadImage(c *gin.Context) {
 	var newImage models.Image
 	userID := c.Param("id")
 
-	// Bind the request body to the new image struct
 	if err := c.ShouldBindJSON(&newImage); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
 		return
 	}
 
-	// Set the UserID for the image
 	userIDUint, err := strconv.ParseUint(userID, 10, 64)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
@@ -38,7 +36,6 @@ func UploadImage(c *gin.Context) {
 	}
 	newImage.UserID = uint(userIDUint)
 
-	// Create new image in the database
 	if err := db.DB.Db.Create(&newImage).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to upload image"})
 		return
