@@ -2,18 +2,17 @@ package util
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt"
+	"github.com/joho/godotenv"
 )
 
 func CreateToken(name string, email string, phone string, username string, id uint) (string, error) {
-	/* godotenv.Load() */
+	godotenv.Load()
 
-	/* 	var secretKey = []byte(os.Getenv("SECRET_KEY"))
-	 */ /* var secretKey = ("enSuperFedKode") */
-
-	var secretKey = []byte("your-secret-key")
+	var secretKey = []byte(os.Getenv("SECRET_KEY"))
 
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"sub":      name,
