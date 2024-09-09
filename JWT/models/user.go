@@ -13,6 +13,6 @@ type User struct {
 type Image struct {
 	ID     uint   `json:"id" gorm:"primary_key"`
 	Name   string `json:"name"`
-	Image  []byte `json:"image"`
+	Image  string `json:"image"`
 	UserID uint   `json:"user_id"`
 }
