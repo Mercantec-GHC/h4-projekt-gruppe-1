@@ -69,8 +69,7 @@ class _PlayerOneState extends State<PlayerOne> {
   final user;
   _PlayerOneState(this.game, this.user);
     DateTime? lastPrintedTime ;
-    StreamSubscription<AccelerometerEvent>? stream; // Declare the 'stream' variable
-
+    StreamSubscription<AccelerometerEvent>? stream; 
     @override
     initState() {
       super.initState();

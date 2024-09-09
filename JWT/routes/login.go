@@ -41,6 +41,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
+	// Compare the password with the hashed password function is in util folder hash.go
 	if !util.ComparePassword(user.Password, loginData.Password) {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid email or password"})
 		return

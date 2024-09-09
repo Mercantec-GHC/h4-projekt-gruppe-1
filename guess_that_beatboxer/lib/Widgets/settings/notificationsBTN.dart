@@ -16,7 +16,7 @@ class _NotificationButtonState extends State<NotificationButton> {
   Future<void> _showNotification() async {
     if (!_notificationsEnabled) return;
 
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
       'default_channel',
       'Default Notifications',
       importance: Importance.max,
@@ -46,19 +46,20 @@ class _NotificationButtonState extends State<NotificationButton> {
       mainAxisAlignment: MainAxisAlignment.start,
       verticalDirection: VerticalDirection.down,
       children: [
-        ElevatedButton(
-          onPressed: _showNotification,
-          child: Text('Send Notification'),
-        ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Enable Notifications'),
+            const Text('Enable Notifications'),
             Switch(
               value: _notificationsEnabled,
               onChanged: (bool value) {
                 _toggleNotifications();
               },
+              activeColor: Colors.red,
+              activeTrackColor: Colors.black,
+              inactiveThumbColor: Colors.black,
+              inactiveTrackColor: Colors.white,
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
           ],
         ),

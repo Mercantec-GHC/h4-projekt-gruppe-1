@@ -19,7 +19,7 @@ class UserStats {
         rightGuesses: json['right_guesses'],
         skips: json['skips'],
         updated: json['updated_at'],
-        draw: json['draw']
+        draw: json['draw'],
       );
     }
 }

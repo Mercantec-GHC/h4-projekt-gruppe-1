@@ -31,6 +31,7 @@ func main() {
 			"title": "Home Page",
 		})
 	})
+
 	db.Connect()
 
 	r.GET("/users", routes.Users)

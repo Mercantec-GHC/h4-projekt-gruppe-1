@@ -4,7 +4,7 @@ import 'package:guess_that_beatboxer/models/user.dart';
 class ChangeUsername extends StatefulWidget {
   final User user;
 
-  ChangeUsername({Key? key, required this.user}) : super(key: key);
+  const ChangeUsername({super.key, required this.user});
 
   @override
   _ChangeUsernameState createState() => _ChangeUsernameState();
@@ -36,7 +36,6 @@ class _ChangeUsernameState extends State<ChangeUsername> {
       });
 
     } catch (e) {
-      print(e);
       setState(() {
         _statusMessage = "Failed to change username.";
         _isLoading = false;
@@ -58,7 +57,7 @@ class _ChangeUsernameState extends State<ChangeUsername> {
                   width: double.infinity,
                   child: TextField(
                     controller: _usernameController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: "Enter new username",
                     ),
@@ -68,9 +67,9 @@ class _ChangeUsernameState extends State<ChangeUsername> {
               
               ElevatedButton(
                 style: ButtonStyle(
-                  minimumSize: WidgetStatePropertyAll(Size(double.infinity, 50)),
+                  minimumSize: const WidgetStatePropertyAll(Size(double.infinity, 50)),
                   backgroundColor: WidgetStateProperty.all(Colors.black),
-                  textStyle: WidgetStateProperty.all(TextStyle(color: Colors.white)),
+                  textStyle: WidgetStateProperty.all(const TextStyle(color: Colors.white)),
                   shape: WidgetStatePropertyAll<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
@@ -78,10 +77,10 @@ class _ChangeUsernameState extends State<ChangeUsername> {
                   ),                  
                 ),
                 onPressed: _isLoading ? null : _changeUsername,
-                child: _isLoading ? CircularProgressIndicator() : Text('Change username'),
+                child: _isLoading ? const CircularProgressIndicator() : const Text('Change username'),
               ),
               if (_statusMessage.isNotEmpty) ...[
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Text(
                   _statusMessage,
                   style: TextStyle(
