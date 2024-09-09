@@ -9,6 +9,25 @@ import (
 	"github.com/joho/godotenv"
 )
 
+func CreateRefreshToken(name string, id uint) (string, error) {
+	godotenv.Load()
+
+	var secretKey = []byte(os.Getenv("SECRET_KEY"))
+
+	refreshToken := jwt.New(jwt.SigningMethodHS256)
+	rtClaims := refreshToken.Claims.(jwt.MapClaims)
+	rtClaims["sub"] = name
+	rtClaims["id"] = id
+	rtClaims["exp"] = time.Now().Add(time.Hour * 24).Unix()
+	rt, err := refreshToken.SignedString(secretKey)
+
+	if err != nil {
+		return "", err
+	}
+
+	return rt, nil
+}
+
 func CreateToken(name string, email string, phone string, username string, id uint) (string, error) {
 	godotenv.Load()
 
@@ -30,28 +49,22 @@ func CreateToken(name string, email string, phone string, username string, id ui
 		return "", err
 	}
 
-	fmt.Printf("Token claims added: %+v\n", claims)
+	fmt.Println("Token: ", tokenString)
 
 	return tokenString, nil
 }
 
-func CreateRefreshToken(id uint) (string, error) {
-	godotenv.Load()
-
-	var secretKey = []byte(os.Getenv("SECRET_KEY"))
-
-	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"iss": "token-auth",
+/*func CreateRefreshToken(id uint) (string, error) {
+	refreshClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"id":  id,
 		"exp": time.Now().Add(time.Hour * 24 * 7).Unix(),
 		"iat": time.Now().Unix(),
-		"id":  id,
 	})
 
-	tokenString, err := claims.SignedString(secretKey)
+	refreshTokenString, err := refreshClaims.SignedString(secretKey)
 	if err != nil {
 		return "", err
 	}
 
-	fmt.Printf("Refresh token claims added: %+v\n", claims)
-	return tokenString, nil
-}
+	return refreshTokenString, nil
+}*/

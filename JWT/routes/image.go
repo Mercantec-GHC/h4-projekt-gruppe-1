@@ -24,13 +24,11 @@ func UploadImage(c *gin.Context) {
 	var newImage models.Image
 	userID := c.Param("id")
 
-	// Bind the request body to the new image struct
 	if err := c.ShouldBindJSON(&newImage); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
 		return
 	}
 
-	// Set the UserID for the image
 	userIDUint, err := strconv.ParseUint(userID, 10, 64)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
@@ -38,7 +36,6 @@ func UploadImage(c *gin.Context) {
 	}
 	newImage.UserID = uint(userIDUint)
 
-	// Create new image in the database
 	if err := db.DB.Db.Create(&newImage).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to upload image"})
 		return
@@ -84,13 +81,11 @@ func UpdateImage(c *gin.Context) {
 	var updatedImage models.Image
 	userID := c.Param("id")
 
-	// Bind the request body to the updated image struct
 	if err := c.ShouldBindJSON(&updatedImage); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
 		return
 	}
 
-	// Set the UserID for the image
 	userIDUint, err := strconv.ParseUint(userID, 10, 64)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
@@ -98,7 +93,6 @@ func UpdateImage(c *gin.Context) {
 	}
 	updatedImage.UserID = uint(userIDUint)
 
-	// Update the image in the database
 	if err := db.DB.Db.Model(&models.Image{}).Where("user_id = ?", userID).Updates(updatedImage).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update image"})
 		return
@@ -117,7 +111,6 @@ func UpdateImage(c *gin.Context) {
 func DeleteImage(c *gin.Context) {
 	userID := c.Param("id")
 
-	// Delete the image by user ID
 	if err := db.DB.Db.Where("user_id = ?", userID).Delete(&models.Image{}).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete image"})
 		return
