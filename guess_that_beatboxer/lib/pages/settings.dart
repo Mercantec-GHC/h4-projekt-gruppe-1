@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:guess_that_beatboxer/Widgets/appBar.dart';
 import 'package:guess_that_beatboxer/models/user.dart';
+import 'package:guess_that_beatboxer/pages/landing.dart';
 import 'package:guess_that_beatboxer/pages/login.dart';
-import 'package:guess_that_beatboxer/pages/register.dart';
+import 'package:guess_that_beatboxer/Widgets/util/inputFields.dart';
 import '../Widgets/buttons.dart';
 import '../Widgets/settings/notificationsBTN.dart';
 import '../Widgets/settings/muteSoundSwitch.dart';
 import '../../api/patch_user.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
 import 'dart:ui';
+import 'package:guess_that_beatboxer/widgets/util/spinner.dart';
 
 class SettingsPage extends StatefulWidget {
   final user;
@@ -26,6 +27,7 @@ class _SettingsPageState extends State<SettingsPage> {
   final List<TextEditingController> _controllers = List.generate(Updatelabels.length, (index) => TextEditingController());
 
   bool _isLoading = false;
+  bool _isUpdated = false;
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   String? imageData;
 
@@ -33,14 +35,14 @@ class _SettingsPageState extends State<SettingsPage> {
   void initState() {
     super.initState();
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    const  initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
-    const  initializationSettings = InitializationSettings(
+    const initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
+    const initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid,
     );
     flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
-    void _updateUser() async {
+  void _updateUser() async {
     try {
       setState(() {
         _isLoading = true;
@@ -64,160 +66,169 @@ class _SettingsPageState extends State<SettingsPage> {
       await widget.user.updateToken(newToken);
       setState(() {
         _isLoading = false;
+        _isUpdated = true;
       });
+
+      await Future.delayed(Duration(seconds: 2));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage()));
     } catch (e) {
       print(e);
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
-@override
-Widget build(BuildContext context) {
-  List<String> userInfo = [
-    user.userName,
-    user.email,
-    user.phone,
-    'Password',
-    'Bekræft Password',
-  ];
+  @override
+  Widget build(BuildContext context) {
+    List<String> userInfo = [
+      user.userName,
+      user.email,
+      user.phone,
+      'Password',
+      'Bekræft Password',
+    ];
 
-  return Scaffold(
-    appBar: appBarFunction("Settings", context),
-    backgroundColor: Colors.white,
-    body: Stack(
-      children: [
-        SingleChildScrollView(
-          child: Container(
-            width: double.infinity,
-            child: Column(
-              children: <Widget>[
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    'Notification Settings',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+    return Scaffold(
+      appBar: appBarFunction("Settings", context),
+      backgroundColor: Colors.white,
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Container(
+              width: double.infinity,
+              child: Column(
+                children: <Widget>[
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      'Notification Settings',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: NotificationButton(flutterLocalNotificationsPlugin),
-                    ),
-                    const SizedBox(width: 20),
-                    Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: EnableSoundButton(),
-                    ),
-                  ]
-                ),
-                const SizedBox(height: 20),
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    'Change User Information',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: NotificationButton(flutterLocalNotificationsPlugin),
+                      ),
+                      const SizedBox(width: 20),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: EnableSoundButton(),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      'Change User Information',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-                Center(
-                  child: inputFields(_controllers, Updatelabels, userInfo, (data) {
-                    setState(() {
-                      imageData = data;
-                    });
-                  }),
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Buttons(
-                          text: 'Update',
-                          pressFunction: () {
-                            _updateUser();
-                          },
-                          length: double.infinity,
-                          height: 50,
+                  Center(
+                    child: InputFields(_controllers, Updatelabels, userInfo, (data) {
+                      setState(() {
+                        imageData = data;
+                      });
+                    }),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Buttons(
+                            text: 'Update',
+                            pressFunction: () {
+                              _updateUser();
+                            },
+                            length: double.infinity,
+                            height: 50,
+                          ),
                         ),
                       ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Buttons(
-                          text: 'Cancel',
-                          pressFunction: () {
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
-                          },
-                          length: double.infinity,
-                          height: 50,
-                          backgroundColor: Colors.white,
-                          textColor: Colors.black,
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Buttons(
+                            text: 'Cancel',
+                            pressFunction: () {
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
+                            },
+                            length: double.infinity,
+                            height: 50,
+                            backgroundColor: Colors.white,
+                            textColor: Colors.black,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Buttons(
-                          text: 'Delete Account',
-                          pressFunction: () {
-                            _updateUser();
-                          },
-                          length: double.infinity,
-                          height: 50,
-                          backgroundColor: Colors.red,
-                          textColor: Colors.white,
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Buttons(
+                            text: 'Delete Account',
+                            pressFunction: () {
+                              _updateUser();
+                            },
+                            length: double.infinity,
+                            height: 50,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                          ),
                         ),
                       ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Buttons(
-                          text: 'Logout',
-                          pressFunction: () async {
-                            await user.deleteToken();
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
-                          },
-                          length: double.infinity,
-                          height: 50,
-                          backgroundColor: Colors.white,
-                          textColor: Colors.black,
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Buttons(
+                            text: 'Logout',
+                            pressFunction: () async {
+                              await user.deleteToken();
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
+                            },
+                            length: double.infinity,
+                            height: 50,
+                            backgroundColor: Colors.white,
+                            textColor: Colors.black,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-        if (_isLoading)
-          BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-            child: const Center(
-              child: CircularProgressIndicator(),
+          if (_isLoading || _isUpdated)
+            BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+              child: LoadingSpinner(
+                isLoading: _isLoading,
+                isSuccess: _isUpdated,
+                successMessage: 'Settings updated successfully!',
+              ),
             ),
-          ),
-      ],
-    ),
-  );
-}
+        ],
+      ),
+    );
+  }
 }
 
 List<String> Updatelabels = [

@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../Widgets/buttons.dart';
 import '../api/fetch_login.dart';
 import '../Widgets/appBarLogin.dart';
+import '../Widgets/util/resetPassword.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -114,8 +115,8 @@ class _LoginFormState extends State<LoginForm> {
     var appState = context.watch<MyAppState>();
     if(_isLoading){
       return CircularProgressIndicator();
-    }else
-    return Form(
+    }else {
+      return Form(
       key: _formKey,
       child:
      Padding(
@@ -147,7 +148,13 @@ class _LoginFormState extends State<LoginForm> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-                Buttons( text: "Forgot password", pressFunction: () {_showPopup(context, "forgot password");}, backgroundColor: Colors.white, textColor: Colors.black),
+                Buttons(
+                      text: "Forgot password",
+                      pressFunction: () {
+                        resetPassword(context);
+                      },
+                      backgroundColor: Colors.white,
+                      textColor: Colors.black),
                 SizedBox(width: 10),
                 Buttons(text: "Login",pressFunction: () async {await login(appState);}, backgroundColor: Colors.black, textColor: Colors.white),
             ],
@@ -158,6 +165,7 @@ class _LoginFormState extends State<LoginForm> {
            ),
      ),
     );
+    }
   }
 
 void _showPopup(BuildContext context, error) {

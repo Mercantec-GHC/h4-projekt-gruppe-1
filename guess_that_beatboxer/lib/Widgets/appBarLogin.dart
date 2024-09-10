@@ -12,7 +12,7 @@ appBarLoginFunction (text){
               fit: BoxFit.contain,
               height: 42, 
             ),
-            SizedBox(width: 25),
+            const SizedBox(width: 25),
             Text(text),
           ],
         ),

@@ -16,6 +16,8 @@ definitions:
         type: string
       password:
         type: string
+      refreshToken:
+        type: string
     type: object
   models.User:
     properties:
@@ -31,6 +33,8 @@ definitions:
         type: string
       phone:
         type: string
+      refresh_token:
+        type: boolean
       username:
         type: string
     type: object
@@ -38,6 +42,24 @@ info:
   contact: {}
 paths:
   /image/{id}:
+    delete:
+      description: Delete image for a user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Delete image
+      tags:
+      - image
     get:
       description: Get image for a user
       parameters:
@@ -54,6 +76,32 @@ paths:
           schema:
             $ref: '#/definitions/models.Image'
       summary: Get image
+      tags:
+      - image
+    patch:
+      consumes:
+      - application/json
+      description: Update image for a user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Image data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Image'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Update image
       tags:
       - image
     post:
@@ -168,22 +216,8 @@ paths:
     patch:
       consumes:
       - application/json
-      - application/json
-      description: |-
-        Update user
-        Update user
+      description: Update user
       parameters:
-      - description: User ID
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: User data
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/models.User'
       - description: User ID
         in: path
         name: id
@@ -197,32 +231,36 @@ paths:
           $ref: '#/definitions/models.User'
       produces:
       - application/json
-      - application/json
       responses:
         "200":
           description: User updated
           schema:
             additionalProperties: true
             type: object
-        "400":
-          description: Invalid request
-          schema:
-            additionalProperties: true
-            type: object
-        "404":
-          description: User not found
-          schema:
-            additionalProperties: true
-            type: object
-        "500":
-          description: Failed to update user
-          schema:
-            additionalProperties: true
-            type: object
       summary: Update user with specific id
       tags:
       - user
-      - user
+  /user/email/{email}:
+    get:
+      consumes:
+      - application/json
+      description: Get user details by email
+      parameters:
+      - description: User ID
+        in: path
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: Get user by email
+      tags:
+      - users
   /users:
     get:
       description: Retrieves a list of user accounts

@@ -31,14 +31,14 @@ AppBar appBarFunction(String text, BuildContext context) {
           fit: BoxFit.contain,
           height: 42,
         ),
-        SizedBox(width: 25),
+        const SizedBox(width: 25),
         Text(text),
       ],
     ),
     centerTitle: true,
     actions: [
       IconButton(
-        icon: Icon(Icons.help_outline, color: Colors.black),
+        icon: const Icon(Icons.help_outline, color: Colors.black),
         onPressed: () {
           showHowToPlayPopup(context);
         },
