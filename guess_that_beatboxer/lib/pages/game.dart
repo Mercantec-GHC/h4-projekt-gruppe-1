@@ -8,13 +8,9 @@ import 'package:guess_that_beatboxer/models/game.dart';
 import 'package:provider/provider.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
-
-
 class GamePage extends StatelessWidget{
 
-
  GamePage();
-
 
   @override
  Widget build(BuildContext context) {
@@ -30,10 +26,8 @@ class GamePage extends StatelessWidget{
 
       ),
     );
-  
+  }
 }
-}
-
 
 class gameController extends StatelessWidget {
 
@@ -135,11 +129,6 @@ class PlayerTwo extends StatelessWidget {
   var gameStated = false;
   PlayerTwo(this.gameStated);
 
-
-
- 
-  
-
   String  timerText(timer) {
     int minutes = timer ~/ 60;
     int seconds = timer % 60;
@@ -147,10 +136,6 @@ class PlayerTwo extends StatelessWidget {
     String secondStr = seconds.toString().padLeft(2, '0');
     return "$minuteStr:$secondStr";
   }
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -186,11 +171,8 @@ class PlayerTwo extends StatelessWidget {
             game.gameController.startGame();
           },
           child: Text("Start Game", style: TextStyle(color: Colors.white, fontSize: MediaQuery.of(context).size.width * 0.05)),
-
         ),
           )
-        
-
         ],
       ) 
     );

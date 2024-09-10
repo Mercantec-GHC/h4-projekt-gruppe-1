@@ -14,12 +14,10 @@ class NotificationButton extends StatefulWidget {
 
 class _NotificationButtonState extends State<NotificationButton> {
   bool _notificationsEnabled = true;
-  late NotificationService _notificationService;
 
   @override
   void initState() {
     super.initState();
-    _notificationService = NotificationService(widget.flutterLocalNotificationsPlugin);
   }
 
   void _toggleNotifications() {

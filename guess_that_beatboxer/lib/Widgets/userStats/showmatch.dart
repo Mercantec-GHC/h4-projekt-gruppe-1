@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 
-Future<dynamic> popup(BuildContext context, match) {
+Future<dynamic> showMatch(BuildContext context, match) {
     final formattedDate = DateFormat.yMMMd().add_Hm().format(match.createdAt);
 
 

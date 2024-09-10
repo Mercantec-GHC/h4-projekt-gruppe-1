@@ -3,7 +3,10 @@ package main
 import (
 	"net/http"
 	"token-auth/db"
-	"token-auth/routes"
+	ImageRoutes "token-auth/routes/image"
+	LoginRoutes "token-auth/routes/login"
+	RegisterRoutes "token-auth/routes/register"
+	UserRoutes "token-auth/routes/user"
 
 	_ "token-auth/docs"
 
@@ -34,16 +37,10 @@ func main() {
 
 	db.Connect()
 
-	r.GET("/users", routes.Users)
-	r.GET("/user/:id", routes.GetSingleUser)
-	r.DELETE("/user/:id", routes.DeleteUser)
-	r.PATCH("/user/:id", routes.UpdateUser)
-	r.POST("/register", routes.Register)
-	r.POST("/image/:id", routes.UploadImage)
-	r.PATCH("/image/:id", routes.UpdateImage)
-	r.GET("/image/:id", routes.GetImage)
-	r.DELETE("/image/:id", routes.DeleteImage)
-	r.POST("/login", routes.Login)
+	UserRoutes.UserRoutes(r)
+	ImageRoutes.ImageRoutes(r)
+	RegisterRoutes.RegisterRoutes(r)
+	LoginRoutes.LoginRoutes(r)
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.Run(":8080")

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:guess_that_beatboxer/Widgets/popup.dart';
+import 'package:guess_that_beatboxer/Widgets/userStats/showmatch.dart';
 
 class MatchHistory extends StatelessWidget {
   final user;
@@ -52,7 +52,7 @@ class MatchHistory extends StatelessWidget {
                 for (var i = 0; i < user.matchHistory.length; i++)
                   GestureDetector(
                     onTap: () {
-                      popup(context, user.matchHistory[i]);
+                      showMatch(context, user.matchHistory[i]);
                     },
                     child: Container(
                       width: 75,
@@ -97,7 +97,7 @@ class MatchHistory extends StatelessWidget {
                           const SizedBox(height: 8),
                           TextButton(
                             onPressed: () {
-                              popup(context, user.matchHistory[i]);
+                              showMatch(context, user.matchHistory[i]);
                             },
                             child: const Text(
                               "View Match",

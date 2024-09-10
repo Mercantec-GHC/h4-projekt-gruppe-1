@@ -31,7 +31,12 @@ class NotificationService {
 
   void onUserLogin(bool notificationsEnabled, User user) {
     if (notificationsEnabled) {
-      sendNotification('Welcome ${user.name} to Swishbeater boxer', 'You have successfully logged in');
+      sendNotification('Welcome ${user.name} back', 'You have successfully logged in');
+    }
+  }
+  void onUserRegister(bool notificationsEnabled, User user) {
+    if (notificationsEnabled) {
+      sendNotification('Welcome ${user.name} to Swishbeater boxer', 'You have successfully registered');
     }
   }
 }
