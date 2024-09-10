@@ -5,13 +5,23 @@ class GameChannel < ApplicationCable::Channel
   end
 
   def unsubscribed
-    # Any cleanup needed when channel is unsubscribed
+    if Match.exists?(params[:game_id])
+      @game = Match.find(params[:game_id])
+      if @game.rounds < 6 && @game.rounds > 0
+        determine_winner(true)
+        game_over("test")
+        @game.rounds = 6
+        @game.save
+
+      end
+    end
+    
   end
 
   def join(data)
     player_data = data["playerInfo"]
     @player_instance = UserStat.find_by(user_id: player_data["user_id"])
-    @game.rounds = 1
+    @game.user_ids = @game.user_ids + [@player_instance["user_id"]] unless @game.user_ids.include?(@player_instance["user_id"])
     if player_data["player_type"] == "host"
       @game.player_1_user_name = player_data["user_name"]
     elsif player_data["player_type"] == "join"
@@ -25,15 +35,20 @@ class GameChannel < ApplicationCable::Channel
 
   def leave(data)
     @game.player_2_user_name = " "
+    @game.user_ids = @game.user_ids - [@player_instance.user_id]
     @game.save
     ActionCable.server.broadcast("game_channel_#{params[:game_id]}", {type: "game_update", game: @game})
     ActionCable.server.broadcast("game_channel_#{params[:game_id]}", {type: "game_leave"})
   end
 
   def start(data)
+    @game = Match.find(params[:game_id])
     @game.timer = data["timer"].to_i
+    @game.rounds = 1
     @game.save
     @beat_boxer = BeatBoxer.all
+    # @game.user_ids = @game.user_ids + [@player_instance["user_id"]] unless @game.user_ids.include?(@player_instance["user_id"])
+    ActionCable.server.broadcast("game_channel_#{params[:game_id]}", {type: "game_update", game: @game})
     ActionCable.server.broadcast("game_channel_#{params[:game_id]}", {type: "game_start", beat_boxer: @beat_boxer})
   end
 
@@ -44,6 +59,7 @@ class GameChannel < ApplicationCable::Channel
 
   def start_timer(data)
     @game = Match.find(params[:game_id])
+    # @game.user_ids = @game.user_ids + [@player_instance.user_id] unless @game.user_ids.include?(@player_instance.user_id)
     ActionCable.server.broadcast("game_channel_#{params[:game_id]}", {type: "timer_started"})
     Thread.new(count_down(data))
   end
@@ -51,6 +67,9 @@ class GameChannel < ApplicationCable::Channel
   def count_down(data)
     timer = @game.timer
     while timer >= 0
+      if timer == @game.timer / 2
+        ActionCable.server.broadcast("game_channel_#{params[:game_id]}", {type: "half_time"})
+      end
       ActionCable.server.broadcast("game_channel_#{params[:game_id]}", {type: "count_down", timer: timer})
       timer -= 1
       sleep(1)
@@ -79,25 +98,40 @@ class GameChannel < ApplicationCable::Channel
     ActionCable.server.broadcast("game_channel_#{params[:game_id]}", {type: "game_update", game: @game})
   end
 
-
+#snak med Mathias om det her
 
   def game_over(data)
     user = User.find(@player_instance.user_id)
     @game = Match.find(params[:game_id])
-    if user.username == @game.winner
+    if user.id == @game.winner.to_i
       @player_instance.wins += 1
-    elsif user.username == @game.loser
+    elsif user.id == @game.loser.to_i
       @player_instance.lost += 1
     else
       @player_instance.draw += 1
     end
+    @player_instance.games_played += 1
     @player_instance.save
   end
 
   def comment(data)
-    puts data
+    @game = Match.find(params[:game_id])
+    if data["host"]
+      @game.player_1_comment = data["comment"]
+    else
+      @game.player_2_comment = data["comment"]
+    end
+    @game.save
+
   end
 
+
+  def update_timer(data)
+    @game.timer = data["timer"]
+    @game.save
+
+    ActionCable.server.broadcast("game_channel_#{params[:game_id]}", {type: "timer_update", timer: @game.timer})
+  end
 
     private
 
@@ -122,19 +156,27 @@ class GameChannel < ApplicationCable::Channel
     @game.save
   end
 
-  def determine_winner()
-    if @game.player_1_points > @game.player_2_points
-      @game.winner = @game.player_1_user_name
-      @game.loser = @game.player_2_user_name
-    elsif @game.player_1_points < @game.player_2_points
-      @game.winner = @game.player_2_user_name
-      @game.loser = @game.player_1_user_name
+  def determine_winner(leaver = false)
+      @game = Match.find(params[:game_id])
+    if leaver
+      @game.loser = @player_instance.user_id
+      @game.winner = @game.user_ids.select { |id| id != @player_instance.user_id }[0]
     else
-      @game.draw = true
+      if @game.player_1_points > @game.player_2_points
+        @game.winner = User.find_by(username: @game.player_1_user_name).id
+        @game.loser = User.find_by(username: @game.player_2_user_name).id
+      elsif @game.player_1_points < @game.player_2_points
+        @game.winner = User.find_by(username: @game.player_2_user_name).id
+        @game.loser = User.find_by(username: @game.player_1_user_name).id
+      else
+        @game.draw = true
+      end
+  
     end
 
+    
     @game.save
-    ActionCable.server.broadcast("game_channel_#{params[:game_id]}", {type: "game_update", game: @game})
-    ActionCable.server.broadcast("game_channel_#{params[:game_id]}", {type: "game_over"})
+    ActionCable.server.broadcast("game_channel_#{params[:game_id]}", {type: "game_over", game: @game})
   end
+
 end
