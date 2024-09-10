@@ -1,5 +1,4 @@
-class BeatBoxerController < ApplicationController
-  # before_action :jwt_test
+class BeatBoxerController < LoginController
 
   def show
     

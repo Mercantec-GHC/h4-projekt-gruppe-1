@@ -1,4 +1,5 @@
-class MatchController < ApplicationController
+class MatchController < LoginController
+
   def show
     match = Match.find(params[:id])
     if match
@@ -6,12 +7,11 @@ class MatchController < ApplicationController
     else
       render json: {error: "Match not found"}, status: :not_found
     end
-    
   end
 
   def create
-
     match = Match.new(match_params)
+    match.timer = 60
     if match.save
       match.user_ids = params[:user_ids] if params[:user_ids].present?
       render json: match, status: :created
@@ -53,6 +53,7 @@ class MatchController < ApplicationController
   private
 
 def match_params
+
   params.fetch(:match, {}).permit(:winner, :loser, :player_1_points, :player_2_points, :draw, :player_1_user_name, :player_2_user_name, :player_1_comment, :player_2_comment)
         .tap do |match_params|
           match_params[:winner] ||= 'N/A'

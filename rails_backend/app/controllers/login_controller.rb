@@ -6,6 +6,8 @@ class LoginController < ApplicationController
 
   def json_token 
     token = request.headers["Authorization"]&.split(" ")&.last
+    puts JWT.decode(token, ENV['JWT_SECRET'], true, {algorithm: "HS256"})
+
     if token
       begin
         decoded_token = JWT.decode(token, ENV['JWT_SECRET'], true, {algorithm: "HS256"})

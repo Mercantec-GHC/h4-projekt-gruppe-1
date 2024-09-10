@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_05_123101) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_09_093211) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -38,7 +38,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_05_123101) do
     t.string "player_2_comment"
     t.string "player_1_user_name"
     t.string "player_2_user_name"
-    t.integer "timer", default: 0
+    t.integer "timer", default: 60
     t.integer "rounds", default: 0
   end
 
