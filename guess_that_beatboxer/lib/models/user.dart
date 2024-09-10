@@ -69,9 +69,9 @@ class User {
       if (expired()) {
         throw Exception('Token expired');
       }
-      var jsonData = await FetchMatchStats(jsonWebToken, id);
-      var data = jsonDecode(jsonData) as List<dynamic>;
-      matchHistory = data.map((item) => MatchHistory.fromJson(item)).toList();
+        var jsonData = await FetchMatchStats(jsonWebToken, id);
+        var data = jsonDecode(jsonData) as List<dynamic>;
+        matchHistory = data.map((item) => MatchHistory.fromJson(item)).toList();
     } catch (e) {
       print(e);
       throw Exception('Failed to load match data');
