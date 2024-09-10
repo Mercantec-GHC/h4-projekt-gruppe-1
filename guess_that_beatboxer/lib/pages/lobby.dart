@@ -440,17 +440,22 @@ class StartSection extends StatelessWidget {
   Widget build(BuildContext context) {
     var game = context.watch<Game>();
     int totalseconds = (minutes * 60) + seconds;
-
-    return Center(
-      child: ElevatedButton(
-        onPressed: () {
-          game.initGame(totalseconds);
-        },
-        child: Text("Start game", style: TextStyle(color: Colors.white),),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.black,
+    if(game.host){
+      return Center(
+        child: ElevatedButton(
+          onPressed: () {
+            game.initGame(totalseconds);
+          },
+          child: Text("Start game", style: TextStyle(color: Colors.white),),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.black,
+          ),
         ),
-      ),
-    );
+      );
+    }else{
+      return Center(
+        child: Text("Waiting for host to start the game"),
+      );
+    }
   }
 }

@@ -29,86 +29,93 @@ class _GameOverState extends State<GameOver> {
 
 
     return Scaffold(
+      resizeToAvoidBottomInset:true,
       body: SafeArea(
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(
-                  "${game.player_1_user_name}: ${game.player_1_points}",
-                  style: TextStyle(
-                    fontSize: MediaQuery.of(context).size.width * 0.06,
-                  ),
-                ),
-                Text(
-                  "${game.player_2_user_name}: ${game.player_2_points}",
-                  style: TextStyle(
-                    fontSize: MediaQuery.of(context).size.width * 0.06,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.2),
-            Center(
-              child: game.draw
-                  ? Text(
-                      "It's a draw!",
-                      style: TextStyle(
-                        fontSize: MediaQuery.of(context).size.width * 0.09,
-                      ),
-                    )
-                  : int.parse(game.winner) == user.id
-                      ? Text(
-                          "You win!",
-                          style: TextStyle(
-                            fontSize: MediaQuery.of(context).size.width * 0.09,
-                          ),
-                        )
-                      : Text(
-                          "You lose!",
-                          style: TextStyle(
-                            fontSize: MediaQuery.of(context).size.width * 0.09,
-                          ),
-                        ),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.25),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0), // Tilføj lidt polstring
+        child: SingleChildScrollView( // Gør det muligt at rulle, når tastaturet dukker op
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  Center(
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      child: TextField(
-                        controller: _commentController,
-                        decoration: InputDecoration(
-                          labelText: "Leave a comment",
-                          hintText: "Comment",
-                          border: OutlineInputBorder(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        "${game.player_1_user_name}: ${game.player_1_points}",
+                        style: TextStyle(
+                          fontSize: MediaQuery.of(context).size.width * 0.06,
                         ),
                       ),
-                    ),
+                      Text(
+                        "${game.player_2_user_name}: ${game.player_2_points}",
+                        style: TextStyle(
+                          fontSize: MediaQuery.of(context).size.width * 0.06,
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 8,),
-                  Buttons(
-                    pressFunction: () async {
-                      await game.sendComment(_commentController.text);
-                      appState.updateRecentMatches();
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => BottomNavBar()));
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.2),
+                  Center(
+                    child: game.draw
+                        ? Text(
+                            "It's a draw!",
+                            style: TextStyle(
+                              fontSize: MediaQuery.of(context).size.width * 0.09,
+                            ),
+                          )
+                        : int.parse(game.winner) == user.id
+                            ? Text(
+                                "You win!",
+                                style: TextStyle(
+                                  fontSize: MediaQuery.of(context).size.width * 0.09,
+                                ),
+                              )
+                            : Text(
+                                "You lose!",
+                                style: TextStyle(
+                                  fontSize: MediaQuery.of(context).size.width * 0.09,
+                                ),
+                              ),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.25),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16.0), // Tilføj lidt polstring
+                    child: Column(
+                      children: [
+                        Center(
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.8,
+                            child: TextField(
+                              controller: _commentController,
+                              decoration: InputDecoration(
+                                labelText: "Leave a comment",
+                                hintText: "Comment",
+                                border: OutlineInputBorder(),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 8,),
+                        Buttons(
+                          pressFunction: () async {
+                            await game.sendComment(_commentController.text);
+                            appState.updateRecentMatches();
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => BottomNavBar()));
 
-                    },
-                    text: "Submit",
-                    length: MediaQuery.of(context).size.width * 0.5,
+                          },
+                          text: "Submit",
+                          length: MediaQuery.of(context).size.width * 0.5,
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
-            ),
-          ],
-        ),
-      ),
-    );
+        )
+        )
+    ),
+  );
+
   }
 }
