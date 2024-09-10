@@ -1,57 +1,183 @@
 import 'package:flutter/material.dart';
+import 'package:guess_that_beatboxer/main.dart';
+import 'package:provider/provider.dart';
 import '../models/user.dart';
+import '../models/match_history.dart'; 
 
 class MatchTile extends StatelessWidget {
-  final int matchNumber;
-  final String player1;
-  final String player1Feedback;
-  final String player2;
-  final String player2Feedback;
-  final String winner;
+  final MatchHistory match;
 
-  MatchTile({
-    required this.matchNumber,
-    required this.player1,
-    required this.player1Feedback,
-    required this.player2,
-    required this.player2Feedback,
-    required this.winner,
-  });
+  MatchTile({required this.match});
+
+  void showMatchDetailsDialog(BuildContext context) {
+    final formattedDate = "${match.createdAt.day}/${match.createdAt.month}/${match.createdAt.year}";
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(
+            'Match Details',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Container(
+            width: MediaQuery.of(context).size.width * 0.8,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'Winner: ${match.winner}',
+                    style: const TextStyle(
+                      color: Colors.green,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Loser: ${match.loser}',
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    '${match.player_1_user_name} match info',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const Divider(),
+                  Text(
+                    'Username: ${match.player_1_user_name}',
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Points: ${match.player_1_points}',
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Comment: ${match.player_1_comment}',
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    '${match.player_2_user_name} match info',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const Divider(),
+                  Text(
+                    'Username: ${match.player_2_user_name}',
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Points: ${match.player_2_points}',
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Comment: ${match.player_2_comment}',
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Match Details',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const Divider(),
+                  Text(
+                    'Draw: ${match.draw ? "Yes" : "No"}',
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Played At: $formattedDate',
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'Close',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Match $matchNumber",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
+    var user = context.read<MyAppState>().user;
+    return InkWell(
+      onTap: () => showMatchDetailsDialog(context),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Match ${match.createdAt.day}/${match.createdAt.month}/${match.createdAt.year}",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
               ),
-            ),
-            Text(
-              "Winner of the match: $winner",
-              style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8),
-            Text(
-              "Player 1: $player1",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 2),
-            Text("Comment: $player1Feedback"),
-            SizedBox(height: 8),
-            Text(
-              "Player 2: $player2",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 2),
-            Text("Comment: $player2Feedback"),
-          ],
+              Text(
+                match.draw
+                    ? "The match ended in a draw"
+                    : int.parse(match.winner) == user.id
+                        ? "You won the match"
+                        : "You lost the match", 
+                style: TextStyle(
+                  color: match.draw ? const Color.fromARGB(255, 0, 0, 0) : int.parse(match.winner) == user.id? Colors.green : Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 8),
+              Text(
+                "Player 1: ${match.player_1_user_name}",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 2),
+              Text("Comment: ${match.player_1_comment}"),
+              SizedBox(height: 8),
+              Text(
+                "Player 2: ${match.player_2_user_name}",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 2),
+              Text("Comment: ${match.player_2_comment}"),
+            ],
+          ),
         ),
       ),
     );
@@ -90,12 +216,7 @@ class PlayerFeedback extends StatelessWidget {
               itemBuilder: (context, index) {
                 final match = recentMatches[index];
                 return MatchTile(
-                  matchNumber: index + 1,
-                  player1: match.player_1_user_name,
-                  player1Feedback: match.player_1_comment,
-                  player2: match.player_2_user_name,
-                  player2Feedback: match.player_2_comment,
-                  winner: match.winner,
+                  match: match,
                 );
               },
             ),

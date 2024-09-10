@@ -29,7 +29,7 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	// Hash the user's password
+	// Hash the user's password present in util hash.go
 	hashedPassword, err := util.HashPassword(newUser.Password)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to hash password"})

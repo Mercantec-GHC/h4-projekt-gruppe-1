@@ -39,26 +39,33 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset:true,
       appBar: appBarLoginFunction("Login"),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/logo.png',
-              fit: BoxFit.contain,
-              height: 150,
+        child:SingleChildScrollView( // Gør det muligt at rulle, når tastaturet dukker op
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child:  
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/logo.png',
+                    fit: BoxFit.contain,
+                    height: 150,
+                  ),
+                  Text(
+                    "Welcome To Guess That Beatboxer!",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  SizedBox(height: 20),
+                  LoginForm(),
+                  SizedBox(height: 200),
+                ],
+              ),
             ),
-            Text(
-              "Welcome To Guess That Beatboxer!",
-              style: TextStyle(fontSize: 20),
-            ),
-            SizedBox(height: 20),
-            LoginForm(),
-            SizedBox(height: 200),
-          ],
-        ),
-      ),
+        )
+      )
     );
   }
 }
@@ -126,6 +133,7 @@ class _LoginFormState extends State<LoginForm> {
           ),
           SizedBox(height: 10),
           Text("Password"),
+          //fejl lige her !!!!!
           TextFormField(
             controller: _passwordController,
             decoration: const InputDecoration(

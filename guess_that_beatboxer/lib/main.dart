@@ -65,6 +65,12 @@ class MyAppState extends ChangeNotifier {
     selectedIndex = index;
     notifyListeners();
   }
+  Future<void> updateRecentMatches() async {
+    await user.fetchUserData();
+    await user.fetchMatchData();
+    notifyListeners();
+  }
+
 }
 
 class BottomNavBar extends StatefulWidget {

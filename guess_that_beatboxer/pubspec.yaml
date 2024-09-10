@@ -47,6 +47,8 @@ dependencies:
   linear_progress_bar: "^1.1.2"
   web_socket_channel: ^3.0.1
   sensors_plus: ^6.0.1
+  sound_mode: ^3.0.0
+  vibration: ^1.7.4
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +71,7 @@ flutter:
   assets:
     - assets/logo.png
     - assets/beatbox.png
+    - assets/comingsoon.png
 
   fonts:
     - family: Karla

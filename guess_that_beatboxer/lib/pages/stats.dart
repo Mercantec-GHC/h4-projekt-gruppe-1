@@ -92,8 +92,8 @@ class StatsSection extends StatelessWidget {
                   value: user.userStats.rightGuesses.toString(),
                 ),
                 StatsBox(
-                  title: 'Right guesses',
-                  value: user.userStats.rightGuesses.toString(),
+                  title: 'Draw',
+                  value: user.userStats.draw.toString(),
                 ),
               ],
             ),

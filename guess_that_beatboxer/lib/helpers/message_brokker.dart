@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:guess_that_beatboxer/Widgets/popup.dart';
 import 'package:guess_that_beatboxer/main.dart';
+import 'package:guess_that_beatboxer/pages/game_over.dart';
+import 'package:vibration/vibration.dart';
 
 dynamic findData(data){
 if (!isMessage(data)) {
@@ -30,7 +33,7 @@ isMessage(data){
 
 
 
-handleMessage(data, game){
+handleMessage(data, game) async {
 
 
     if(data["type"] == "game_update"){
@@ -49,9 +52,13 @@ handleMessage(data, game){
       }
 
       if(data["type"] == "game_delete"){
+        print(data);
         game.closeChannel();
-        game.resetGame();
         Navigator.pushReplacement(game.gameContext, MaterialPageRoute(builder: (context) => BottomNavBar()));
+        if (!game.host){
+          popup(game.gameContext, "Host has left the game");
+        }
+        game.resetGame();
       }
       if(data["type"] == "timer_started"){
         game.gameController.gameStarted = true;
@@ -61,8 +68,27 @@ handleMessage(data, game){
       }
       if(data["type"] == "round_over"){
         game.gameController.timer = 0;
+        game.round = (data["rounds"] as int).toDouble();
         game.gameController.newRound();
         
+      }
+      if(data["type"] == "game_over"){
+        game.sendMessage({"action": "game_over"});
+        game.updateGameData(data['game']);
+        Navigator.pushReplacement(game.gameContext, MaterialPageRoute(builder: (context) => GameOver()));
+      }
+
+      if(data["type"] == "timer_update"){
+        game.timer = data["timer"];
+      }
+
+      if(data["type"] == "half_time"){
+        var hasVibrator = await Vibration.hasVibrator();
+        if (hasVibrator!) {
+          if(game.gameController.myTurn){
+            Vibration.vibrate();
+          }
+        }
       }
 
 }

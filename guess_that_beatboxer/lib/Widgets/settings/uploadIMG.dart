@@ -8,8 +8,7 @@ import 'package:image_picker/image_picker.dart';
 typedef Progress = Function(double percent);
 
 class UploadRemoteImageForm extends StatefulWidget {
-  const UploadRemoteImageForm({Key? key, required this.title, required this.onImageUploaded})
-      : super(key: key);
+  const UploadRemoteImageForm({super.key, required this.title, required this.onImageUploaded});
 
   final String title;
   final Function(String?) onImageUploaded;

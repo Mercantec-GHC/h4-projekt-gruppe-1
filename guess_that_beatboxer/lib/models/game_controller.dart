@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:math';
 import 'package:guess_that_beatboxer/models/game.dart';
 
@@ -11,6 +10,7 @@ class GameController {
   Game game;
   String currentBeatboxer;
   int timer = 0;
+  var mounted; 
 
   GameController({this.myTurn = false, this.gameStarted = false, this.beatBoxer, required this.game, this.currentBeatboxer = " "});
 
