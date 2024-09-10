@@ -48,32 +48,33 @@ func Login(c *gin.Context) {
 	fmt.Println(loginData)
 
 	//If the user doesnt have a refresh token, create one
-	if loginData.RefreshToken != "" {
-
+	if user.RefreshToken {
 		token, err := util.CreateToken(user.Name, user.Email, user.Phone, user.Username, user.ID, user.RefreshToken)
-
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create token"})
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{"token": token})
+	} else {
+		refreshToken, err := util.CreateRefreshToken(user.Name, user.ID)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create refresh token"})
 			return
 		}
 
-		c.JSON(http.StatusOK, gin.H{"token": token})
-		return
+		user.RefreshToken = true
+
+		if err := db.DB.Db.Save(&user).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update user data"})
+			return
+		}
+
+		token, err := util.CreateToken(user.Name, user.Email, user.Phone, user.Username, user.ID, user.RefreshToken)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create token"})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"token": token, "refreshToken": refreshToken})
 	}
-
-	refreshToken, err := util.CreateRefreshToken(user.Name, user.ID)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create token"})
-		return
-	}
-
-	user.RefreshToken = true
-
-	if err := db.DB.Db.Save(&user).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update user data"})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{"refreshToken": refreshToken})
-
 }
