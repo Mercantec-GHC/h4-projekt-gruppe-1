@@ -136,7 +136,7 @@ class MatchTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var user = context.read<MyAppState>().user;
-    return InkWell(
+    return GestureDetector(
       onTap: () => showMatchDetailsDialog(context),
       child: Card(
         child: Padding(
