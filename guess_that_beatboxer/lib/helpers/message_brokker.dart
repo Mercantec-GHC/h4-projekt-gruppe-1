@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:guess_that_beatboxer/Widgets/popup.dart';
 import 'package:guess_that_beatboxer/main.dart';
 import 'package:guess_that_beatboxer/pages/game_over.dart';
+import 'package:vibration/vibration.dart';
 
 dynamic findData(data){
 if (!isMessage(data)) {
@@ -33,7 +33,7 @@ isMessage(data){
 
 
 
-handleMessage(data, game){
+handleMessage(data, game) async {
 
 
     if(data["type"] == "game_update"){
@@ -80,6 +80,15 @@ handleMessage(data, game){
 
       if(data["type"] == "timer_update"){
         game.timer = data["timer"];
+      }
+
+      if(data["type"] == "half_time"){
+        var hasVibrator = await Vibration.hasVibrator();
+        if (hasVibrator!) {
+          if(game.gameController.myTurn){
+            Vibration.vibrate();
+          }
+        }
       }
 
 }

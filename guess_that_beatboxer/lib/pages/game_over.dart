@@ -58,7 +58,7 @@ class _GameOverState extends State<GameOver> {
                         fontSize: MediaQuery.of(context).size.width * 0.09,
                       ),
                     )
-                  : game.winner == user.userName
+                  : int.parse(game.winner) == user.id
                       ? Text(
                           "You win!",
                           style: TextStyle(

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:guess_that_beatboxer/main.dart';
+import 'package:provider/provider.dart';
 import '../models/user.dart';
 import '../models/match_history.dart'; 
 
@@ -133,6 +135,7 @@ class MatchTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var user = context.read<MyAppState>().user;
     return InkWell(
       onTap: () => showMatchDetailsDialog(context),
       child: Card(
@@ -151,9 +154,11 @@ class MatchTile extends StatelessWidget {
               Text(
                 match.draw
                     ? "The match ended in a draw"
-                    : "Winner of the match: ${match.winner}",
+                    : int.parse(match.winner) == user.id
+                        ? "You won the match"
+                        : "You lost the match", 
                 style: TextStyle(
-                  color: match.draw ? Colors.pink.shade300 : Colors.green,
+                  color: match.draw ? const Color.fromARGB(255, 0, 0, 0) : int.parse(match.winner) == user.id? Colors.green : Colors.red,
                   fontWeight: FontWeight.bold,
                 ),
               ),

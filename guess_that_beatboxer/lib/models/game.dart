@@ -62,7 +62,7 @@ class Game extends ChangeNotifier {
     
         this.channel = channel;
     
-        await channel.stream.listen((message) {
+        await channel.stream.listen((message) async {
             final data = jsonDecode(message);
             
             if (data['type'] == 'confirm_subscription') {
@@ -71,7 +71,7 @@ class Game extends ChangeNotifier {
             var mapData = findData(data);
 
             if (mapData != null) {
-              handleMessage(mapData, this);
+             await handleMessage(mapData, this);
               notifyListeners();
             }
 
