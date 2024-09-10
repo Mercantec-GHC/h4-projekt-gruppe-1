@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"fmt"
 	"net/http"
 	"token-auth/db"
 	"token-auth/models"
@@ -44,28 +45,35 @@ func Login(c *gin.Context) {
 		return
 	}
 
+	fmt.Println(loginData)
+
+	//If the user doesnt have a refresh token, create one
 	if loginData.RefreshToken != "" {
-		refreshToken, err := util.CreateRefreshToken(user.Name, user.ID)
+
+		token, err := util.CreateToken(user.Name, user.Email, user.Phone, user.Username, user.ID, user.RefreshToken)
+
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create refresh token"})
 			return
 		}
 
-		token, err := util.CreateToken(user.Name, user.Email, user.Phone, user.Username, user.ID)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create token"})
-			return
-		}
-
-		c.JSON(http.StatusOK, gin.H{"token": token, "refreshToken": refreshToken})
+		c.JSON(http.StatusOK, gin.H{"token": token})
 		return
 	}
 
-	token, err := util.CreateToken(user.Name, user.Email, user.Phone, user.Username, user.ID)
+	refreshToken, err := util.CreateRefreshToken(user.Name, user.ID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create token"})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"token": token})
+	user.RefreshToken = true
+
+	if err := db.DB.Db.Save(&user).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update user data"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"refreshToken": refreshToken})
+
 }

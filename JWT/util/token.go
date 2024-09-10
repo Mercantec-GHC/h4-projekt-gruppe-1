@@ -28,7 +28,13 @@ func CreateRefreshToken(name string, id uint) (string, error) {
 	return rt, nil
 }
 
-func CreateToken(name string, email string, phone string, username string, id uint) (string, error) {
+func CreateToken(name string, email string, phone string, username string, id uint, rt bool) (string, error) {
+	if !rt {
+		err := fmt.Errorf("rt is false, cannot create token")
+		fmt.Println(err)
+		return "", err
+	}
+
 	godotenv.Load()
 
 	var secretKey = []byte(os.Getenv("SECRET_KEY"))
