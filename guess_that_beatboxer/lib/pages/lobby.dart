@@ -164,16 +164,20 @@ class _KategoriSectionState extends State<KategoriSection> {
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
       ),
-      itemCount: 4, 
+      itemCount: 4,
       itemBuilder: (context, index) {
+        final title = getTitle(index);
+        final isSelectable = title.isNotEmpty;
+
         return CategoryCard(
-          title: getTitle(index),
-          isSelected: index == selectedIndex, 
-          onTap: () {
+           title: title,
+          isSelected: index == selectedIndex,
+          onTap: isSelectable ? () {
             setState(() {
-              selectedIndex = index; 
+              selectedIndex = index;
             });
-          },
+          } : null,
+          imagePath: getImagePath(index),
         );
       },
     );
@@ -184,13 +188,28 @@ class _KategoriSectionState extends State<KategoriSection> {
       case 0:
         return "Solo";
       case 1:
-        return "Coming soon";
+        return "";
       case 2:
-        return "Coming soon";
+        return "";
       case 3:
-        return "Coming soon";
+        return "";
       default:
         return "";
+    }
+  }
+
+  String getImagePath(int index) {
+    switch (index) {
+      case 0:
+        return 'assets/beatbox.png';
+      case 1:
+        return 'assets/comingsoon.png';
+      case 2:
+        return 'assets/comingsoon.png'; 
+      case 3:
+        return 'assets/comingsoon.png'; 
+      default:
+        return ''; 
     }
   }
 }
@@ -198,9 +217,15 @@ class _KategoriSectionState extends State<KategoriSection> {
 class CategoryCard extends StatelessWidget {
   final String title;
   final bool isSelected;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
+  final String imagePath;
 
-  CategoryCard({required this.title, required this.isSelected, required this.onTap});
+  CategoryCard({
+    required this.title,
+    required this.isSelected,
+    this.onTap,
+    required this.imagePath,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -210,11 +235,11 @@ class CategoryCard extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           image: DecorationImage(
-            image: AssetImage('assets/beatbox.png'), 
+            image: AssetImage(imagePath),
             fit: BoxFit.cover,
           ),
           border: Border.all(
-            color: isSelected ? Colors.red : Colors.transparent, 
+            color: isSelected ? Colors.red : Colors.transparent,
             width: 4,
           ),
         ),

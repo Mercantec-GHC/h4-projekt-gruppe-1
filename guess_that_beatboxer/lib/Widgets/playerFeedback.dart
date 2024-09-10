@@ -5,12 +5,12 @@ import '../models/user.dart';
 import '../models/match_history.dart'; 
 
 class MatchTile extends StatelessWidget {
-  final MatchHistory match; // Use the whole match object
+  final MatchHistory match;
 
   MatchTile({required this.match});
 
   void showMatchDetailsDialog(BuildContext context) {
-    final formattedDate = "${match.createdAt.day}/${match.createdAt.month}/${match.createdAt.year}"; // Format as needed
+    final formattedDate = "${match.createdAt.day}/${match.createdAt.month}/${match.createdAt.year}";
 
     showDialog(
       context: context,

@@ -71,6 +71,7 @@ flutter:
   assets:
     - assets/logo.png
     - assets/beatbox.png
+    - assets/comingsoon.png
 
   fonts:
     - family: Karla
