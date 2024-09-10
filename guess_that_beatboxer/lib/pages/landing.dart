@@ -48,7 +48,6 @@ class HomePageContent extends StatelessWidget {
           JoinLobbyButton(),
           SizedBox(height: 16),
           PlayerFeedback(user: user),
-          //NearbyPlayersSection(),
         ],
       ),
     );

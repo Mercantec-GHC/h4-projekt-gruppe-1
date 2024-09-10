@@ -142,7 +142,7 @@ class WinLoseSection extends StatelessWidget {
                     winLoseRatio.toStringAsFixed(2),
                     style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.primary,
+                          color: Color(Colors.black.value),
                         ),
                   ),
                 ],

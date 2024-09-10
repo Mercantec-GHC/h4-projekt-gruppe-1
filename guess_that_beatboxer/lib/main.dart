@@ -49,6 +49,11 @@ class _MyAppState extends State<MyApp> {
           primarySwatch: Colors.red,
           primaryColor: Colors.red,
           scaffoldBackgroundColor: Colors.white,
+          cardTheme: CardTheme(
+            color: Colors.white,
+            elevation: 5,
+            shadowColor: Colors.black,
+          ),
           fontFamily: 'Karla',
         ),
         home: Login(),
