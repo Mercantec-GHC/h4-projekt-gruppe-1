@@ -47,6 +47,7 @@ dependencies:
   linear_progress_bar: "^1.1.2"
   web_socket_channel: ^3.0.1
   sensors_plus: ^6.0.1
+  sound_mode: ^3.0.0
 
 dev_dependencies:
   flutter_test:

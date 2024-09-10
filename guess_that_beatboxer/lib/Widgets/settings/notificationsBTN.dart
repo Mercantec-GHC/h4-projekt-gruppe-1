@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:guess_that_beatboxer/notificationManager/notificationService.dart';
+
 
 class NotificationButton extends StatefulWidget {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
@@ -12,26 +14,12 @@ class NotificationButton extends StatefulWidget {
 
 class _NotificationButtonState extends State<NotificationButton> {
   bool _notificationsEnabled = true;
+  late NotificationService _notificationService;
 
-  Future<void> _showNotification() async {
-    if (!_notificationsEnabled) return;
-
-    var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
-      'default_channel',
-      'Default Notifications',
-      importance: Importance.max,
-      priority: Priority.high,
-    );
-    var platformChannelSpecifics = NotificationDetails(
-      android: androidPlatformChannelSpecifics,
-    );
-    await widget.flutterLocalNotificationsPlugin.show(
-      0,
-      'Test Title',
-      'Test Body',
-      platformChannelSpecifics,
-      payload: 'Test Payload',
-    );
+  @override
+  void initState() {
+    super.initState();
+    _notificationService = NotificationService(widget.flutterLocalNotificationsPlugin);
   }
 
   void _toggleNotifications() {

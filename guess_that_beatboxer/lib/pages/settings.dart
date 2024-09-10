@@ -5,6 +5,7 @@ import 'package:guess_that_beatboxer/pages/login.dart';
 import 'package:guess_that_beatboxer/pages/register.dart';
 import '../Widgets/buttons.dart';
 import '../Widgets/settings/notificationsBTN.dart';
+import '../Widgets/settings/muteSoundSwitch.dart';
 import '../../api/patch_user.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -110,7 +111,7 @@ Widget build(BuildContext context) {
                     const SizedBox(width: 20),
                     Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: NotificationButton(flutterLocalNotificationsPlugin),
+                    child: EnableSoundButton(),
                     ),
                   ]
                 ),

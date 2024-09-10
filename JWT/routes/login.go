@@ -47,7 +47,7 @@ func Login(c *gin.Context) {
 
 	fmt.Println(loginData)
 
-	//If the user doesnt have a refresh token, create one
+	//If the user has a refresh token then create a acess token otherwise make both if login credentials are correct
 	if user.RefreshToken {
 		token, err := util.CreateToken(user.Name, user.Email, user.Phone, user.Username, user.ID, user.RefreshToken)
 		if err != nil {
@@ -55,6 +55,7 @@ func Login(c *gin.Context) {
 			return
 		}
 		c.JSON(http.StatusOK, gin.H{"token": token})
+
 	} else {
 		refreshToken, err := util.CreateRefreshToken(user.Name, user.ID)
 		if err != nil {
