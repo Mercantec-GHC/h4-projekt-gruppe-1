@@ -5,6 +5,7 @@ import 'package:guess_that_beatboxer/main.dart';
 import 'package:guess_that_beatboxer/models/game.dart';
 import 'package:provider/provider.dart';
 
+
 class GameOver extends StatefulWidget {
   const GameOver({Key? key}) : super(key: key);
 
@@ -23,7 +24,9 @@ class _GameOverState extends State<GameOver> {
     ]);
 
     var game = context.read<Game>();
-    var user = context.read<MyAppState>().user;
+    var appState = context.read<MyAppState>();
+    var user = appState.user;
+
 
     return Scaffold(
       body: SafeArea(
@@ -87,12 +90,15 @@ class _GameOverState extends State<GameOver> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 12,),
+                  SizedBox(height: 8,),
                   Buttons(
-                    pressFunction: () {
-                      game.sendComment(_commentController.text);
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) => BottomNavBar()));
+                    pressFunction: () async {
+                      await game.sendComment(_commentController.text);
+                      appState.updateRecentMatches();
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => BottomNavBar()));
+
                     },
                     text: "Submit",
                     length: MediaQuery.of(context).size.width * 0.5,
