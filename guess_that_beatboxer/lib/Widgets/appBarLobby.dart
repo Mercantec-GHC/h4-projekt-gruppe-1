@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 appBarLobbyFunction (text, {Widget? action}) {
   return AppBar(
-    backgroundColor: Colors.white,
     title: Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [

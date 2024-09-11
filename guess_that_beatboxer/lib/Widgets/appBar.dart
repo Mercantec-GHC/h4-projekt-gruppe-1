@@ -22,7 +22,6 @@ void showHowToPlayPopup(BuildContext context) {
 
 AppBar appBarFunction(String text, BuildContext context) {
   return AppBar(
-    backgroundColor: Colors.white,
     title: Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [

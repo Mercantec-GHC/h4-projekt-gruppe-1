@@ -49,6 +49,11 @@ class _MyAppState extends State<MyApp> {
           primarySwatch: Colors.red,
           primaryColor: Colors.red,
           scaffoldBackgroundColor: Colors.white,
+          appBarTheme: AppBarTheme(
+            elevation: 0,
+            scrolledUnderElevation: 0,
+            backgroundColor: Colors.white,
+          ),
           cardTheme: CardTheme(
             color: Colors.white,
             elevation: 5,
