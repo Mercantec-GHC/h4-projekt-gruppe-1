@@ -11,7 +11,7 @@ Future<String?> refreshAccessToken() async {
   }
 
   final response = await http.post(
-    Uri.parse('http://localhost:8080/token/refresh'),
+    Uri.parse('https://h4-projekt-gruppe-1.onrender.com/token/refresh'),
     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     body: {'refresh_token': refreshToken},
   );
