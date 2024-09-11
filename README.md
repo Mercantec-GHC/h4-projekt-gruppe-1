@@ -1,31 +1,105 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/nlVhM163)
-# H4
+# Guide: Sådan kører du Flutter-projektet fra GitHub
 
-H4 Projekt skabelon - Flutter og .NET API
+## Trin 1: Installer Flutter SDK
 
-## Mappe struktur
+1. **Download Flutter SDK** fra [flutter.dev](https://flutter.dev/docs/get-started/install).
+2. Følg installationsvejledningen for dit operativsystem, og sørg for, at Flutter er tilføjet til din `PATH`.
+3. Kør følgende kommando for at sikre, at alt er korrekt installeret:
 
-Der er 3 mapper i jeres projekt, I skal være velkommende til at tilføje flere som I finder det nødvendigt!
+    ```bash
+    flutter doctor
+    ```
 
-#### Docs
+4. Løs eventuelle problemer, som `flutter doctor` rapporterer, før du går videre.
 
-Her skal alt dokumentation være, der er noget documentation vi beder jer om at lave, men der er nok også flere dokumenter. Dem vi gerne skal have herinde er:
+## Trin 2: Installer Android Studio eller Visual Studio Code
 
-1. Casebeskrivelse fra jeres kunde - gerne som PDF
-2. Kravspecifikation som I som gruppe har udarbejde ud fra kundens casebeskrivelse
+- **Android Studio** bruges til at installere Android SDK og oprette Android-emulatorer.
+- **Visual Studio Code** kan bruges som editor. Installer **Flutter**- og **Dart**-udvidelserne, hvis du bruger denne editor.
 
-#### API
+## Trin 3: Klon projektet fra GitHub
 
-I skal bygge en backend, altså en API, som jeres mobilapplikation skal kontakte. Vi anbefaler og underviser i .NET, hvis I har erfaring med at bygge en API i et andet sprog eller framework, kan der gives tilladelse til at erstatte det med den!
+1. Åbn terminalen, og klon projektet fra GitHub:
 
-#### Mobile
+    ```bash
+    git clone https://github.com/Mercantec-GHC/h4-projekt-gruppe-1-1.git
+    ```
 
-Her er jeres Flutter applikation, vi anbefaler og underviser i Flutter og Dart, hvis I har erfaring med et andet framework såsom Kotlin, Swift, MAUI eller React Native kan der gives tilladelse til at bruge det i stedet!
+2. Gå ind i projektmappen:
 
-# Hosting - Cloud
+    ```bash
+    cd h4-projekt-gruppe-1-1
+    ```
 
-Vi anbefaler [Render.com](https://render.com/) til at hoste jeres API samt Flutter for web. Med Flutter kan vi selvfølgelig også hente det ned på en Android eller IOS enhed! Man kan se Swagger UI'et på Render her - [API på Render](https://h4api.onrender.com/swagger/index.html)
+## Trin 4: Installer projektets afhængigheder
 
-Alternativt til Render kan vi også bruge [Netlify](https://netlify.app/) til at hoste Flutter applikation uden downtime - Man kan se applikationen her - [Netlify Flutter](https://h4flutter.netlify.app/)
+1. Kør denne kommando for at hente alle nødvendige Flutter-pakker og afhængigheder:
 
-Til database bruger vi enten [Neon](Neon.tech) eller [Supabase](https://supabase.com) som begge tilbyder en gratis version af Postgres!
+    ```bash
+    flutter pub get
+    ```
+
+## Trin 5: Kør projektet på en emulator eller fysisk enhed
+
+### For Android:
+
+1. Opret og start en Android-emulator i **Android Studio**:
+   - Gå til **AVD Manager**.
+   - Opret en ny emulator med en valgfri Android-version, og start den.
+
+2. Kør projektet:
+
+    ```bash
+    flutter run
+    ```
+
+### For iOS:
+
+1. Åbn Xcode, og kør en iOS-simulator.
+2. Kør projektet med:
+
+    ```bash
+    flutter run
+    ```
+
+### For fysisk enhed (Android/iOS):
+
+1. **Android**: Tilslut enheden via USB, aktiver **USB-fejlfinding**, og kør:
+
+    ```bash
+    flutter run
+    ```
+
+2. **iOS**: Tilslut din iPhone via USB, åbn projektet i Xcode, og kør derfra.
+
+## Trin 6: Fejlretning og Hot Reload
+
+- Når projektet kører, kan du bruge **Hot Reload** ved at trykke `r` i terminalen.
+- Dette vil opdatere appen øjeblikkeligt uden at genstarte den.
+
+## Trin 7: Byg APK eller iOS build
+
+Når du er klar til at bygge projektet til produktion:
+
+- For Android:
+
+    ```bash
+    flutter build apk --release
+    ```
+
+- For iOS:
+
+    ```bash
+    flutter build ios --release
+    ```
+
+Bemærk: iOS-bygninger kræver en Mac og de nødvendige certifikater til app-underskrift.
+
+## Yderligere hjælp
+
+Hvis du støder på problemer undervejs, kan du altid køre:
+
+```bash
+flutter doctor
+```
+
