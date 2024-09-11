@@ -36,7 +36,7 @@ class _RegisterState extends State<Register> {
   var user = User();
 
   @override
-  Widget build(BuildContext context) {
+ Widget build(BuildContext context) {
     const String appTitle = 'Register';
     return MaterialApp(
       title: appTitle,
@@ -45,55 +45,57 @@ class _RegisterState extends State<Register> {
         backgroundColor: Colors.white,
         body: Stack(
           children: [
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Image.asset(
-                    '../assets/logo.png',
-                    fit: BoxFit.contain,
-                    height: 150,
-                  ),
-                  const Text(
-                    "Welcome To Guess That Beatboxer!",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  InputFields(_controllers, registerLabels, registerLabels, (data) {
-                    setState(() {
-                      imageData = data;
-                    });
-                  }),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: RegisterBTN(_controllers, _setLoading, _setRegistered, imageData),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: SizedBox(
-                            height: 50,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                  side: const BorderSide(color: Colors.black),
+            SingleChildScrollView(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Image.asset(
+                      '../assets/logo.png',
+                      fit: BoxFit.contain,
+                      height: 150,
+                    ),
+                    const Text(
+                      "Welcome To Guess That Beatboxer!",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    InputFields(_controllers, registerLabels, registerLabels, (data) {
+                      setState(() {
+                        imageData = data;
+                      });
+                    }),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: RegisterBTN(_controllers, _setLoading, _setRegistered, imageData),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: SizedBox(
+                              height: 50,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                    side: const BorderSide(color: Colors.black),
+                                  ),
                                 ),
+                                onPressed: () {
+                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
+                                },
+                                child: const Text('Cancel', style: TextStyle(color: Colors.black)),
                               ),
-                              onPressed: () {
-                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
-                              },
-                              child: const Text('Cancel', style: TextStyle(color: Colors.black)),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             if (_isLoading || _isRegistered)
@@ -110,7 +112,6 @@ class _RegisterState extends State<Register> {
       ),
     );
   }
-
   void _setLoading(bool isLoading) {
     setState(() {
       _isLoading = isLoading;
