@@ -27,5 +27,5 @@ func GetSingleUser(c *gin.Context) {
 		return
 	}
 
-	c.IndentedJSON(http.StatusOK, user)
+	c.IndentedJSON(http.StatusOK, user.Username)
 }

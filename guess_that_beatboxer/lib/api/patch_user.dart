@@ -42,8 +42,6 @@ Future<dynamic> patchUser(String username, String email, String phone, String pa
       throw Exception('Failed to change username: Token is null.');
     }
   } else {
-    print('Failed with status code: ${response.statusCode}');
-    print('Response body: ${response.body}');
     throw Exception('Failed to change username');
   }
 }

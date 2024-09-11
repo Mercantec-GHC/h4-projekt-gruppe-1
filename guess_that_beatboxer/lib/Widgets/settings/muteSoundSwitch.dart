@@ -14,15 +14,21 @@ class _EnableSoundButtonState extends State<EnableSoundButton> {
   Future<void> _toggleSound() async {
     try {
       if (_soundEnabled) {
+        print('Setting sound mode to silent');
         await SoundMode.setSoundMode(RingerModeStatus.silent);
       } else {
+        print('Setting sound mode to vibrate');
         await SoundMode.setSoundMode(RingerModeStatus.vibrate);
       }
       setState(() {
         _soundEnabled = !_soundEnabled;
+        print('Sound enabled state: $_soundEnabled');
       });
-    } on PlatformException {
+    } on PlatformException catch (e) {
+      print('PlatformException: ${e.message}');
       print('Please enable permissions required');
+    } catch (e) {
+      print('Unexpected error: $e');
     }
   }
 

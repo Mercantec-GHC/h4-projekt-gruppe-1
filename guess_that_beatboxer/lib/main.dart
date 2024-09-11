@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:guess_that_beatboxer/models/game.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'pages/landing.dart';
 import 'pages/settings.dart';
-//import 'pages/lobby.dart';
 import 'pages/userStats.dart';
 import 'pages/stats.dart';
-//import 'pages/register.dart';
 import 'pages/login.dart';
 
 void main() {
@@ -22,24 +19,7 @@ void main() {
   );
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-
-  @override
-  void initState() {
-    super.initState();
-    final initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
-    final initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
-    flutterLocalNotificationsPlugin.initialize(initializationSettings);
-  }
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -75,12 +55,12 @@ class MyAppState extends ChangeNotifier {
     selectedIndex = index;
     notifyListeners();
   }
+
   Future<void> updateRecentMatches() async {
     await user.fetchUserData();
     await user.fetchMatchData();
     notifyListeners();
   }
-
 }
 
 class BottomNavBar extends StatefulWidget {
@@ -155,15 +135,15 @@ class _BottomNavBarState extends State<BottomNavBar> {
             onTap: _onItemTapped,
           ),
           Positioned(
-            top: -20.0, 
+            top: -20.0,
             child: Container(
-              width: 40, 
-              height: 40, 
+              width: 40,
+              height: 40,
               decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border.all(
-                  color: themeColor, 
-                  width: 3, 
+                  color: themeColor,
+                  width: 3,
                 ),
                 borderRadius: BorderRadius.circular(30),
                 image: DecorationImage(

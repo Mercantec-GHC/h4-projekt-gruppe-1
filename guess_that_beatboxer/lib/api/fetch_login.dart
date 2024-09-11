@@ -1,13 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-
+import 'package:guess_that_beatboxer/notificationManager/notificationService.dart';
 
 
 
 Future<String> fetchLogin(email, password) async {
 
   final response = await http.post(Uri.parse('https://h4-projekt-gruppe-1.onrender.com/login'),
-  /* final response = await http.post(Uri.parse('http://localhost:8080/login'), */
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
 

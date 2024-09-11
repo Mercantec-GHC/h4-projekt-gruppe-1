@@ -7,6 +7,8 @@ import 'package:guess_that_beatboxer/pages/login.dart';
 import 'package:guess_that_beatboxer/widgets/util/inputFields.dart';
 import 'package:guess_that_beatboxer/widgets/util/validation.dart';
 import 'package:guess_that_beatboxer/widgets/util/spinner.dart';
+import 'package:guess_that_beatboxer/notificationManager/notificationService.dart';
+
 
 class Register extends StatefulWidget {
   @override
@@ -36,14 +38,11 @@ class _RegisterState extends State<Register> {
   var user = User();
 
   @override
- Widget build(BuildContext context) {
-    const String appTitle = 'Register';
-    return MaterialApp(
-      title: appTitle,
-      home: Scaffold(
+    Widget build(BuildContext context) {
+      return Scaffold(
         appBar: appBarLoginFunction("Register"),
-        backgroundColor: Colors.white,
-        body: Stack(
+          backgroundColor: Colors.white,
+          body: Stack(
           children: [
             SingleChildScrollView(
               child: Center(
@@ -109,8 +108,7 @@ class _RegisterState extends State<Register> {
               ),
           ],
         ),
-      ),
-    );
+      );
   }
   void _setLoading(bool isLoading) {
     setState(() {
@@ -151,7 +149,8 @@ class RegisterBTN extends StatelessWidget {
           setLoading(false);
           if (success) {
             setRegistered(true);
-            await Future.delayed(Duration(seconds: 2));
+            await Future.delayed(const Duration(seconds: 2));
+            NotificationService().onUserRegister(true);
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
           }
         },

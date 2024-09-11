@@ -20,7 +20,7 @@ class _LoadingSpinnerState extends State<LoadingSpinner> {
   Widget build(BuildContext context) {
     if (widget.isLoading) {
       return const Center(
-        child:  CircularProgressIndicator(
+        child: CircularProgressIndicator(
           valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
         ),
       );
@@ -29,24 +29,28 @@ class _LoadingSpinnerState extends State<LoadingSpinner> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-                      Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Container(
-                            width: 100,
-                            height: 100,
-                            decoration: const BoxDecoration(
-                              color: Colors.black,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                          const Positioned(
-                            child: Icon(Icons.check, color: Colors.red, size: 80),
-                          ),
-                        ],
-                      ),
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  width: 100,
+                  height: 100,
+                  decoration: const BoxDecoration(
+                    color: Colors.black,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                const Positioned(
+                  child: Icon(Icons.check, color: Colors.red, size: 80),
+                ),
+              ],
+            ),
             const SizedBox(height: 16),
-            Text(widget.successMessage, style: const TextStyle(fontSize: 24,fontWeight: FontWeight.w900, color: Colors.white)), 
+            Text(widget.successMessage,
+                style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w900,
+                    color: Colors.white)),
           ],
         ),
       );

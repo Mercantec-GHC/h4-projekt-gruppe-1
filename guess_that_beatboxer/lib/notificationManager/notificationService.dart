@@ -2,11 +2,20 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:guess_that_beatboxer/models/user.dart';
 
 class NotificationService {
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+  static final NotificationService _instance = NotificationService._internal();
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
-  NotificationService(this.flutterLocalNotificationsPlugin);
+  factory NotificationService() {
+    return _instance;
+  }
 
-  Future<void> sendNotification(String title, String body,) async {
+  NotificationService._internal() {
+    final initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+    final initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  Future<void> sendNotification(String title, String body) async {
     var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
       'default_channel',
       'Default Notifications',
@@ -31,12 +40,13 @@ class NotificationService {
 
   void onUserLogin(bool notificationsEnabled, User user) {
     if (notificationsEnabled) {
-      sendNotification('Welcome ${user.name} back', 'You have successfully logged in');
+      sendNotification('Welcome back ${user.name}', 'Ready to guess a beatboxer?');
     }
   }
-  void onUserRegister(bool notificationsEnabled, User user) {
+
+  void onUserRegister(bool notificationsEnabled) {
     if (notificationsEnabled) {
-      sendNotification('Welcome ${user.name} to Swishbeater boxer', 'You have successfully registered');
+      sendNotification('User registered', 'You have successfully registered');
     }
   }
 }

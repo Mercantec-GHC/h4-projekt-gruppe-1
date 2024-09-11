@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:guess_that_beatboxer/api/fetch_user_by_id.dart';
 
-Future<dynamic> showMatch(BuildContext context, match) {
+Future<dynamic> showMatch(BuildContext context, match) async {
   final formattedDate = DateFormat.yMMMd().add_Hm().format(match.createdAt);
+  final winnerUsername = await fetchUserById(int.parse(match.winner));
+  final looserUsername = await fetchUserById(int.parse(match.loser));
 
   List<Map<String, dynamic>> players = [
     {
@@ -24,16 +27,15 @@ Future<dynamic> showMatch(BuildContext context, match) {
         backgroundColor: Colors.white,
         title: const Text('Match Details', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
         content: Container(
-          
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text('Winner: ${match.winner}', style: const TextStyle(color: Colors.green, fontSize: 18, fontWeight: FontWeight.bold)),
+                Text('Winner: $winnerUsername', style: const TextStyle(color: Colors.green, fontSize: 18, fontWeight: FontWeight.bold)),
 
                 const SizedBox(height: 8),
 
-                Text('Loser: ${match.loser}', style: const TextStyle(color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold)),
+                Text('Loser: ${looserUsername.toString()}', style: const TextStyle(color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold)),
 
                 const SizedBox(height: 16),
 

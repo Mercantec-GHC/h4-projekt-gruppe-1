@@ -6,6 +6,7 @@ import (
 	ImageRoutes "token-auth/routes/image"
 	LoginRoutes "token-auth/routes/login"
 	RegisterRoutes "token-auth/routes/register"
+	RefreshToken "token-auth/routes/token"
 	UserRoutes "token-auth/routes/user"
 
 	_ "token-auth/docs"
@@ -41,6 +42,7 @@ func main() {
 	ImageRoutes.ImageRoutes(r)
 	RegisterRoutes.RegisterRoutes(r)
 	LoginRoutes.LoginRoutes(r)
+	RefreshToken.GetNewTokenRoutes(r)
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.Run(":8080")

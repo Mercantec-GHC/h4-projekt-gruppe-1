@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:guess_that_beatboxer/Widgets/appBar.dart';
+import 'package:guess_that_beatboxer/main.dart';
 import 'package:guess_that_beatboxer/models/user.dart';
 import 'package:guess_that_beatboxer/pages/landing.dart';
 import 'package:guess_that_beatboxer/pages/login.dart';
 import 'package:guess_that_beatboxer/Widgets/util/inputFields.dart';
+import 'package:provider/provider.dart';
 import '../Widgets/buttons.dart';
 import '../Widgets/settings/notificationsBTN.dart';
 import '../Widgets/settings/muteSoundSwitch.dart';
@@ -42,7 +44,7 @@ class _SettingsPageState extends State<SettingsPage> {
     flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
-  void _updateUser() async {
+  void _updateUser(appState) async {
     try {
       setState(() {
         _isLoading = true;
@@ -70,7 +72,7 @@ class _SettingsPageState extends State<SettingsPage> {
       });
 
       await Future.delayed(Duration(seconds: 2));
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage()));
+      appState.onItemTapped(0);
     } catch (e) {
       print(e);
       setState(() {
@@ -88,6 +90,8 @@ class _SettingsPageState extends State<SettingsPage> {
       'Password',
       'Bekræft Password',
     ];
+    
+    final appState = context.watch<MyAppState>();
 
     return Scaffold(
       appBar: appBarFunction("Settings", context),
@@ -152,7 +156,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           child: Buttons(
                             text: 'Update',
                             pressFunction: () {
-                              _updateUser();
+                              _updateUser(appState);
                             },
                             length: double.infinity,
                             height: 50,
@@ -165,7 +169,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           child: Buttons(
                             text: 'Cancel',
                             pressFunction: () {
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
+                              appState.onItemTapped(0);
                             },
                             length: double.infinity,
                             height: 50,
@@ -185,7 +189,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           child: Buttons(
                             text: 'Delete Account',
                             pressFunction: () {
-                              _updateUser();
+                              _updateUser(appState);
                             },
                             length: double.infinity,
                             height: 50,
@@ -205,8 +209,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             },
                             length: double.infinity,
                             height: 50,
-                            backgroundColor: Colors.white,
-                            textColor: Colors.black,
+                            backgroundColor: Colors.white, textColor: Colors.black,
                           ),
                         ),
                       ),
@@ -230,6 +233,8 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 }
+
+
 
 List<String> Updatelabels = [
   'Username',

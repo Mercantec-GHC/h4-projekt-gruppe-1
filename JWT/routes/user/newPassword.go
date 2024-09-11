@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// postNewPasswordByMail godoc
 // @Summary Update user password by email
 // @Description Update user password by email
 // @Tags users
@@ -16,9 +17,7 @@ import (
 // @Produce  json
 // @Param   email path string true "User Email"
 // @Param   password body string true "New Password"
-// @Success 200 {string} string
-// @Failure 404 {object} models.ErrorResponse
-// @Failure 500 {object} models.ErrorResponse
+// @Success 200 {string} string "Password updated successfully"
 // @Router /user/email/{email}/password [post]
 func postNewPasswordByMail(c *gin.Context) {
 	email := c.Param("email")

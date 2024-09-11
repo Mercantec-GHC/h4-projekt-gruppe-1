@@ -453,7 +453,7 @@ class StartSection extends StatelessWidget {
         ),
       );
     }else{
-      return Center(
+      return const Center(
         child: Text("Waiting for host to start the game"),
       );
     }

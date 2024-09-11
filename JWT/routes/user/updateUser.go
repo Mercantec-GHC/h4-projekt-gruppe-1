@@ -56,7 +56,7 @@ func UpdateUser(c *gin.Context) {
 	}
 
 	// Generate a new token for the updated user
-	token, err := util.CreateToken(user.Name, user.Email, user.Phone, user.Username, user.ID, user.RefreshToken)
+	token, err := util.CreateToken(user.Name, user.Email, user.Phone, user.Username, user.ID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token", "details": err.Error()})
 		return

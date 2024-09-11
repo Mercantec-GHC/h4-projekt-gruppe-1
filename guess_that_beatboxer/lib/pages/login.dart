@@ -7,8 +7,11 @@ import '../Widgets/buttons.dart';
 import '../api/fetch_login.dart';
 import '../Widgets/appBarLogin.dart';
 import '../Widgets/util/resetPassword.dart';
+import 'package:guess_that_beatboxer/notificationManager/notificationService.dart';
+
 
 class Login extends StatefulWidget {
+
   @override
   _LoginState createState() => _LoginState();
 }
@@ -98,8 +101,10 @@ class _LoginFormState extends State<LoginForm> {
       appState.user = User(jsonWebToken: token);
       await appState.user.saveToken();
       await appState.user.loadData();
+      NotificationService().onUserLogin(true, appState.user);
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => BottomNavBar()));
+
     } catch (e) {
       _showPopup(context, "Invalid email or password");
       print(e);

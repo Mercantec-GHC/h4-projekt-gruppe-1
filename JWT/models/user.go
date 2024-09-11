@@ -8,7 +8,7 @@ type User struct {
 	Password     string `json:"password"`
 	Phone        string `json:"phone"`
 	Image        Image  `json:"image" gorm:"foreignkey:UserID"`
-	RefreshToken bool   `json:"refresh_token"`
+	RefreshToken string `json:"refresh_token"`
 }
 
 type Image struct {

@@ -18,7 +18,7 @@ func CreateRefreshToken(name string, id uint) (string, error) {
 	rtClaims := refreshToken.Claims.(jwt.MapClaims)
 	rtClaims["sub"] = name
 	rtClaims["id"] = id
-	rtClaims["exp"] = time.Now().Add(time.Hour * 24).Unix()
+	rtClaims["exp"] = time.Now().Add(time.Hour * 24 * 7).Unix()
 	rt, err := refreshToken.SignedString(secretKey)
 
 	if err != nil {
@@ -28,12 +28,7 @@ func CreateRefreshToken(name string, id uint) (string, error) {
 	return rt, nil
 }
 
-func CreateToken(name string, email string, phone string, username string, id uint, rt bool) (string, error) {
-	if !rt {
-		err := fmt.Errorf("rt is false, cannot create token")
-		fmt.Println(err)
-		return "", err
-	}
+func CreateToken(name string, email string, phone string, username string, id uint) (string, error) {
 
 	godotenv.Load()
 
@@ -45,7 +40,7 @@ func CreateToken(name string, email string, phone string, username string, id ui
 		"username": username,
 		"phone":    phone,
 		"iss":      "token-auth",
-		"exp":      time.Now().Add(time.Hour * 24).Unix(),
+		"exp":      time.Now().Add(time.Minute * 1).Unix(),
 		"iat":      time.Now().Unix(),
 		"id":       id,
 	})
