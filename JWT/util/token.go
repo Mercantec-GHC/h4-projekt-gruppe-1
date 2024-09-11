@@ -40,7 +40,7 @@ func CreateToken(name string, email string, phone string, username string, id ui
 		"username": username,
 		"phone":    phone,
 		"iss":      "token-auth",
-		"exp":      time.Now().Add(time.Minute * 1).Unix(),
+		"exp":      time.Now().Add(time.Minute * 30).Unix(),
 		"iat":      time.Now().Unix(),
 		"id":       id,
 	})
