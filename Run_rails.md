@@ -35,6 +35,6 @@ Rails server
     rails server
     ```
 
-5. Rails-serveren kører nu normalt på `http://localhost:3000`.
+5. Rails-serveren kører nu  på `http://localhost:5501`.
 
 ---
