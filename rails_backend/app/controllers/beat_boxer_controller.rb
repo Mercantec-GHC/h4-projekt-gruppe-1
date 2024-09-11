@@ -1,9 +1,10 @@
 class BeatBoxerController < LoginController
 
-  def show
-    
-  end
+  #This controller is used to alle endpoints related to beatboxers
 
+
+
+  # This is only used for populating the database
   def create
     beat_boxers = beat_boxer_names
     beat_boxers.each do |beat_boxer|
@@ -13,9 +14,7 @@ class BeatBoxerController < LoginController
     
   end
 
-  def destroy
-  end
-
+  # Fetches all beatboxers from the database GET /beat_boxers
   def index
     beat_boxers = BeatBoxer.all
     create() if beat_boxers.length == 0
@@ -27,23 +26,7 @@ class BeatBoxerController < LoginController
 
   private
 
-  def jwt_test
-    token = request.headers["autherization"]
-    if token
-      puts token
-      begin
-        decoded_token = JWT.decode(token, ENV['JWT_SECRET'], true, {algorithm: "HS256"})
-        # puts decoded_token[0]["sub"]
-        @test_user = TestUser.new(decoded_token[0]["sub"], "12345678")
-        puts @test_user.name
-      rescue JWT::DecodeError
-        render json: {error: "Invalid token"}, status: :unauthorized
-      end
-    else
-      render json: {error: "No token"}, status: :unauthorized
-    end
-  end
-
+  #List of beatboxers to be added to the database
   def beat_boxer_names 
     beatboxers = [
       "Ariel Pink",

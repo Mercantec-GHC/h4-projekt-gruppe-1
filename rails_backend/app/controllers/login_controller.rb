@@ -1,12 +1,13 @@
 class LoginController < ApplicationController
+ #This controller is for validating the token before accessing the endpoints
+
  before_action :json_token
 
 
  private
-
+  #decodes the token and checks if it is valid
   def json_token 
     token = request.headers["Authorization"]&.split(" ")&.last
-    puts JWT.decode(token, ENV['JWT_SECRET'], true, {algorithm: "HS256"})
 
     if token
       begin

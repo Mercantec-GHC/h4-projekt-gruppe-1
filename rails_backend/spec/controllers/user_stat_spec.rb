@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe "UserStats", type: :request do
     before(:all) do
-        @token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjM4MDAyMjgsImlhdCI6MTcyMzcxMzgyOCwiaXNzIjoidG9rZW4tYXV0aCIsInN1YiI6IkpvaG4gRG9lMSJ9.j7F4AuE_6DGJMea1-NvJ2Zc2uAP3qNYS2Dwg3eGijKw"
+        @token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtpbUBray5jb20iLCJleHAiOjE3MjYwNzc2MzEsImlhdCI6MTcyNjA3NzU3MSwiaWQiOjIwLCJpc3MiOiJ0b2tlbi1hdXRoIiwicGhvbmUiOiIxMjM0NTY3OCIsInN1YiI6IktpbSIsInVzZXJuYW1lIjoiS3JpeHp5In0.TJO8gygw62CvJD9gtomUG3642cNExtuyzhT1dO17H0o"
       end
     describe "GET /user_stat" do
       it "returns a list of user_stats" do
