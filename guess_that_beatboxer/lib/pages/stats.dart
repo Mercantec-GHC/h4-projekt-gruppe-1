@@ -111,15 +111,14 @@ class WinLoseSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final int gamesWon = user.userStats.wins;
-    final int gamesLost = user.userStats.lost;
-    final double winLoseRatio = gamesLost == 0
-        ? gamesWon.toDouble()
-        : gamesWon / gamesLost;
+  final int gamesWon = user.userStats.wins;
+  final int gamesPlayed = user.userStats.gamesPlayed;
+  final int gamesLost = gamesPlayed - gamesWon;
+
+  var winLoseRatio = gamesLost != 0 ? (gamesWon / gamesLost).toDouble() : 0;
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        // Adjust padding based on the available width
         final padding = constraints.maxWidth < 400 ? 16.0 : 24.0;
 
         return Center(

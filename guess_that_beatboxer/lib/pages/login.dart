@@ -97,8 +97,8 @@ class _LoginFormState extends State<LoginForm> {
     try {
       String email = _emailController.text;
       String password = _passwordController.text;
-      var token = await fetchLogin(email, password);
-      appState.user = User(jsonWebToken: token);
+      var tokens = await fetchLogin(email, password);
+      appState.user = User(jsonWebToken: tokens[0],refreshToken: tokens[1]);
       await appState.user.saveToken();
       await appState.user.loadData();
       NotificationService().onUserLogin(true, appState.user);

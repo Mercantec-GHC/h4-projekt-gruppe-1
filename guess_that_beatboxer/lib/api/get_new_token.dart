@@ -5,6 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 final storage = FlutterSecureStorage();
 
 Future<String?> refreshAccessToken() async {
+
   final refreshToken = await storage.read(key: 'refreshToken');
   if (refreshToken == null) {
     throw Exception('No refresh token available');
@@ -18,7 +19,7 @@ Future<String?> refreshAccessToken() async {
 
   if (response.statusCode == 200) {
     final data = jsonDecode(response.body);
-    final newToken = data['token'];
+    final newToken = data['access_token'];
     await storage.write(key: 'jwtToken', value: newToken);
     return newToken;
   } else {

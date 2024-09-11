@@ -64,12 +64,11 @@ class _PlayerOneState extends State<PlayerOne> {
   _PlayerOneState(this.game, this.user);
     DateTime? lastPrintedTime ;
     StreamSubscription<AccelerometerEvent>? stream; 
+
     @override
     initState() {
       super.initState();
-
         stream = accelerometerEventStream(samplingPeriod: Duration(milliseconds: 150)).listen((AccelerometerEvent event) {
-          
           final currentTime = DateTime.now();
           if (game.gameController.gameStarted) {            
             if (lastPrintedTime == null || currentTime.difference(lastPrintedTime!).inSeconds >= 1) {
@@ -85,6 +84,7 @@ class _PlayerOneState extends State<PlayerOne> {
           }
         });
     }
+
     @override
     dispose() {
       super.dispose();

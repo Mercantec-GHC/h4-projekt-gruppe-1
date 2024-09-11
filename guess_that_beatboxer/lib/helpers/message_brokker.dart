@@ -35,18 +35,17 @@ isMessage(data){
 
 handleMessage(data, game) async {
 
-
     if(data["type"] == "game_update"){
         game.updateGameData(data['game']);
       }
 
       if(data["type"] == "game_leave"){
-
         if (game.host == false){
           game.closeChannel();
           game.resetGame();
         }
       }
+
       if(data["type"] == "game_start"){
         game.startGame(data["beat_boxer"]);
       }
@@ -73,8 +72,8 @@ handleMessage(data, game) async {
         
       }
       if(data["type"] == "game_over"){
-        game.sendMessage({"action": "game_over"});
         game.updateGameData(data['game']);
+        print(data['game']);
         Navigator.pushReplacement(game.gameContext, MaterialPageRoute(builder: (context) => GameOver()));
       }
 
@@ -90,5 +89,4 @@ handleMessage(data, game) async {
           }
         }
       }
-
 }

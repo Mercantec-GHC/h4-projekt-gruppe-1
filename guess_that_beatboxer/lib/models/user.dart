@@ -19,11 +19,11 @@ class User {
   String image = " ";
   UserStats userStats = UserStats();
   List<MatchHistory> matchHistory = [];
-  String? refreshToken;
+  String refreshToken;
 
   static final storage = FlutterSecureStorage();
 
-  User({this.jsonWebToken = " "});
+  User({this.jsonWebToken = " ", this.refreshToken = " "});
 
   Future<void> saveToken() async {
     await storage.write(key: 'jwtToken', value: jsonWebToken);

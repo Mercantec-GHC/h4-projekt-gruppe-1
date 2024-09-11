@@ -28,7 +28,6 @@ class Join extends StatelessWidget {
     this.match_id,
     this.player_type,
   });
-
   @override
   Widget build(BuildContext context) {
     final game = context.read<Game>();

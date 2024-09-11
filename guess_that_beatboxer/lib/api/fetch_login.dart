@@ -1,10 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:guess_that_beatboxer/notificationManager/notificationService.dart';
 
 
 
-Future<String> fetchLogin(email, password) async {
+Future<List> fetchLogin(email, password) async {
 
   final response = await http.post(Uri.parse('https://h4-projekt-gruppe-1.onrender.com/login'),
     headers: <String, String>{
@@ -18,7 +17,7 @@ Future<String> fetchLogin(email, password) async {
   );
   
   if (response.statusCode == 200) {
-    return jsonDecode(response.body)['token'];
+    return [jsonDecode(response.body)["token"],jsonDecode(response.body)["refreshToken"]];
   } else {
     throw Exception('Failed to load');
   }

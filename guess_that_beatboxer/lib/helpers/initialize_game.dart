@@ -14,6 +14,8 @@ Future<dynamic> initializeGame(player_type, game, user, {match_id = 0}) async {
 
 
   if (player_type == "host") {
+    try {
+    await user.refreshTokenIfNeeded();
     var data = await createMatch(user.jsonWebToken);
     game.id = data["id"];
     game.host = true;
@@ -24,9 +26,15 @@ Future<dynamic> initializeGame(player_type, game, user, {match_id = 0}) async {
     await game.joinGame(user.userName, player_type, user.id);
     return "";
     
+    } catch (e) {
+      throw Exception(e);
+      
+    }
+
     
   } else if(player_type == "join") {
     try {
+      await user.refreshTokenIfNeeded();
       var data = await fetchMatch(user.jsonWebToken, match_id);
       if(data == "No match found" || match_id == ""){
         Navigator.pushReplacement(game.gameContext, MaterialPageRoute(builder: (context) => BottomNavBar()));
