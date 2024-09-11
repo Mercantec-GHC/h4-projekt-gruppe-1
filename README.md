@@ -22,7 +22,7 @@
 1. Åbn terminalen, og klon projektet fra GitHub:
 
     ```bash
-    git clone https://github.com/Mercantec-GHC/h4-projekt-gruppe-1-1.git
+    git clone https://github.com/Mercantec-GHC/h4-projekt-gruppe-1.git
     ```
 
 2. Gå ind i projektmappen:
