@@ -59,18 +59,3 @@ func CreateToken(name string, email string, phone string, username string, id ui
 
 	return tokenString, nil
 }
-
-/*func CreateRefreshToken(id uint) (string, error) {
-	refreshClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"id":  id,
-		"exp": time.Now().Add(time.Hour * 24 * 7).Unix(),
-		"iat": time.Now().Unix(),
-	})
-
-	refreshTokenString, err := refreshClaims.SignedString(secretKey)
-	if err != nil {
-		return "", err
-	}
-
-	return refreshTokenString, nil
-}*/

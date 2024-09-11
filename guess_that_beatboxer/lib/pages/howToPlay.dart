@@ -24,9 +24,9 @@ class HowToPlayPageContent extends StatelessWidget {
         children: [
           HowToPlaySection(),
           SizedBox(height: 16),
-          VipUpSection(),
+          TiltUpSection(),
           SizedBox(height: 16),
-          VipDownSection(),
+          TiltDownSection(),
           SizedBox(height: 16),
         ],
       ),
@@ -53,7 +53,7 @@ class HowToPlaySection extends StatelessWidget {
   }
 }
 
-class VipUpSection extends StatelessWidget {
+class TiltUpSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -91,7 +91,7 @@ class VipUpSection extends StatelessWidget {
   }
 }
 
-class VipDownSection extends StatelessWidget {
+class TiltDownSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
