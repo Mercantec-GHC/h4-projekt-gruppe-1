@@ -115,28 +115,6 @@ class MatchHistory extends StatelessWidget {
               ],
             ),
           ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const Text(
-                "Winrate: ",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w300,
-                  color: Colors.grey,
-                ),
-              ),
-              Text(
-                "${winRate.toString()}%",
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w300,
-                  color: Colors.grey,
-                ),
-              ),
-            ],
-          ),
         ],
       ),
     );
