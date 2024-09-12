@@ -40,14 +40,17 @@ Future<dynamic> showMatch(BuildContext context, match) async {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text('Winner: $winnerUsername', style: const TextStyle(color: Colors.green, fontSize: 18, fontWeight: FontWeight.bold)),
-
-                const SizedBox(height: 8),
-
-                Text('Loser: $looserUsername', style: const TextStyle(color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold)),
+                  if (match.draw == true) ...[
+                    Text('Player 1: $winnerUsername', style: const TextStyle(color: Colors.blue, fontSize: 18, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 8),
+                    Text('Player 2: $looserUsername', style: const TextStyle(color: Colors.blue, fontSize: 18, fontWeight: FontWeight.bold)),
+                  ] else ...[
+                    Text('Winner: $winnerUsername', style: const TextStyle(color: Colors.green, fontSize: 18, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 8),
+                    Text('Loser: $looserUsername', style: const TextStyle(color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold)),
+                  ],
 
                 const SizedBox(height: 16),
-
                 ...players.map((player) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
