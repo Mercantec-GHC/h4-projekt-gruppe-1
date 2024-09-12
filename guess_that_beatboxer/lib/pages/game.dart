@@ -150,7 +150,7 @@ class PlayerTwo extends StatelessWidget {
         children: [
           Text("${game.player_1_user_name} : ${game.player_1_points}", style: TextStyle(color: Colors.black, fontSize: MediaQuery.of(context).size.width * 0.05)),
           Text("Round: ${(game.round / 2).ceil()}", style: TextStyle(color: Colors.black, fontSize: MediaQuery.of(context).size.width * 0.04)),
-          Text("${game.player_2_user_name} :${game.player_2_points}", style: TextStyle(color: Colors.black, fontSize: MediaQuery.of(context).size.width * 0.05)),
+          Text("${game.player_2_user_name} : ${game.player_2_points}", style: TextStyle(color: Colors.black, fontSize: MediaQuery.of(context).size.width * 0.05)),
         ],
         ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.20),
