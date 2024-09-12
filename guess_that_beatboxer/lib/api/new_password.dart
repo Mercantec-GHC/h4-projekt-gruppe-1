@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 
 Future<String> updatePassword(String email, String newPassword) async {
   final response = await http.post(
-    Uri.parse('https://h4-projekt-gruppe-1.onrender.com/user/$email/password'),
+    Uri.parse('https://h4-projekt-gruppe-1.onrender.com/user/password/$email'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
