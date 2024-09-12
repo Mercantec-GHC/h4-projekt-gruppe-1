@@ -4,8 +4,17 @@ import 'package:guess_that_beatboxer/api/fetch_user_by_id.dart';
 
 Future<dynamic> showMatch(BuildContext context, match) async {
   final formattedDate = DateFormat.yMMMd().add_Hm().format(match.createdAt);
-  final winnerUsername = await fetchUserById(int.parse(match.winner));
-  final looserUsername = await fetchUserById(int.parse(match.loser));
+  var winnerUsername;
+  var looserUsername;
+
+  if (match.draw == true) {
+    winnerUsername = match.player_1_user_name;
+    looserUsername = match.player_2_user_name;
+  } else {
+    winnerUsername = await fetchUserById(int.parse(match.winner));
+    looserUsername = await fetchUserById(int.parse(match.loser));
+  }
+
 
   List<Map<String, dynamic>> players = [
     {
@@ -35,7 +44,7 @@ Future<dynamic> showMatch(BuildContext context, match) async {
 
                 const SizedBox(height: 8),
 
-                Text('Loser: ${looserUsername.toString()}', style: const TextStyle(color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold)),
+                Text('Loser: $looserUsername', style: const TextStyle(color: Colors.red, fontSize: 18, fontWeight: FontWeight.bold)),
 
                 const SizedBox(height: 16),
 
